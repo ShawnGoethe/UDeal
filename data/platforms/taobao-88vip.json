@@ -1,0 +1,91 @@
+{
+  "platform": "淘宝",
+  "platform_id": "taobao-88vip",
+  "levels": ["88VIP"],
+  "benefits": [
+    {
+      "id": "taobao-88vip-discount",
+      "name": "95折优惠",
+      "category": "shopping",
+      "description": "天猫超市、天猫国际等享受95折",
+      "level_details": {
+        "88VIP": { "discount": "95折", "scope": "天猫超市、天猫国际、部分品牌" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "下单自动计算折扣",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "taobao-88vip-饿了么",
+      "name": "饿了么超级会员",
+      "category": "dining",
+      "description": "88VIP包含饿了么超级会员权益",
+      "level_details": {
+        "88VIP": { "note": "自动获得饿了么超级会员" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "饿了么APP内自动显示超级会员",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "taobao-88vip-优酷",
+      "name": "优酷VIP会员",
+      "category": "entertainment",
+      "description": "88VIP包含优酷VIP会员",
+      "level_details": {
+        "88VIP": { "note": "自动获得优酷VIP" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "使用淘宝账号登录优酷即可",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "taobao-88vip-淘票票",
+      "name": "淘票票优惠",
+      "category": "entertainment",
+      "description": "电影票享受会员优惠价",
+      "level_details": {
+        "88VIP": { "note": "部分影片享特价" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "淘票票APP内自动显示优惠",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "taobao-88vip-shipping",
+      "name": "运费险",
+      "category": "shopping",
+      "description": "退货免运费",
+      "level_details": {
+        "88VIP": { "note": "天猫商品退货自动获得运费险" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "退货时自动赔付运费",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "taobao-88vip-飞猪",
+      "name": "飞猪会员权益",
+      "category": "travel",
+      "description": "飞猪旅行享受会员权益",
+      "level_details": {
+        "88VIP": { "note": "部分酒店/机票享优惠价" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "飞猪APP内自动识别",
+      "active": true,
+      "last_updated": "2026-06-26"
+    }
+  ]
+}

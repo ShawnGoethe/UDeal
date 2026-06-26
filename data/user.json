@@ -1,0 +1,29 @@
+{
+  "memberships": [
+    {
+      "platform_id": "taobao-88vip",
+      "level": "88VIP",
+      "since": null,
+      "expires": null,
+      "notes": "淘宝/天猫88VIP"
+    },
+    {
+      "platform_id": "meituan",
+      "level": "黑金会员",
+      "since": null,
+      "expires": null,
+      "notes": "美团外卖会员"
+    },
+    {
+      "platform_id": "jd",
+      "level": "PLUS",
+      "since": null,
+      "expires": null,
+      "notes": "京东付费会员"
+    }
+  ],
+  "preferences": {
+    "priority_categories": ["health", "dining"],
+    "notify_expiring": true
+  }
+}

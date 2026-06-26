@@ -1,0 +1,71 @@
+{
+  "platform": "携程",
+  "platform_id": "ctrip",
+  "levels": ["黄金会员", "铂金会员", "钻石会员"],
+  "benefits": [
+    {
+      "id": "ctrip-hotel-discount",
+      "name": "酒店会员价",
+      "category": "travel",
+      "description": "酒店预订享受会员专属价格",
+      "level_details": {
+        "黄金会员": { "discount": "95折" },
+        "铂金会员": { "discount": "9折" },
+        "钻石会员": { "discount": "85折" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "预订时自动显示会员价",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "ctrip-flight-coupon",
+      "name": "机票优惠券",
+      "category": "travel",
+      "description": "每月赠送机票优惠券",
+      "level_details": {
+        "黄金会员": { "amount": "20元", "period": "每月" },
+        "铂金会员": { "amount": "50元", "period": "每月" },
+        "钻石会员": { "amount": "100元", "period": "每月" }
+      },
+      "redeem_time": "每月1日发放",
+      "limit": null,
+      "tips": "在携程APP领取",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "ctrip-vip-lounge",
+      "name": "机场贵宾厅",
+      "category": "travel",
+      "description": "免费使用机场贵宾休息室",
+      "level_details": {
+        "黄金会员": { "times": 0 },
+        "铂金会员": { "times": 2, "period": "每年" },
+        "钻石会员": { "times": 4, "period": "每年" }
+      },
+      "redeem_time": "提前预约",
+      "limit": null,
+      "tips": "在携程APP内预约使用",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "ctrip-room-upgrade",
+      "name": "房型升级",
+      "category": "travel",
+      "description": "酒店入住可享房型升级",
+      "level_details": {
+        "黄金会员": { "note": "视房态而定" },
+        "铂金会员": { "note": "优先升级" },
+        "钻石会员": { "note": "保证升级（视 availability）" }
+      },
+      "redeem_time": "入住时",
+      "limit": null,
+      "tips": "预订时备注会员等级",
+      "active": true,
+      "last_updated": "2026-06-26"
+    }
+  ]
+}

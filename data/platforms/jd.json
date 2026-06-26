@@ -1,0 +1,91 @@
+{
+  "platform": "京东",
+  "platform_id": "jd",
+  "levels": ["PLUS"],
+  "benefits": [
+    {
+      "id": "jd-plus-shipping",
+      "name": "运费券",
+      "category": "shopping",
+      "description": "每月赠送运费券，免运费购物",
+      "level_details": {
+        "PLUS": { "amount": "5张", "period": "每月" }
+      },
+      "redeem_time": "自动发放",
+      "limit": null,
+      "tips": "自动到账，购物时自动使用",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "jd-plus-coupon",
+      "name": "PLUS专属优惠券",
+      "category": "shopping",
+      "description": "每月可领取PLUS专属满减券",
+      "level_details": {
+        "PLUS": { "amount": "多张满减券", "period": "每月" }
+      },
+      "redeem_time": "每日可领",
+      "limit": null,
+      "tips": "关注PLUS会员中心领取",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "jd-plus-price",
+      "name": "PLUS会员价",
+      "category": "shopping",
+      "description": "部分商品享受PLUS专属低价",
+      "level_details": {
+        "PLUS": { "note": "全品类商品享受会员价" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "商品页标注PLUS价",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "jd-plus-100back",
+      "name": "100元/年返利",
+      "category": "shopping",
+      "description": "PLUS会员年返100元京豆",
+      "level_details": {
+        "PLUS": { "amount": "10000京豆", "period": "每年" }
+      },
+      "redeem_time": "开通后自动发放",
+      "limit": null,
+      "tips": "京豆可抵扣现金",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "jd-plus-video",
+      "name": "京东读书/视频会员",
+      "category": "entertainment",
+      "description": "赠送京东读书或视频会员权益",
+      "level_details": {
+        "PLUS": { "note": "可选京东读书VIP或视频会员" }
+      },
+      "redeem_time": "每月领取",
+      "limit": null,
+      "tips": "在PLUS会员中心选择领取",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "jd-plus-express",
+      "name": "PLUS专属客服",
+      "category": "services",
+      "description": "PLUS会员专属客服通道",
+      "level_details": {
+        "PLUS": { "note": "优先接入人工客服" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "拨打客服电话或在线客服自动识别",
+      "active": true,
+      "last_updated": "2026-06-26"
+    }
+  ]
+}

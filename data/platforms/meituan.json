@@ -1,0 +1,82 @@
+{
+  "platform": "美团",
+  "platform_id": "meituan",
+  "levels": ["黑金会员", "黑钻会员"],
+  "benefits": [
+    {
+      "id": "meituan-dental-cleaning",
+      "name": "免费洁牙",
+      "category": "health",
+      "description": "美团会员可兑换免费洁牙权益，口腔机构提供",
+      "level_details": {
+        "黑金会员": { "times": 1, "period": "每月" },
+        "黑钻会员": { "times": 2, "period": "每月" }
+      },
+      "redeem_time": "每日0:00",
+      "limit": "限量，需抢兑",
+      "tips": "建议提前设好闹钟，0点准时抢",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "meituan-food-delivery-coupon",
+      "name": "外卖优惠券",
+      "category": "dining",
+      "description": "每月赠送外卖满减优惠券包",
+      "level_details": {
+        "黑金会员": { "amount": "6张5元无门槛", "period": "每月" },
+        "黑钻会员": { "amount": "10张5元无门槛", "period": "每月" }
+      },
+      "redeem_time": "自动发放",
+      "limit": null,
+      "tips": "自动到账，无需抢兑",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "meituan-free-delivery",
+      "name": "免配送费",
+      "category": "dining",
+      "description": "外卖订单免配送费",
+      "level_details": {
+        "黑金会员": { "times": "无限次", "condition": "满20元" },
+        "黑钻会员": { "times": "无限次", "condition": "满15元" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "下单自动减免",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "meituan-birthday-gift",
+      "name": "生日礼包",
+      "category": "shopping",
+      "description": "生日当天赠送专属礼包",
+      "level_details": {
+        "黑金会员": { "gift": "外卖红包+到店优惠券" },
+        "黑钻会员": { "gift": "大额外卖红包+到店霸王餐机会" }
+      },
+      "redeem_time": "生日当天",
+      "limit": null,
+      "tips": "需提前设置生日信息",
+      "active": true,
+      "last_updated": "2026-06-26"
+    },
+    {
+      "id": "meituan-priority-delivery",
+      "name": "优先配送",
+      "category": "dining",
+      "description": "外卖订单优先派送",
+      "level_details": {
+        "黑金会员": { "note": "高峰期优先" },
+        "黑钻会员": { "note": "全天优先" }
+      },
+      "redeem_time": "自动生效",
+      "limit": null,
+      "tips": "高峰期体验更明显",
+      "active": true,
+      "last_updated": "2026-06-26"
+    }
+  ]
+}

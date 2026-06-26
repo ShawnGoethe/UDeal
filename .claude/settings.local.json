@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(xxd -l 200 -s 700 src/index.ts)",
+      "Bash(npm install *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: 初始化 UDeal 会员权益 MCP Server *)"
+    ]
+  }
+}
