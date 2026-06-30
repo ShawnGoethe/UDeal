@@ -1,0 +1,31 @@
+{
+  "tags": [
+    { "id": "dental-cleaning", "name": "洁牙", "icon": "🦷" },
+    { "id": "airport-lounge", "name": "机场贵宾室", "icon": "✈️" },
+    { "id": "rail-lounge", "name": "高铁贵宾室", "icon": "🚄" },
+    { "id": "health-check", "name": "体检", "icon": "🩺" },
+    { "id": "delivery-coupon", "name": "外卖优惠", "icon": "🛵" },
+    { "id": "free-shipping", "name": "免运费", "icon": "📦" },
+    { "id": "birthday-gift", "name": "生日礼", "icon": "🎂" },
+    { "id": "movie", "name": "电影", "icon": "🎬" },
+    { "id": "hotel", "name": "酒店", "icon": "🏨" },
+    { "id": "insurance", "name": "保险", "icon": "🛡️" },
+    { "id": "priority-delivery", "name": "优先配送", "icon": "🚀" },
+    { "id": "member-price", "name": "会员价", "icon": "💰" },
+    { "id": "coupon", "name": "优惠券", "icon": "🎟️" },
+    { "id": "points", "name": "积分", "icon": "⭐" },
+    { "id": "customer-service", "name": "专属客服", "icon": "🎧" },
+    { "id": "video", "name": "视频会员", "icon": "📺" },
+    { "id": "reading", "name": "阅读", "icon": "📚" },
+    { "id": "coffee", "name": "咖啡", "icon": "☕" },
+    { "id": "ticket", "name": "度假", "icon": "🏖️" },
+    { "id": "important", "name": "重要", "icon": "🔥" },
+    { "id": "grab-10s", "name": "10秒抢", "icon": "⚡" },
+    { "id": "grab-60s", "name": "60秒抢", "icon": "⏰" },
+    { "id": "skin-care", "name": "医美护肤", "icon": "💆" },
+    { "id": "housekeeping", "name": "保洁", "icon": "🧹" },
+    { "id": "powerbank", "name": "充电宝", "icon": "🔋" },
+    { "id": "hair-salon", "name": "美发", "icon": "💇" },
+    { "id": "airport-fast", "name": "机场快速通道", "icon": "🏃" }
+  ]
+}

@@ -7,6 +7,8 @@
       "id": "12306-points",
       "name": "乘车积分",
       "category": "travel",
+      "tags": ["points"],
+      "type": "free",
       "description": "购票乘车累积积分，可兑换车票",
       "level_details": {
         "普通会员": { "rate": "5倍票价", "note": "票价×5=积分" },
@@ -17,40 +19,6 @@
       "redeem_time": "乘车后自动累积",
       "limit": null,
       "tips": "100积分=1元，可兑换车票",
-      "active": true,
-      "last_updated": "2026-06-26"
-    },
-    {
-      "id": "12306-ticket-exchange",
-      "name": "积分兑票",
-      "category": "travel",
-      "description": "使用积分免费兑换火车票",
-      "level_details": {
-        "普通会员": { "note": "满10000积分可兑换" },
-        "银卡会员": { "note": "满10000积分可兑换" },
-        "金卡会员": { "note": "满10000积分可兑换" },
-        "铂金会员": { "note": "满10000积分可兑换" }
-      },
-      "redeem_time": "随时可兑",
-      "limit": "仅限标注"兑"字的车次",
-      "tips": "12306 APP → 积分兑换",
-      "active": true,
-      "last_updated": "2026-06-26"
-    },
-    {
-      "id": "12306-priority-booking",
-      "name": "优先购票",
-      "category": "travel",
-      "description": "高峰期优先出票权",
-      "level_details": {
-        "普通会员": { "note": "无" },
-        "银卡会员": { "note": "无" },
-        "金卡会员": { "note": "春运等高峰期优先" },
-        "铂金会员": { "note": "春运等高峰期优先" }
-      },
-      "redeem_time": "自动生效",
-      "limit": null,
-      "tips": "高等级会员在节假日有优势",
       "active": true,
       "last_updated": "2026-06-26"
     }

@@ -1,27 +1,38 @@
 {
   "name": "udeal",
-  "version": "1.0.0",
-  "description": "会员权益 MCP Server - 追踪和管理各平台会员权益",
-  "type": "module",
-  "main": "dist/index.js",
+  "version": "3.0.0",
+  "description": "会员权益查询工具 - NestJS + FastMCP",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "start": "node dist/main.js",
+    "start:stdio": "node dist/mcp/stdio.js",
+    "dev": "ts-node src/main.ts",
+    "dev:debug": "node --inspect -r ts-node/register src/main.ts",
+    "dev:stdio": "ts-node src/mcp/stdio.ts"
   },
   "keywords": [
     "mcp",
     "membership",
     "benefits",
-    "vip"
+    "vip",
+    "nestjs"
   ],
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.1",
-    "zod": "^4.4.3"
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "fastmcp": "^4.3.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.0",
+    "zod": "^3.25.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^22.0.0",
+    "cross-env": "^10.1.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
   }

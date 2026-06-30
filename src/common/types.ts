@@ -16,6 +16,8 @@ export interface Benefit {
   id: string;
   name: string;
   category: string;
+  tags: string[];
+  type: "free" | "paid";
   description: string;
   level_details: Record<string, LevelDetail>;
   redeem_time: string;
@@ -37,6 +39,12 @@ export interface Category {
   name: string;
   icon: string;
   keywords: string[];
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+  icon: string;
 }
 
 export interface UserMembership {

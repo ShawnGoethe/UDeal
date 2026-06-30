@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "udeal": {
+      "command": "node",
+      "args": ["dist/mcp/stdio.js"],
+      "cwd": "C:\\Users\\zehai\\Downloads\\UDeal"
+    }
+  }
+}
