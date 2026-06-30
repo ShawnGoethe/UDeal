@@ -75,6 +75,35 @@ npm start
 
 > ⚠️ 免费层容器休眠后文件会恢复到部署时的状态，通过 API 写入的数据不会持久化。
 
+## 部署到 Cloudflare Pages（纯静态）
+
+如果只需要展示页面（不需要 MCP/API），可以部署到 Cloudflare Pages，完全免费、无限请求：
+
+```bash
+# 构建静态页面（数据嵌入 HTML）
+npm run build:static
+
+# 输出目录: dist-site/index.html
+```
+
+**部署步骤：**
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create**
+2. 选择 **Pages** → **Upload assets**
+3. 上传 `dist-site/` 目录
+4. 完成，分配 `xxx.pages.dev` 域名
+
+**自动部署（GitHub 集成）：**
+
+1. 在 Cloudflare Pages 中 **Connect to Git**
+2. 选择 GitHub 仓库 `ShawnGoethe/UDeal`
+3. 配置：
+   - **Build command:** `npm run build:static`
+   - **Build output directory:** `dist-site`
+4. 以后 push 到 `main` 自动部署
+
+> ⚠️ 纯静态版本数据在构建时冻结，更新数据需重新构建部署（push 代码即可触发）。
+
 ## HTTP API
 
 基础路径: `/api/benefits`

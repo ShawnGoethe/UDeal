@@ -5,6 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
+    "build:static": "node scripts/build-static.js",
     "start": "node dist/main.js",
     "start:stdio": "node dist/mcp/stdio.js",
     "dev": "ts-node src/main.ts",

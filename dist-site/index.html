@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDeal - 会员权益查询</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; }
+.header h1 { font-size: 2.5em; margin-bottom: 10px; }
+.header p { font-size: 1.1em; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.search-box { margin: 20px 0; display: flex; gap: 10px; }
+.search-box input { flex: 1; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; outline: none; transition: border-color 0.2s; }
+.search-box input:focus { border-color: #667eea; }
+.filter-section { margin: 20px 0; }
+.filter-label { font-weight: 600; margin-bottom: 8px; color: #555; }
+.tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tag-chip { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; cursor: pointer; font-size: 14px; transition: all 0.2s; user-select: none; }
+.tag-chip:hover { border-color: #667eea; color: #667eea; }
+.tag-chip.active { background: #667eea; color: white; border-color: #667eea; }
+.platform-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.platform-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid #ddd; background: white; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.platform-tab:hover { border-color: #764ba2; color: #764ba2; }
+.platform-tab.active { background: #764ba2; color: white; border-color: #764ba2; }
+.type-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.type-tab { padding: 8px 16px; border-radius: 8px; border: 1.5px solid #ddd; background: white; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.type-tab:hover { border-color: #27ae60; color: #27ae60; }
+.type-tab.active { background: #27ae60; color: white; border-color: #27ae60; }
+.benefits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-top: 20px; }
+.benefit-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+.benefit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.card-title { font-size: 16px; font-weight: 600; }
+.card-platform { font-size: 12px; color: #888; background: #f0f0f0; padding: 2px 8px; border-radius: 4px; }
+.card-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; margin-left: 6px; }
+.type-free { background: #e8f5e9; color: #2e7d32; }
+.type-paid { background: #fff3e0; color: #e65100; }
+.card-desc { color: #666; font-size: 14px; margin: 8px 0; line-height: 1.5; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.card-tag { font-size: 12px; padding: 2px 8px; background: #f5f5f5; border-radius: 4px; color: #888; }
+.card-meta { font-size: 12px; color: #999; margin-top: 8px; }
+.stats { display: flex; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+.stat-card { background: white; border-radius: 12px; padding: 20px; flex: 1; min-width: 150px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.stat-number { font-size: 2em; font-weight: 700; color: #667eea; }
+.stat-label { font-size: 14px; color: #888; margin-top: 4px; }
+.section-title { font-size: 1.3em; font-weight: 600; margin: 30px 0 15px; color: #333; }
+.mcp-section { background: white; border-radius: 12px; padding: 24px; margin: 30px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.mcp-section h3 { margin-bottom: 12px; color: #667eea; }
+.mcp-section pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.mcp-section code { color: #e91e63; }
+.footer { text-align: center; padding: 30px; color: #999; font-size: 14px; }
+.loading { text-align: center; padding: 40px; color: #999; }
+.no-results { text-align: center; padding: 40px; color: #999; }
+@media (max-width: 768px) {
+  .header h1 { font-size: 1.8em; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .stats { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎫 UDeal</h1>
+  <p>一站式管理你的会员权益，不错过每一个福利</p>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索权益，如：洁牙、机场贵宾厅、外卖优惠..." />
+  </div>
+
+  <div class="stats" id="stats">
+    <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
+    <div class="stat-card"><div class="stat-number" id="statFree">-</div><div class="stat-label">免费权益</div></div>
+    <div class="stat-card"><div class="stat-number" id="statPlatforms">-</div><div class="stat-label">覆盖平台</div></div>
+    <div class="stat-card"><div class="stat-number" id="statTags">-</div><div class="stat-label">权益标签</div></div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">🏷️ 标签筛选</div>
+    <div class="tags-container" id="tagsContainer"></div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">📱 平台筛选</div>
+    <div class="platform-tabs" id="platformTabs"></div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">💰 类型筛选</div>
+    <div class="type-tabs" id="typeTabs">
+      <div class="type-tab active" data-type="">全部</div>
+      <div class="type-tab" data-type="free">免费权益</div>
+      <div class="type-tab" data-type="paid">付费权益</div>
+    </div>
+  </div>
+
+  <div class="section-title">🎯 权益列表</div>
+  <div class="benefits-grid" id="benefitsGrid">
+    <div class="loading">加载中...</div>
+  </div>
+
+  <div class="mcp-section">
+    <h3>🔌 MCP 接入</h3>
+    <p>UDeal 支持 MCP 协议，可接入 Claude Desktop 等 AI 工具：</p>
+    <pre><code>// claude_desktop_config.json
+{
+  "mcpServers": {
+    "udeal": {
+      "command": "node",
+      "args": ["path/to/udeal/dist/index.js"]
+    }
+  }
+}</code></pre>
+  </div>
+</div>
+
+<div class="footer">
+  <p>UDeal v2.0 - 用 MCP 让会员权益一目了然</p>
+</div>
+
+<script>
+const API = '';
+const EMBEDDED_DATA = {"tags":[{"id":"dental-cleaning","name":"洁牙","icon":"🦷"},{"id":"airport-lounge","name":"机场贵宾室","icon":"✈️"},{"id":"rail-lounge","name":"高铁贵宾室","icon":"🚄"},{"id":"health-check","name":"体检","icon":"🩺"},{"id":"delivery-coupon","name":"外卖优惠","icon":"🛵"},{"id":"free-shipping","name":"免运费","icon":"📦"},{"id":"birthday-gift","name":"生日礼","icon":"🎂"},{"id":"movie","name":"电影","icon":"🎬"},{"id":"hotel","name":"酒店","icon":"🏨"},{"id":"insurance","name":"保险","icon":"🛡️"},{"id":"priority-delivery","name":"优先配送","icon":"🚀"},{"id":"member-price","name":"会员价","icon":"💰"},{"id":"coupon","name":"优惠券","icon":"🎟️"},{"id":"points","name":"积分","icon":"⭐"},{"id":"customer-service","name":"专属客服","icon":"🎧"},{"id":"video","name":"视频会员","icon":"📺"},{"id":"reading","name":"阅读","icon":"📚"},{"id":"coffee","name":"咖啡","icon":"☕"},{"id":"ticket","name":"度假","icon":"🏖️"},{"id":"important","name":"重要","icon":"🔥"},{"id":"grab-10s","name":"10秒抢","icon":"⚡"},{"id":"grab-60s","name":"60秒抢","icon":"⏰"},{"id":"skin-care","name":"医美护肤","icon":"💆"},{"id":"housekeeping","name":"保洁","icon":"🧹"},{"id":"powerbank","name":"充电宝","icon":"🔋"},{"id":"hair-salon","name":"美发","icon":"💇"},{"id":"airport-fast","name":"机场快速通道","icon":"🏃"}],"platforms":[{"platform":"12306","platform_id":"12306","levels":["普通会员","银卡会员","金卡会员","铂金会员"],"benefit_count":1},{"platform":"支付宝","platform_id":"alipay","levels":["大众会员","黄金会员","铂金会员","钻石会员"],"benefit_count":0},{"platform":"携程","platform_id":"ctrip","levels":["黄金会员","铂金会员","钻石会员"],"benefit_count":0},{"platform":"喜茶","platform_id":"heytea","levels":["星球会员"],"benefit_count":0},{"platform":"京东","platform_id":"jd","levels":["PLUS"],"benefit_count":0},{"platform":"美团","platform_id":"meituan","levels":["普通会员","白银会员","黄金会员","白金会员","黑金会员","黑钻会员"],"benefit_count":8},{"platform":"淘宝","platform_id":"taobao-88vip","levels":["88VIP"],"benefit_count":0},{"platform":"银联","platform_id":"unionpay","levels":["钻石卡"],"benefit_count":0}],"benefits":[{"id":"12306-points","name":"乘车积分","category":"travel","tags":["points"],"type":"free","description":"购票乘车累积积分，可兑换车票","level_details":{"普通会员":{"rate":"5倍票价","note":"票价×5=积分"},"银卡会员":{"rate":"8倍票价"},"金卡会员":{"rate":"10倍票价"},"铂金会员":{"rate":"15倍票价"}},"redeem_time":"乘车后自动累积","limit":null,"tips":"100积分=1元，可兑换车票","active":true,"last_updated":"2026-06-26","platform":"12306","platform_id":"12306"},{"id":"meituan-dental-cleaning","name":"洁牙","category":"health","tags":["dental-cleaning","important"],"type":"free","description":"美团会员可兑换免费洁牙权益，口腔机构提供","level_details":{"黑金会员":{"times":1,"period":"每月"},"黑钻会员":{"times":2,"period":"每月"}},"redeem_time":"每日0:00","limit":"限量，需抢兑","tips":"建议提前设好闹钟，0点准时抢","active":true,"last_updated":"2026-06-29","platform":"美团","platform_id":"meituan"},{"id":"meituan-photon-rejuvenation","name":"光子嫩肤","category":"health","tags":["skin-care","grab-10s","important"],"type":"free","description":"美团会员可兑换免费光子嫩肤权益，医美机构提供","level_details":{"黑金会员":{"times":1,"period":"每年"},"黑钻会员":{"times":1,"period":"每半年"}},"redeem_time":"每日0:00","limit":"限量，需抢兑","tips":"10秒内抢到概率大，建议提前设好闹钟","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-free-cleaning","name":"免费保洁","category":"services","tags":["housekeeping","grab-60s"],"type":"free","description":"美团会员可兑换免费上门保洁服务","level_details":{"黑金会员":{"times":1,"period":"每年"},"黑钻会员":{"times":1,"period":"每半年"}},"redeem_time":"每日0:00","limit":"限量，需设闹钟抢兑","tips":"60秒内比较好抢，但需要设闹钟","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-free-powerbank","name":"免费充电宝","category":"services","tags":["powerbank"],"type":"free","description":"美团会员可享免费充电宝使用时长","level_details":{"黑金会员":{"times":2,"period":"每月","note":"2小时"},"黑钻会员":{"times":4,"period":"每月","note":"4小时"}},"redeem_time":"随时","limit":null,"tips":"在美团充电宝小程序中自动生效","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-birthday-gift","name":"生日礼","category":"services","tags":["birthday-gift"],"type":"free","description":"美团会员生日当月可领取生日礼包，含外卖红包、优惠券等","level_details":{"黑金会员":{"note":"生日当月领取优惠券礼包（具体面额以App展示为准）"},"黑钻会员":{"note":"生日当月领取更大额优惠券礼包（具体面额以App展示为准）"}},"redeem_time":"生日当月","limit":"每个会员年度仅限一次","tips":"具体权益内容请在美团App「我的-会员中心-生日礼」查看，权益会不定期调整","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-free-haircut","name":"免费丽人美发","category":"services","tags":["hair-salon"],"type":"free","description":"黑钻会员可兑换免费美发服务","level_details":{"黑钻会员":{"times":1,"period":"终身"}},"redeem_time":"每日0:00","limit":"仅限黑钻会员，限量抢兑","tips":"仅黑钻会员可享，建议关注领取时间","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-airport-fast-track","name":"机场快速通道","category":"travel","tags":["airport-fast"],"type":"free","description":"黑钻会员可享机场快速安检通道","level_details":{"黑钻会员":{"times":2,"period":"每季度"}},"redeem_time":"随时","limit":"仅限黑钻会员，每季度2次","tips":"出行前在App领取，到机场出示权益码使用","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"},{"id":"meituan-mango-tv","name":"芒果视频会员","category":"entertainment","tags":["video"],"type":"free","description":"黑钻会员可每周领取芒果TV会员权益","level_details":{"黑钻会员":{"times":1,"period":"每周"}},"redeem_time":"每周一0:00","limit":"仅限黑钻会员，每周限领1次","tips":"每周一刷新，建议设闹钟领取","active":true,"last_updated":"2026-06-30","platform":"美团","platform_id":"meituan"}]};
+let allBenefits = [];
+let allTags = [];
+let allPlatforms = [];
+let activeTag = '';
+let activePlatform = '';
+let activeType = '';
+let activeLevel = '';
+let searchQuery = '';
+
+async function init() {
+  const [tags, platforms, benefits] = await Promise.all([
+    fetch(`${API}/api/tags`).then(r => r.json()),
+    fetch(`${API}/api/platforms`).then(r => r.json()),
+    fetch(`${API}/api/benefits`).then(r => r.json()),
+  ]);
+  allTags = tags;
+  allPlatforms = platforms;
+  allBenefits = benefits;
+
+  renderTags();
+  renderPlatforms();
+  renderStats();
+  renderBenefits();
+
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    renderBenefits();
+  });
+}
+
+function renderTags() {
+  const container = document.getElementById('tagsContainer');
+  container.innerHTML = allTags.map(t =>
+    `<div class="tag-chip" data-tag="${t.id}" onclick="toggleTag('${t.id}')">${t.icon} ${t.name}</div>`
+  ).join('');
+}
+
+function renderPlatforms() {
+  const container = document.getElementById('platformTabs');
+  container.innerHTML = `<div class="platform-tab active" data-platform="" onclick="togglePlatform('')">全部</div>` +
+    allPlatforms.map(p =>
+      `<div class="platform-tab" data-platform="${p.platform_id}" onclick="togglePlatform('${p.platform_id}')">${p.platform} (${p.benefit_count})</div>`
+    ).join('');
+}
+
+function renderStats() {
+  document.getElementById('statTotal').textContent = allBenefits.length;
+  document.getElementById('statFree').textContent = allBenefits.filter(b => b.type === 'free').length;
+  document.getElementById('statPlatforms').textContent = allPlatforms.length;
+  document.getElementById('statTags').textContent = allTags.length;
+}
+
+function renderBenefits() {
+  let filtered = allBenefits;
+  if (activeTag) filtered = filtered.filter(b => b.tags.includes(activeTag));
+  if (activePlatform) filtered = filtered.filter(b => b.platform_id === activePlatform);
+  if (activeLevel) {
+    filtered = filtered.filter(b => b.level_details && b.level_details[activeLevel]);
+  } else if (activeType) {
+    filtered = filtered.filter(b => b.type === activeType);
+  }
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(b =>
+      b.name.toLowerCase().includes(q) ||
+      b.description.toLowerCase().includes(q) ||
+      b.tags.some(t => t.includes(q))
+    );
+  }
+
+  const grid = document.getElementById('benefitsGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results">没有找到匹配的权益</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(b => `
+    <div class="benefit-card">
+      <div class="card-header">
+        <div>
+          <span class="card-title">${b.name}</span>
+          <span class="card-type type-${b.type}">${b.type === 'free' ? '免费' : '付费'}</span>
+        </div>
+        <span class="card-platform">${b.platform}</span>
+      </div>
+      <div class="card-desc">${b.description}</div>
+      <div class="card-tags">
+        ${b.tags.map(t => {
+          const tag = allTags.find(tt => tt.id === t);
+          return tag ? `<span class="card-tag">${tag.icon} ${tag.name}</span>` : '';
+        }).join('')}
+      </div>
+      <div class="card-meta">兑换时间: ${b.redeem_time}${b.limit ? ' | ' + b.limit : ''}</div>
+    </div>
+  `).join('');
+}
+
+function toggleTag(tagId) {
+  activeTag = activeTag === tagId ? '' : tagId;
+  document.querySelectorAll('.tag-chip').forEach(el => {
+    el.classList.toggle('active', el.dataset.tag === activeTag);
+  });
+  renderBenefits();
+}
+
+function togglePlatform(platformId) {
+  activePlatform = activePlatform === platformId ? '' : platformId;
+  activeLevel = '';
+  document.querySelectorAll('.platform-tab').forEach(el => {
+    el.classList.toggle('active', el.dataset.platform === activePlatform);
+  });
+  renderTypeTabs();
+  renderBenefits();
+}
+
+function renderTypeTabs() {
+  const container = document.getElementById('typeTabs');
+  const platform = allPlatforms.find(p => p.platform_id === activePlatform);
+  if (platform && platform.levels && platform.levels.length > 1) {
+    container.innerHTML = `<div class="type-tab active" data-level="">全部</div>` +
+      platform.levels.map(l =>
+        `<div class="type-tab" data-level="${l}">${l}</div>`
+      ).join('');
+  } else {
+    container.innerHTML = `
+      <div class="type-tab active" data-type="">全部</div>
+      <div class="type-tab" data-type="free">免费权益</div>
+      <div class="type-tab" data-type="paid">付费权益</div>
+    `;
+  }
+}
+
+document.getElementById('typeTabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('.type-tab');
+  if (!tab) return;
+  if ('level' in tab.dataset) {
+    activeLevel = tab.dataset.level;
+    activeType = '';
+  } else {
+    activeType = tab.dataset.type;
+    activeLevel = '';
+  }
+  document.querySelectorAll('#typeTabs .type-tab').forEach(el => el.classList.remove('active'));
+  tab.classList.add('active');
+  renderBenefits();
+});
+
+init();
+</script>
+</body>
+</html>
