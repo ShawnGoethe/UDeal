@@ -1,6 +1,319 @@
 {
   "platform": "银联",
   "platform_id": "unionpay",
-  "levels": ["钻石卡"],
-  "benefits": []
+  "levels": ["持卡人", "62VIP", "钻石"],
+  "benefits": [
+    {
+      "id": "unionpay-ccb-debit-12306",
+      "name": "建行借记卡12306满减",
+      "category": "travel",
+      "tags": ["coupon"],
+      "type": "free",
+      "description": "建设银行借记卡在12306购票满100元减10元",
+      "level_details": {
+        "持卡人": {
+          "times": 1,
+          "period": "每月",
+          "discount": "满100-10",
+          "note": "3月1日至6月30日最高享受四次",
+          "condition": "建设银行借记卡"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每月1次，活动期间最多4次",
+      "tips": "活动截至6月30日，注意次数限制",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-ccb-social-12306",
+      "name": "建行社保卡12306满减",
+      "category": "travel",
+      "tags": ["coupon", "important"],
+      "type": "free",
+      "description": "建设银行社保卡在12306购票满100元减20元",
+      "level_details": {
+        "持卡人": {
+          "times": 1,
+          "period": "每月",
+          "discount": "满100-20",
+          "note": "3月1日至6月30日最高享受四次",
+          "condition": "建设银行社保卡"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每月1次，活动期间最多4次",
+      "tips": "社保卡专属优惠，力度更大，活动截至6月30日",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-icbc-debit-12306",
+      "name": "工商银行卡12306五折",
+      "category": "travel",
+      "tags": ["coupon", "important", "grab-3s"],
+      "type": "free",
+      "description": "工商银行卡在12306购票享5折优惠，每日8点抢名额",
+      "level_details": {
+        "持卡人": {
+          "times": 2,
+          "period": "每月",
+          "discount": "5折",
+          "note": "活动截至2026年12月31日",
+          "condition": "工商银行卡，每日8:00抢名额"
+        }
+      },
+      "redeem_time": "每日8:00",
+      "limit": "每用户每月2次",
+      "tips": "8点准时抢名额，手速要快！",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-icbc-credit-12306",
+      "name": "工商信用卡12306满减",
+      "category": "travel",
+      "tags": ["coupon"],
+      "type": "free",
+      "description": "工商银行信用卡在12306购票满100元减15元",
+      "level_details": {
+        "持卡人": {
+          "times": 1,
+          "period": "每月",
+          "discount": "满100-15",
+          "note": "2026年4月24日至6月30日",
+          "condition": "工商银行信用卡"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每用户单月1次",
+      "tips": "活动截至6月30日，注意是信用卡专属",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-cmb-debit-taobao",
+      "name": "招行借记卡淘宝闪购满减",
+      "category": "shopping",
+      "tags": ["coupon"],
+      "type": "free",
+      "description": "招商银行借记卡在淘宝闪购满15元减2元",
+      "level_details": {
+        "持卡人": {
+          "times": 2,
+          "period": "每月",
+          "discount": "满15-2",
+          "note": "3月26日至6月30日最多8次",
+          "condition": "招商银行借记卡，淘宝闪购"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每用户每月2次，活动期间最多8次",
+      "tips": "淘宝闪购专用，注意活动6月30日截止",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-cmb-credit-taobao",
+      "name": "招行信用卡淘宝闪购满减",
+      "category": "shopping",
+      "tags": ["coupon"],
+      "type": "free",
+      "description": "招商银行信用卡在淘宝闪购满10元减2元",
+      "level_details": {
+        "持卡人": {
+          "times": 1,
+          "period": "每月",
+          "discount": "满10-2",
+          "note": "1月1日至12月31日最多6次",
+          "condition": "招商银行信用卡，淘宝闪购"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每用户每月1次，活动期间最多6次",
+      "tips": "全年活动，每月别忘了用一次",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-62vip-cashback-coupon",
+      "name": "回本券",
+      "category": "shopping",
+      "tags": ["coupon", "important"],
+      "type": "free",
+      "description": "银联62VIP会员每月可领取回本券，金额6元或7.5元",
+      "level_details": {
+        "62VIP": {
+          "times": 1,
+          "period": "每月",
+          "amount": "6元/7.5元",
+          "condition": "手动领取"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每月1次",
+      "tips": "每月记得手动领取，回本利器",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-62vip-mobile-data",
+      "name": "移动2G国内流量",
+      "category": "services",
+      "tags": ["coupon"],
+      "type": "free",
+      "description": "银联62VIP会员每月可领取移动2G国内流量，领取后24小时内有效",
+      "level_details": {
+        "62VIP": {
+          "times": 1,
+          "period": "每月",
+          "note": "24小时内有效",
+          "condition": "手动领取"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": "每月1次",
+      "tips": "需要时再领，24小时过期",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-62vip-youli",
+      "name": "有礼甄享家",
+      "category": "shopping",
+      "tags": ["member-price"],
+      "type": "free",
+      "description": "银联62VIP有礼甄享家专属权益",
+      "level_details": {
+        "62VIP": {
+          "condition": "62VIP会员专属"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": null,
+      "tips": "详情请查看银联APP",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-62vip-birthday",
+      "name": "生日礼包",
+      "category": "shopping",
+      "tags": ["birthday-gift", "important"],
+      "type": "free",
+      "description": "银联62VIP会员生日当天额外获得1倍积点，最多888积点",
+      "level_details": {
+        "62VIP": {
+          "rate": "额外1倍积点",
+          "quota": "最多888积点",
+          "condition": "生日当天"
+        }
+      },
+      "redeem_time": "生日当天",
+      "limit": "每年1次",
+      "tips": "生日当天别忘了领，最多888积点",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-diamond-airport-lounge",
+      "name": "机场贵宾室",
+      "category": "travel",
+      "tags": ["airport-lounge", "grab-10s"],
+      "type": "free",
+      "description": "银联钻石卡会员可抢购机场贵宾室权益，支持单人和三人厅，当日有效",
+      "level_details": {
+        "钻石": {
+          "times": 2,
+          "period": "每日",
+          "note": "1月1日至6月30日：单人最多4次，三人最多2次",
+          "condition": "0点抢购，手动领取，权益当日作废"
+        }
+      },
+      "redeem_time": "每日0:00",
+      "limit": "每日最多2次，活动期间单人4次/三人2次",
+      "tips": "0点开抢，当日领取当日使用，过期作废",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-diamond-rail-lounge",
+      "name": "高铁贵宾室",
+      "category": "travel",
+      "tags": ["rail-lounge", "grab-10s"],
+      "type": "free",
+      "description": "银联钻石卡会员可抢购高铁贵宾室权益，当日有效",
+      "level_details": {
+        "钻石": {
+          "times": 2,
+          "period": "每日",
+          "note": "1月1日至6月30日：单人最多4次，三人最多2次",
+          "condition": "0点抢购，手动领取，权益当日作废"
+        }
+      },
+      "redeem_time": "每日0:00",
+      "limit": "每日最多2次，活动期间单人4次/三人2次",
+      "tips": "0点开抢，规则与机场贵宾室相同",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-diamond-medical-companion",
+      "name": "陪诊就医",
+      "category": "health",
+      "tags": ["important"],
+      "type": "free",
+      "description": "银联钻石卡会员可预约陪诊就医服务，每日限量15份",
+      "level_details": {
+        "钻石": {
+          "times": 3,
+          "note": "1月1日至6月30日最多3次",
+          "condition": "10点开抢，每日限量15份，可约2天后30天内"
+        }
+      },
+      "redeem_time": "每日10:00",
+      "limit": "活动期间最多3次，每日15份",
+      "tips": "10点开抢，提前规划就医日期，可约2天后至30天内",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-diamond-disney",
+      "name": "迪士尼礼遇",
+      "category": "entertainment",
+      "tags": ["ticket"],
+      "type": "free",
+      "description": "银联钻石卡会员专属迪士尼礼遇",
+      "level_details": {
+        "钻石": {
+          "condition": "钻石卡会员专属"
+        }
+      },
+      "redeem_time": "随时",
+      "limit": null,
+      "tips": "详情请查看银联APP",
+      "active": true,
+      "last_updated": "2026-06-30"
+    },
+    {
+      "id": "unionpay-diamond-dental",
+      "name": "洁牙",
+      "category": "health",
+      "tags": ["dental-cleaning"],
+      "type": "free",
+      "description": "银联钻石卡会员可抢购洁牙权益，每张银联卡活动期间最多2次",
+      "level_details": {
+        "钻石": {
+          "times": 2,
+          "note": "1月1日至6月30日每张银联卡最多2次",
+          "condition": "每日10点抢，需提前2天12点前预约"
+        }
+      },
+      "redeem_time": "每日10:00",
+      "limit": "每张卡活动期间最多2次",
+      "tips": "10点抢购后，记得提前2天中午12点前完成预约",
+      "active": true,
+      "last_updated": "2026-06-30"
+    }
+  ]
 }

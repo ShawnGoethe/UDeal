@@ -20,6 +20,7 @@
     { "id": "coffee", "name": "咖啡", "icon": "☕" },
     { "id": "ticket", "name": "度假", "icon": "🏖️" },
     { "id": "important", "name": "重要", "icon": "🔥" },
+    { "id": "grab-3s", "name": "3秒抢", "icon": "⏱️" },
     { "id": "grab-10s", "name": "10秒抢", "icon": "⚡" },
     { "id": "grab-60s", "name": "60秒抢", "icon": "⏰" },
     { "id": "skin-care", "name": "医美护肤", "icon": "💆" },
