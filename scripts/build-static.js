@@ -35,27 +35,18 @@ const platformSummary = platforms.map((p) => ({
 // 读取 HTML 模板
 const html = fs.readFileSync(path.join(__dirname, "../public/index.html"), "utf-8");
 
-const dataJson = JSON.stringify({ tags, platforms: platformSummary, benefits: allBenefits });
-
-// 注入数据：替换 API 变量声明，追加嵌入数据
-let injected = html.replace(
+// 注入数据
+const injected = html.replace(
   "const API = '';",
   `const API = '';
-const EMBEDDED_DATA = ${dataJson};`
-);
-
-// 替换所有 fetch 调用为嵌入数据
-injected = injected.replace(
-  /fetch\(`\$\{API\}\/api\/tags`\)\.then\(r => r\.json\(\)\)/g,
-  "Promise.resolve(EMBEDDED_DATA.tags)"
-);
-injected = injected.replace(
-  /fetch\(`\$\{API\}\/api\/platforms`\)\.then\(r => r\.json\(\)\)/g,
-  "Promise.resolve(EMBEDDED_DATA.platforms)"
-);
-injected = injected.replace(
-  /fetch\(`\$\{API\}\/api\/benefits`\)\.then\(r => r\.json\(\)\)/g,
-  "Promise.resolve(EMBEDDED_DATA.benefits)"
+const EMBEDDED_DATA = ${JSON.stringify({ tags, platforms: platformSummary, benefits: allBenefits })};`
+).replace(
+  `fetch(\`\${API}/api/tags\`).then(r => r.json()),
+    fetch(\`\${API}/api/platforms\`).then(r => r.json()),
+    fetch(\`\${API}/api/benefits\`).then(r => r.json()),`,
+  `Promise.resolve(EMBEDDED_DATA.tags),
+    Promise.resolve(EMBEDDED_DATA.platforms),
+    Promise.resolve(EMBEDDED_DATA.benefits),`
 );
 
 // 输出
