@@ -43,7 +43,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .card-tag { font-size: 12px; padding: 2px 8px; background: #f5f5f5; border-radius: 4px; color: #888; }
 .card-meta { font-size: 12px; color: #999; margin-top: 8px; }
 .benefit-card { cursor: pointer; }
-.benefit-card.expanded {
+.card-detail { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; }
+.detail-section { margin-bottom: 12px; }
+.detail-section h4 { font-size: 13px; color: #667eea; margin-bottom: 6px; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.detail-table th, .detail-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+.detail-table th { color: #888; font-weight: normal; }
+.detail-table tr:last-child td { border-bottom: none; }
+.card-expanded {
   position: fixed;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(1);
@@ -51,20 +58,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   z-index: 1001; overflow-y: auto;
   animation: cardExpand 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  background: white; border-radius: 12px; padding: 20px;
 }
+.card-expanded .card-detail { display: block; }
 @keyframes cardExpand {
   0% { transform: translate(-50%, -50%) scale(0.5) rotateY(90deg); opacity: 0; }
   60% { transform: translate(-50%, -50%) scale(1.05) rotateY(-5deg); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(1) rotateY(0deg); }
 }
-.card-detail { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; }
-.benefit-card.expanded .card-detail { display: block; }
-.detail-section { margin-bottom: 12px; }
-.detail-section h4 { font-size: 13px; color: #667eea; margin-bottom: 6px; }
-.detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.detail-table th, .detail-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #f0f0f0; }
-.detail-table th { color: #888; font-weight: normal; }
-.detail-table tr:last-child td { border-bottom: none; }
 .card-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); z-index: 1000;
@@ -407,20 +408,24 @@ function renderBenefits() {
 
 function expandCard(idx, event) {
   const card = document.getElementById(`card-${idx}`);
-  if (card.classList.contains('expanded')) {
-    closeExpandedCard();
-    return;
-  }
+  const overlay = document.getElementById('cardOverlay');
   // 先关闭已展开的
-  document.querySelectorAll('.benefit-card.expanded').forEach(c => c.classList.remove('expanded'));
-  card.classList.add('expanded');
-  document.getElementById('cardOverlay').classList.add('show');
+  closeExpandedCard();
+  // 克隆卡片内容到 overlay
+  const clone = card.cloneNode(true);
+  clone.id = '';
+  clone.className = 'card-expanded';
+  clone.onclick = (e) => e.stopPropagation();
+  overlay.innerHTML = '';
+  overlay.appendChild(clone);
+  overlay.classList.add('show');
   event.stopPropagation();
 }
 
 function closeExpandedCard() {
-  document.querySelectorAll('.benefit-card.expanded').forEach(c => c.classList.remove('expanded'));
-  document.getElementById('cardOverlay').classList.remove('show');
+  const overlay = document.getElementById('cardOverlay');
+  overlay.classList.remove('show');
+  overlay.innerHTML = '';
 }
 
 // ESC 键关闭
