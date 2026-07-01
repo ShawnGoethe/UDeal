@@ -1,4 +1,17 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_INPUT_FILE_PATH\" | grep -qE '\\.ts$' && npx prettier --write \"$TOOL_INPUT_FILE_PATH\" 2>/dev/null; exit 0"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(npm run *)",
@@ -17,7 +30,7 @@
       "Bash(kill %1)",
       "Bash(curl -s \"http://localhost:3000/api/search?q=洁牙\")",
       "Bash(curl -s \"http://localhost:3000/api/benefits?tag=airport-lounge\")",
-      "Bash(curl -s \"http://localhost:3000/api/my\")",
+      "Bash(curl -s http://localhost:3000/api/my)",
       "Bash(pkill -f \"tsx src/index.ts\")",
       "Bash(curl -s http://localhost:3000/)",
       "Bash(python3 -m json.tool)",

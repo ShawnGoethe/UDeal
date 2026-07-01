@@ -1,7 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common";
-import { PlatformsService } from "./platforms.service";
+import { Controller, Get, Param } from '@nestjs/common';
+import { PlatformsService } from './platforms.service';
 
-@Controller("api/platforms")
+@Controller('api/platforms')
 export class PlatformsController {
   constructor(private readonly platformsService: PlatformsService) {}
 
@@ -10,10 +10,10 @@ export class PlatformsController {
     return this.platformsService.findAll();
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     const platform = this.platformsService.findOne(id);
-    if (!platform) return { error: "平台未找到" };
+    if (!platform) return { error: '平台未找到' };
     return platform;
   }
 }

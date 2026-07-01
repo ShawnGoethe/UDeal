@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { LoaderService } from "../data/loader.service";
+import { Injectable } from '@nestjs/common';
+import { LoaderService } from '../data/loader.service';
 
 @Injectable()
 export class CategoriesService {

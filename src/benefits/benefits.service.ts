@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { LoaderService } from "../data/loader.service";
-import type { SearchResult } from "../common/types";
+import { Injectable } from '@nestjs/common';
+import { LoaderService } from '../data/loader.service';
+import type { SearchResult } from '../common/types';
 
 @Injectable()
 export class BenefitsService {

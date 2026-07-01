@@ -1,8 +1,87 @@
 {
   "platform": "支付宝",
   "platform_id": "alipay",
-  "levels": ["大众会员", "黄金会员", "铂金会员", "钻石会员"],
+  "levels": [
+    "大众会员",
+    "黄金会员",
+    "铂金会员",
+    "钻石会员"
+  ],
   "benefits": [
-    
+    {
+      "id": "alipay-birthday-benefit",
+      "name": "生日特权",
+      "category": "生活",
+      "tags": [
+        "生活服务"
+      ],
+      "type": "free",
+      "description": "会员在生日月份享受专属礼券或优惠，如满减券，礼券自动发放至账户。",
+      "level_details": {
+        "大众会员": {
+          "times": "1张",
+          "period": "每年",
+          "note": "10元满减券"
+        },
+        "黄金会员": {
+          "times": "2张",
+          "period": "每年",
+          "note": "20元满减券"
+        },
+        "铂金会员": {
+          "times": "3张",
+          "period": "每年",
+          "note": "30元满减券"
+        },
+        "钻石会员": {
+          "times": "5张",
+          "period": "每年",
+          "note": "50元满减券"
+        }
+      },
+      "redeem_time": "生日月自动发放",
+      "limit": "每年一次",
+      "tips": "礼券有效期为生日月内，可用于APP内指定商户消费。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "alipay-points-redemption",
+      "name": "积分兑换专区",
+      "category": "购物",
+      "tags": [
+        "购物",
+        "生活服务"
+      ],
+      "type": "paid",
+      "description": "会员使用积分在专区兑换商品或优惠券，积分基于消费积累，兑换后商品不支持退换。",
+      "level_details": {
+        "大众会员": {
+          "times": "基础商品",
+          "period": "随时",
+          "note": "有限选择"
+        },
+        "黄金会员": {
+          "times": "更多商品",
+          "period": "随时",
+          "note": ""
+        },
+        "铂金会员": {
+          "times": "限量商品",
+          "period": "随时",
+          "note": "可兑换高价值商品"
+        },
+        "钻石会员": {
+          "times": "专属商品",
+          "period": "随时",
+          "note": "最全兑换选择"
+        }
+      },
+      "redeem_time": "APP内兑换",
+      "limit": "积分余额限制",
+      "tips": "兑换前确认积分足够，部分商品需额外支付运费。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    }
   ]
 }

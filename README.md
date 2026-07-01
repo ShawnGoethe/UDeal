@@ -11,20 +11,22 @@
 - ✏️ **数据管理** — 新增权益、更新会员信息
 - 🔔 **到期提醒** — 查看 30 天内即将到期的会员
 - 🌐 **可视化主页** — 内置 Web 界面，直观浏览权益
-- 🔌 **MCP 协议** — 支持 Claude Desktop 等 AI 工具接入
+- 🔌 **MCP 协议** — 支持 Claude Desktop、OpenClaw 等 AI Agent 接入
+- 🎯 **权益卡片展开** — 点击权益卡片旋转展开查看详情
+- ☑️ **选择性更新** — AI 生成的权益支持多选框，勾选后才提交
 
 ## 已收录平台
 
-| 平台 | 等级 | 说明 |
-|------|------|------|
-| 美团 | 普通 → 黑钻 | 洁牙、光子嫩肤、保洁、充电宝、生日礼、美发、机场快速通道、芒果视频 |
-| 淘宝 88VIP | 88VIP | — |
-| 京东 PLUS | PLUS | — |
-| 携程 | — | — |
-| 银联 | — | — |
-| 12306 | — | — |
-| 支付宝 | — | — |
-| 喜茶 | — | — |
+| 平台 | 等级 | 权益数 | 说明 |
+|------|------|--------|------|
+| 美团 | 普通 → 黑钻 | 8 | 洁牙、光子嫩肤、保洁、充电宝、生日礼、美发、机场快速通道、芒果视频 |
+| 淘宝 88VIP | 青铜→黑钻, 88VIP-生活/购物 | 7 | 天猫95折、优酷VIP、饿了么、网易云音乐、天天2元红包、生日礼等 |
+| 京东 PLUS | PLUS | — | — |
+| 携程 | — | — | — |
+| 银联 | 62VIP → 钻石 | 15 | 贵宾厅、洁牙、迪士尼、优惠券等 |
+| 12306 | — | 1 | 积分兑换 |
+| 支付宝 | — | — | — |
+| 喜茶 | 星球会员→黑卡贵宾 | 6 | 积分兑换、生日特权、会员日、免费加料、升级奖励、周一免配送费 |
 
 ## 技术栈
 
@@ -32,6 +34,7 @@
 - **协议:** REST API + MCP (FastMCP)
 - **数据:** JSON 文件存储
 - **语言:** TypeScript
+- **代码质量:** Prettier + ESLint（自动格式化）
 
 ## 快速开始
 
@@ -49,6 +52,24 @@ npm run dev:stdio
 ```
 
 开发服务默认端口 `3001`，可通过 `MCP_PORT` 环境变量修改。
+
+### 代码格式化
+
+```bash
+# 格式化所有 TS 文件
+npm run format
+
+# 检查格式
+npm run format:check
+
+# ESLint 检查
+npm run lint
+
+# ESLint 自动修复
+npm run lint:fix
+```
+
+> Claude Code Hook 已配置：每次 Write/Edit `.ts` 文件后自动运行 Prettier。
 
 ### 生产构建
 
@@ -135,34 +156,43 @@ curl "http://localhost:3001/api/benefits/my"
 curl "http://localhost:3001/api/benefits?tag=dental-cleaning&type=free"
 ```
 
-## MCP Tools
+## MCP Agent 集成
 
-| 工具 | 说明 |
-|------|------|
-| `search_benefits` | 搜索权益，支持 tag/platform/type 筛选 |
-| `list_platform_benefits` | 列出某平台全部权益 |
-| `get_my_benefits` | 根据用户会员推荐权益 |
-| `compare_benefits` | 跨平台对比同一权益 |
-| `add_benefit` | 新增/更新权益 |
-| `update_membership` | 更新用户会员状态 |
-| `get_categories` | 获取分类和标签 |
-| `get_expiring_soon` | 即将到期的权益提醒 |
+UDeal 支持标准 MCP 协议，任何兼容 MCP 的 AI Agent（如 Claude Desktop、OpenClaw 等）均可接入。
+
+### MCP Tools
+
+| 工具 | 说明 | 参数 |
+|------|------|------|
+| `search_benefits` | 搜索权益 | `query`(必填), `tag`, `platform`, `type` |
+| `list_platform_benefits` | 列出某平台全部权益 | `platform_id`(必填) |
+| `get_my_benefits` | 根据用户会员推荐权益 | 无 |
+| `compare_benefits` | 跨平台对比同一权益 | `query`(必填) |
+| `get_categories` | 获取分类和标签 | 无 |
+| `get_expiring_soon` | 即将到期的权益提醒 | 无 |
+| `add_benefit` | 新增/更新权益 | `platform_id`, `benefit_id`, `name` 等 |
+| `update_membership` | 更新用户会员状态 | `platform_id`, `level`, `since`, `expires` |
+
+### 筛选维度
+
+| 维度 | 参数 | 示例值 |
+|------|------|--------|
+| 关键词 | `query` | "洁牙"、"外卖"、"贵宾厅" |
+| 标签 | `tag` | dental-cleaning, airport-lounge |
+| 平台 | `platform` | meituan, jd, taobao-88vip |
+| 类型 | `type` | free（免费）、paid（付费） |
+
+### Agent 使用记录
+
+Agent 可通过以下工具帮助用户记录和追踪会员使用情况：
+- `update_membership` — 记录会员开通、续费、等级变更
+- `get_my_benefits` — 查询当前已记录的会员状态
+- `get_expiring_soon` — 检查即将到期的会员
+- `add_benefit` — 记录自定义权益
 
 ### MCP 配置
 
-**HTTP Stream 模式（推荐，支持远程）：**
-
-```json
-{
-  "mcpServers": {
-    "udeal": {
-      "url": "https://your-app.onrender.com/mcp"
-    }
-  }
-}
-```
-
-**Stdio 模式（本地）：**
+**Stdio 模式（推荐）：**
 
 ```json
 {
@@ -170,6 +200,18 @@ curl "http://localhost:3001/api/benefits?tag=dental-cleaning&type=free"
     "udeal": {
       "command": "node",
       "args": ["path/to/UDeal/dist/mcp/stdio.js"]
+    }
+  }
+}
+```
+
+**HTTP Stream 模式（远程）：**
+
+```json
+{
+  "mcpServers": {
+    "udeal": {
+      "url": "https://your-app.onrender.com/mcp"
     }
   }
 }
@@ -208,6 +250,10 @@ UDeal/
 │   └── mcp/                     # MCP Server
 │       ├── mcp.service.ts
 │       └── stdio.ts
+├── public/
+│   └── index.html               # Web 主页
+├── .prettierrc                  # Prettier 配置
+├── eslint.config.mjs            # ESLint 配置
 ├── render.yaml                  # Render 部署配置
 └── package.json
 ```

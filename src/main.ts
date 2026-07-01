@@ -1,7 +1,7 @@
-import "reflect-metadata";
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { McpService } from "./mcp/mcp.service";
+import 'reflect-metadata';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { McpService } from './mcp/mcp.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,17 +11,17 @@ async function bootstrap() {
   // 确保所有 lifecycle hooks 执行完毕
   await app.init();
 
-  const httpPort = parseInt(process.env.PORT || "3000");
-  const mcpPort = parseInt(process.env.MCP_PORT || "3001");
+  const httpPort = parseInt(process.env.PORT || '3000');
+  const mcpPort = parseInt(process.env.MCP_PORT || '3001');
 
   // 启动 MCP Server（HTTP Stream 模式）
   const mcpService = app.get(McpService);
   const mcpServer = mcpService.getServer();
   await mcpServer.start({
-    transportType: "httpStream",
+    transportType: 'httpStream',
     httpStream: {
       port: mcpPort,
-      host: "0.0.0.0",
+      host: '0.0.0.0',
     },
   });
 
@@ -35,6 +35,6 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err) => {
-  console.error("启动失败:", err);
+  console.error('启动失败:', err);
   process.exit(1);
 });

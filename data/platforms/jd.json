@@ -1,6 +1,100 @@
 {
   "platform": "京东",
   "platform_id": "jd",
-  "levels": ["PLUS"],
-  "benefits": []
+  "levels": [
+    "PLUS"
+  ],
+  "benefits": [
+    {
+      "id": "jd-plus-free-shipping",
+      "name": "免费配送",
+      "category": "购物",
+      "tags": [
+        "快递"
+      ],
+      "type": "free",
+      "description": "每月自动发放免运费快递券，可用于京东自营商品订单免运费，需在结算时选择使用。",
+      "level_details": {
+        "PLUS": {
+          "times": "每月多张",
+          "period": "每月",
+          "note": "具体数量根据会员等级动态调整"
+        }
+      },
+      "redeem_time": "自动生效",
+      "limit": "仅限京东自营商品",
+      "tips": "快递券有有效期，需在有效期内使用；不可与其他优惠叠加。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "jd-plus-free-return",
+      "name": "免费退换货",
+      "category": "购物",
+      "tags": [
+        "快递",
+        "购物"
+      ],
+      "type": "free",
+      "description": "会员享受免费上门取件退换货服务，无需承担运费，适用于符合条件商品。",
+      "level_details": {
+        "PLUS": {
+          "times": "无限次",
+          "period": "长期",
+          "note": "需符合京东退换货政策"
+        }
+      },
+      "redeem_time": "自动生效",
+      "limit": "需符合退换货政策，如商品完好、在售后期内",
+      "tips": "在订单详情页申请退换货时选择“上门取件”，系统自动应用权益。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "jd-plus-video-vip",
+      "name": "视频会员",
+      "category": "娱乐",
+      "tags": [
+        "视频",
+        "娱乐"
+      ],
+      "type": "free",
+      "description": "会员可每月领取合作视频平台如爱奇艺、腾讯视频的VIP会员权益，观看独家内容。",
+      "level_details": {
+        "PLUS": {
+          "times": "每月可领",
+          "period": "每月",
+          "note": "具体合作平台可能轮换"
+        }
+      },
+      "redeem_time": "APP内每月领取",
+      "limit": "每月限领一个平台",
+      "tips": "在PLUS会员中心“权益领取”中操作，领取后立即生效至当月底。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "jd-plus-health-service",
+      "name": "健康服务",
+      "category": "生活",
+      "tags": [
+        "健康",
+        "生活服务"
+      ],
+      "type": "free",
+      "description": "合作健康平台提供会员折扣，如在线问诊8折、体检套餐优惠。",
+      "level_details": {
+        "PLUS": {
+          "times": "不限",
+          "period": "长期",
+          "note": "仅限合作服务商"
+        }
+      },
+      "redeem_time": "自动生效或APP内领取",
+      "limit": "仅限指定服务商和项目",
+      "tips": "通过京东健康APP购买相关服务时，系统自动应用会员折扣。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    }
+  ]
 }

@@ -1,15 +1,15 @@
-import { Controller, Get, Param, Query } from "@nestjs/common";
-import { BenefitsService } from "./benefits.service";
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { BenefitsService } from './benefits.service';
 
-@Controller("api/benefits")
+@Controller('api/benefits')
 export class BenefitsController {
   constructor(private readonly benefitsService: BenefitsService) {}
 
   @Get()
   findAll(
-    @Query("tag") tag?: string,
-    @Query("platform") platform?: string,
-    @Query("type") type?: "free" | "paid"
+    @Query('tag') tag?: string,
+    @Query('platform') platform?: string,
+    @Query('type') type?: 'free' | 'paid',
   ) {
     const results = this.benefitsService.getAll({ tag, platform, type });
     return results.map((r) => ({
@@ -28,14 +28,14 @@ export class BenefitsController {
     }));
   }
 
-  @Get("search")
+  @Get('search')
   search(
-    @Query("q") query: string,
-    @Query("tag") tag?: string,
-    @Query("platform") platform?: string,
-    @Query("type") type?: "free" | "paid"
+    @Query('q') query: string,
+    @Query('tag') tag?: string,
+    @Query('platform') platform?: string,
+    @Query('type') type?: 'free' | 'paid',
   ) {
-    const results = this.benefitsService.search(query || "", {
+    const results = this.benefitsService.search(query || '', {
       tag,
       platform,
       type,
@@ -52,15 +52,15 @@ export class BenefitsController {
     }));
   }
 
-  @Get("my")
+  @Get('my')
   getMyBenefits() {
     return this.benefitsService.getMyBenefits();
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     const result = this.benefitsService.getById(id);
-    if (!result) return { error: "权益未找到" };
+    if (!result) return { error: '权益未找到' };
     return result;
   }
 }

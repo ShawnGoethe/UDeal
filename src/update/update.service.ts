@@ -1,32 +1,25 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { randomUUID } from "crypto";
-import { readFileSync } from "fs";
-import { join } from "path";
-import { LoaderService } from "../data/loader.service";
-import { WriterService } from "../data/writer.service";
-import type {
-  BenefitPreview,
-  Platform,
-  PlatformUpdateResult,
-  UpdateTask,
-} from "../common/types";
+import { Injectable, Logger } from '@nestjs/common';
+import { randomUUID } from 'crypto';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { LoaderService } from '../data/loader.service';
+import { WriterService } from '../data/writer.service';
+import type { BenefitPreview, Platform, PlatformUpdateResult, UpdateTask } from '../common/types';
 
 // 从 config.json 读取配置，不存在则用环境变量或默认值
 function loadConfig() {
   try {
-    const cfg = JSON.parse(
-      readFileSync(join(__dirname, "../../config.json"), "utf-8"),
-    );
+    const cfg = JSON.parse(readFileSync(join(__dirname, '../../config.json'), 'utf-8'));
     return {
-      baseUrl: cfg.mimo?.baseUrl || process.env.MIMO_BASE_URL || "",
-      apiKey: cfg.mimo?.apiKey || process.env.MIMO_API_KEY || "",
-      model: cfg.mimo?.model || process.env.MIMO_MODEL || "mimo-v2.5",
+      baseUrl: cfg.mimo?.baseUrl || process.env.MIMO_BASE_URL || '',
+      apiKey: cfg.mimo?.apiKey || process.env.MIMO_API_KEY || '',
+      model: cfg.mimo?.model || process.env.MIMO_MODEL || 'mimo-v2.5',
     };
   } catch {
     return {
-      baseUrl: process.env.MIMO_BASE_URL || "",
-      apiKey: process.env.MIMO_API_KEY || "",
-      model: process.env.MIMO_MODEL || "mimo-v2.5",
+      baseUrl: process.env.MIMO_BASE_URL || '',
+      apiKey: process.env.MIMO_API_KEY || '',
+      model: process.env.MIMO_MODEL || 'mimo-v2.5',
     };
   }
 }
@@ -61,7 +54,7 @@ export class UpdateService {
   ) {}
 
   /** 获取所有平台的基础信息（不含 benefits） */
-  getPlatforms(): Pick<Platform, "platform" | "platform_id" | "levels">[] {
+  getPlatforms(): Pick<Platform, 'platform' | 'platform_id' | 'levels'>[] {
     const platforms = this.loader.loadPlatforms();
     return platforms.map((p) => ({
       platform: p.platform,
@@ -107,7 +100,7 @@ export class UpdateService {
     const taskId = randomUUID();
     const task: UpdateTask = {
       task_id: taskId,
-      status: "running",
+      status: 'running',
       results: [],
     };
     this.tasks.set(taskId, task);
@@ -121,9 +114,7 @@ export class UpdateService {
       for (let i = 0; i < targets.length; i++) {
         const platform = targets[i];
         onPlatformStart(platform.platform, i, targets.length);
-        this.logger.log(
-          `Generating benefits for ${platform.platform} (${platform.platform_id})`,
-        );
+        this.logger.log(`Generating benefits for ${platform.platform} (${platform.platform_id})`);
 
         const benefits = await this.callMimoStreaming(platform, onChunk);
         task.results.push({
@@ -133,10 +124,10 @@ export class UpdateService {
         });
       }
 
-      task.status = "done";
+      task.status = 'done';
       this.logger.log(`Task ${task.task_id} completed`);
     } catch (err: any) {
-      task.status = "error";
+      task.status = 'error';
       task.error = err.message;
       this.logger.error(`Task ${taskId} failed`, err.stack);
     }
@@ -155,16 +146,16 @@ export class UpdateService {
         ? platform.benefits
             .map(
               (b) =>
-                `- ${b.name} (${b.id}): ${b.description} [${b.type}] tags: ${b.tags.join(",")} | 等级: ${Object.keys(b.level_details).join(",")}`,
+                `- ${b.name} (${b.id}): ${b.description} [${b.type}] tags: ${b.tags.join(',')} | 等级: ${Object.keys(b.level_details).join(',')}`,
             )
-            .join("\n")
-        : "暂无数据，需要从零开始收集";
+            .join('\n')
+        : '暂无数据，需要从零开始收集';
 
     const prompt = `你是一个中国互联网会员权益数据专家。你的任务是为「${platform.platform}」平台整理当前最新、最准确的会员权益信息。
 
 ## 平台信息
 - 平台名称：${platform.platform}
-- 会员等级：${platform.levels.join("、")}
+- 会员等级：${platform.levels.join('、')}
 
 ## 已有权益（可能过时，供参考和去重）：
 ${existingSummary}
@@ -184,6 +175,7 @@ ${BENEFIT_SCHEMA}
 6. limit 说明限制条件（如"每月1次"、"仅限指定门店"等），无限制填 null
 7. tips 补充使用注意事项
 8. 更新时间一个月内的权益不更新
+9. 不要添加过于细节的羊毛，比如专属客服，新品优先购
 
 ### 分类规则
 - type: "free" = 会员免费享受的权益（如免费配送、免费退换货）
@@ -203,20 +195,19 @@ ${BENEFIT_SCHEMA}
 - 确保 JSON 格式正确，可被直接解析`;
 
     const res = await fetch(`${MIMO_BASE_URL}/chat/completions`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${MIMO_API_KEY}`,
       },
       body: JSON.stringify({
         model: MIMO_MODEL,
         messages: [
           {
-            role: "system",
-            content:
-              "你是会员权益数据专家。只输出 JSON 数组，不要任何其他文字。",
+            role: 'system',
+            content: '你是会员权益数据专家。只输出 JSON 数组，不要任何其他文字。',
           },
-          { role: "user", content: prompt },
+          { role: 'user', content: prompt },
         ],
         temperature: 0.3,
         stream: true,
@@ -229,42 +220,38 @@ ${BENEFIT_SCHEMA}
     }
 
     // 流式读取 SSE（兼容 Node.js 和浏览器的 stream 类型）
-    let fullText = "";
+    let fullText = '';
     const decoder = new TextDecoder();
-    let buffer = "";
-    let currentEvent = "";
+    let buffer = '';
+    let currentEvent = '';
 
     const body: any = res.body;
     if (!body) {
-      throw new Error("mimo API returned empty body");
+      throw new Error('mimo API returned empty body');
     }
 
     // 使用 async iterator，兼容 Node.js Readable 和 web ReadableStream
     try {
       for await (const chunk of body) {
         const bytes =
-          chunk instanceof Buffer
-            ? chunk
-            : Buffer.isBuffer(chunk)
-              ? chunk
-              : Buffer.from(chunk);
+          chunk instanceof Buffer ? chunk : Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
         buffer += decoder.decode(bytes, { stream: true });
 
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
 
         for (const line of lines) {
-          if (line.startsWith("event: ")) {
+          if (line.startsWith('event: ')) {
             currentEvent = line.slice(7).trim();
             continue;
           }
-          if (!line.startsWith("data: ")) continue;
+          if (!line.startsWith('data: ')) continue;
           const payload = line.slice(6).trim();
-          if (payload === "[DONE]") continue;
+          if (payload === '[DONE]') continue;
 
           // 只处理 content delta 事件
-          if (currentEvent && currentEvent !== "message") {
-            currentEvent = "";
+          if (currentEvent && currentEvent !== 'message') {
+            currentEvent = '';
             continue;
           }
 
@@ -278,7 +265,7 @@ ${BENEFIT_SCHEMA}
           } catch {
             // 跳过无法解析的行
           }
-          currentEvent = "";
+          currentEvent = '';
         }
       }
     } catch (streamErr: any) {
@@ -301,13 +288,10 @@ ${BENEFIT_SCHEMA}
       const parsed = JSON.parse(jsonMatch[0]) as BenefitPreview[];
       return parsed.map((b) => ({
         ...b,
-        action: b.action || "add",
+        action: b.action || 'add',
       }));
     } catch (e) {
-      this.logger.error(
-        `Failed to parse mimo response for ${platform.platform_id}`,
-        e,
-      );
+      this.logger.error(`Failed to parse mimo response for ${platform.platform_id}`, e);
       return [];
     }
   }

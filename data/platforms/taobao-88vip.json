@@ -1,6 +1,133 @@
 {
   "platform": "淘宝",
   "platform_id": "taobao-88vip",
-  "levels": ["88VIP"],
-  "benefits": []
+  "levels": ["青铜", "白银", "黄金", "铂金", "钻石", "黑钻", "88VIP-生活", "88VIP-购物"],
+  "benefits": [
+    {
+      "id": "taobao-88vip-youku",
+      "name": "优酷/芒果VIP会员",
+      "category": "entertainment",
+      "tags": ["video"],
+      "type": "paid",
+      "description": "免费领取优酷VIP会员",
+      "level_details": {
+        "88VIP-生活": { "period": "随88VIP有效期" }
+      },
+      "redeem_time": "开通后领取",
+      "limit": "限88VIP会员",
+      "tips": "在88VIP权益页领取",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-88vip-eleme",
+      "name": "淘宝闪购超级吃货卡",
+      "category": "lifestyle",
+      "tags": ["delivery-coupon"],
+      "type": "paid",
+      "description": "免费领取闪购超级吃货卡，享外卖红包",
+      "level_details": {
+        "88VIP-生活": { "period": "随88VIP有效期" }
+      },
+      "redeem_time": "开通后领取",
+      "limit": "限88VIP会员",
+      "tips": "在88VIP权益页领取",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-88vip-netease-music",
+      "name": "网易云音乐黑胶VIP",
+      "category": "entertainment",
+      "tags": ["music"],
+      "type": "paid",
+      "description": "免费领取网易云音乐黑胶VIP",
+      "level_details": {
+        "88VIP-生活": { "period": "随88VIP有效期" }
+      },
+      "redeem_time": "开通后领取",
+      "limit": "限88VIP会员",
+      "tips": "在88VIP权益页领取",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-88vip-movie",
+      "name": "淘票票优惠",
+      "category": "entertainment",
+      "tags": ["movie"],
+      "type": "paid",
+      "description": "享受淘票票购票折扣",
+      "level_details": {
+        "青铜": { "discount": "5.01-5一张", "period": "每月"},
+        "白银": { "discount": "5.01-5一张", "period": "每月"},
+        "黄金": { "discount": "5.01-5一张", "period": "每月"},
+        "铂金": { "discount": "5.01-5一张，99-10一张", "period": "每月"},
+        "钻石": { "discount": "5.01-5一张，99-10一张", "period": "每月"},
+        "黑钻": { "discount": "5.01-5一张，99-10一张", "period": "每月"},
+        "88VIP-生活": { "discount": "立减优惠" },
+        "88VIP-购物": { "discount": "立减优惠+每月券" }
+      },
+      "redeem_time": "自动生效",
+      "limit": "限88VIP会员",
+      "tips": "在淘票票购票时自动享受",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-88vip-quark",
+      "name": "夸克网盘会员",
+      "category": "lifestyle",
+      "tags": ["storage"],
+      "type": "paid",
+      "description": "免费领取夸克网盘会员",
+      "level_details": {
+        "88VIP-生活": { "period": "随88VIP有效期" }
+      },
+      "redeem_time": "开通后领取",
+      "limit": "限88VIP会员",
+      "tips": "在88VIP权益页领取",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-88vip-daily-redpacket",
+      "name": "天天2元红包",
+      "category": "shopping",
+      "tags": ["coupon", "important"],
+      "type": "paid",
+      "description": "88VIP生活卡用户每天可领取2元无门槛红包",
+      "level_details": {
+        "88VIP-购物": { "amount": "2元/天", "period": "每日" }
+      },
+      "redeem_time": "每日0点更新",
+      "limit": "限88VIP生活卡",
+      "tips": "在淘宝APP搜索「88VIP」进入权益页领取，当天有效",
+      "active": true,
+      "last_updated": "2025-01-01"
+    },
+    {
+      "id": "taobao-birthday-gift",
+      "name": "生日礼",
+      "category": "lifestyle",
+      "tags": ["birthday-gift"],
+      "type": "free",
+      "description": "生日当天抽取淘金币和随机惊喜礼物一份",
+      "level_details": {
+        "青铜": { "note": "生日当天可抽" },
+        "白银": { "note": "生日当天可抽" },
+        "黄金": { "note": "生日当天可抽" },
+        "铂金": { "note": "生日当天可抽" },
+        "钻石": { "note": "生日当天可抽" },
+        "黑钻": { "note": "生日当天可抽" },
+        "88VIP-生活": { "note": "生日当天可抽" },
+        "88VIP-购物": { "note": "生日当天可抽" }
+      },
+      "redeem_time": "生日当天",
+      "limit": "每人每年1次",
+      "tips": "在淘宝APP搜索「生日礼」进入领取页，礼物含淘金币+随机惊喜",
+      "active": true,
+      "last_updated": "2025-01-01"
+    }
+  ]
 }

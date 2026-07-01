@@ -17,7 +17,7 @@ export interface Benefit {
   name: string;
   category: string;
   tags: string[];
-  type: "free" | "paid";
+  type: 'free' | 'paid';
   description: string;
   level_details: Record<string, LevelDetail>;
   redeem_time: string;
@@ -70,7 +70,7 @@ export interface SearchResult {
   matched_keywords: string[];
 }
 
-export type BenefitAction = "add" | "update" | "remove";
+export type BenefitAction = 'add' | 'update' | 'remove';
 
 export interface BenefitPreview extends Benefit {
   action: BenefitAction;
@@ -84,7 +84,7 @@ export interface PlatformUpdateResult {
 
 export interface UpdateTask {
   task_id: string;
-  status: "pending" | "running" | "done" | "error";
+  status: 'pending' | 'running' | 'done' | 'error';
   results: PlatformUpdateResult[];
   error?: string;
 }

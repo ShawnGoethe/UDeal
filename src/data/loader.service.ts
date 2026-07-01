@@ -1,17 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
-import type {
-  Platform,
-  Category,
-  Tag,
-  UserData,
-  SearchResult,
-  Benefit,
-} from "../common/types";
+import { Injectable } from '@nestjs/common';
+import { readFileSync, readdirSync } from 'fs';
+import { join } from 'path';
+import type { Platform, Category, Tag, UserData, SearchResult, Benefit } from '../common/types';
 
-const DATA_DIR = join(__dirname, "../../data");
-const isDev = process.env.NODE_ENV !== "production";
+const DATA_DIR = join(__dirname, '../../data');
+const isDev = process.env.NODE_ENV !== 'production';
 
 @Injectable()
 export class LoaderService {
@@ -29,10 +22,10 @@ export class LoaderService {
 
   loadPlatforms(): Platform[] {
     if (this.platformsCache) return this.platformsCache;
-    const dir = join(DATA_DIR, "platforms");
-    const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+    const dir = join(DATA_DIR, 'platforms');
+    const files = readdirSync(dir).filter((f) => f.endsWith('.json'));
     this.platformsCache = files.map((f) => {
-      const data = JSON.parse(readFileSync(join(dir, f), "utf-8"));
+      const data = JSON.parse(readFileSync(join(dir, f), 'utf-8'));
       return data as Platform;
     });
     return this.platformsCache;
@@ -40,33 +33,27 @@ export class LoaderService {
 
   loadCategories(): Category[] {
     if (this.categoriesCache) return this.categoriesCache;
-    const data = JSON.parse(
-      readFileSync(join(DATA_DIR, "categories.json"), "utf-8")
-    );
+    const data = JSON.parse(readFileSync(join(DATA_DIR, 'categories.json'), 'utf-8'));
     this.categoriesCache = data.categories;
     return this.categoriesCache!;
   }
 
   loadTags(): Tag[] {
     if (this.tagsCache) return this.tagsCache;
-    const data = JSON.parse(
-      readFileSync(join(DATA_DIR, "tags.json"), "utf-8")
-    );
+    const data = JSON.parse(readFileSync(join(DATA_DIR, 'tags.json'), 'utf-8'));
     this.tagsCache = data.tags;
     return this.tagsCache!;
   }
 
   loadUser(): UserData {
     if (this.userCache) return this.userCache;
-    this.userCache = JSON.parse(
-      readFileSync(join(DATA_DIR, "user.json"), "utf-8")
-    );
+    this.userCache = JSON.parse(readFileSync(join(DATA_DIR, 'user.json'), 'utf-8'));
     return this.userCache!;
   }
 
   searchBenefits(
     query: string,
-    filters?: { tag?: string; platform?: string; type?: string }
+    filters?: { tag?: string; platform?: string; type?: string },
   ): SearchResult[] {
     if (isDev) this.clearCache();
     const platforms = this.loadPlatforms();
@@ -80,8 +67,8 @@ export class LoaderService {
         if (filters?.tag && !b.tags.includes(filters.tag)) continue;
         if (filters?.type && b.type !== filters.type) continue;
 
-        const matchFields = [b.name, b.description, b.category, ...b.tags].map(
-          (s) => s.toLowerCase()
+        const matchFields = [b.name, b.description, b.category, ...b.tags].map((s) =>
+          s.toLowerCase(),
         );
 
         const matched = matchFields.some((f) => f.includes(q));
@@ -103,12 +90,8 @@ export class LoaderService {
     return this.loadPlatforms().find((p) => p.platform_id === platformId);
   }
 
-  getAllBenefits(filters?: {
-    tag?: string;
-    platform?: string;
-    type?: string;
-  }): SearchResult[] {
-    return this.searchBenefits("", filters);
+  getAllBenefits(filters?: { tag?: string; platform?: string; type?: string }): SearchResult[] {
+    return this.searchBenefits('', filters);
   }
 
   getMyBenefits(): Array<{
@@ -130,9 +113,7 @@ export class LoaderService {
     for (const m of user.memberships) {
       const p = platforms.find((pp) => pp.platform_id === m.platform_id);
       if (!p) continue;
-      const benefits = p.benefits.filter(
-        (b) => b.active && m.level in b.level_details
-      );
+      const benefits = p.benefits.filter((b) => b.active && m.level in b.level_details);
       result.push({
         platform: p.platform,
         platform_id: p.platform_id,
@@ -148,7 +129,7 @@ export class LoaderService {
   }
 
   getBenefitById(
-    id: string
+    id: string,
   ): (SearchResult & { level_detail: Record<string, unknown> }) | undefined {
     if (isDev) this.clearCache();
     const platforms = this.loadPlatforms();

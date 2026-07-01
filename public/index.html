@@ -42,6 +42,36 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
 .card-tag { font-size: 12px; padding: 2px 8px; background: #f5f5f5; border-radius: 4px; color: #888; }
 .card-meta { font-size: 12px; color: #999; margin-top: 8px; }
+.benefit-card { cursor: pointer; }
+.benefit-card.expanded {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 90%; max-width: 600px; max-height: 80vh;
+  z-index: 1001; overflow-y: auto;
+  animation: cardExpand 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+@keyframes cardExpand {
+  0% { transform: translate(-50%, -50%) scale(0.5) rotateY(90deg); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(1.05) rotateY(-5deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1) rotateY(0deg); }
+}
+.card-detail { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; }
+.benefit-card.expanded .card-detail { display: block; }
+.detail-section { margin-bottom: 12px; }
+.detail-section h4 { font-size: 13px; color: #667eea; margin-bottom: 6px; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.detail-table th, .detail-table td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+.detail-table th { color: #888; font-weight: normal; }
+.detail-table tr:last-child td { border-bottom: none; }
+.card-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+.card-overlay.show { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .stats { display: flex; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
 .stat-card { background: white; border-radius: 12px; padding: 20px; flex: 1; min-width: 150px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .stat-number { font-size: 2em; font-weight: 700; color: #667eea; }
@@ -94,6 +124,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .edit-form .ef-actions { margin-top: 8px; display: flex; gap: 8px; }
 .edit-form .ef-actions button { padding: 5px 14px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; cursor: pointer; }
 .edit-form .ef-actions .save-edit { background: #667eea; color: white; border-color: #667eea; }
+.edit-form .ef-actions .delete-btn { background: #e74c3c; color: white; border-color: #e74c3c; }
+.edit-form .ef-actions .delete-btn:hover { background: #c0392b; border-color: #c0392b; }
 .confirm-platform-btn { margin-top: 14px; padding: 10px 24px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; width: 100%; transition: background 0.2s; }
 .confirm-platform-btn:hover { background: #5a6fd6; }
 .confirm-platform-btn:disabled { background: #ccc; cursor: not-allowed; }
@@ -114,6 +146,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 </style>
 </head>
 <body>
+<div class="card-overlay" id="cardOverlay" onclick="closeExpandedCard()"></div>
 <div class="header">
   <h1>🎫 UDeal</h1>
   <p>一站式管理你的会员权益，不错过每一个羊毛</p>
@@ -149,17 +182,84 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   </div>
 
   <div class="mcp-section">
-    <h3>🔌 MCP 接入</h3>
-    <p>UDeal 支持 MCP 协议，可接入 Claude Desktop 等 AI 工具：</p>
-    <pre><code>// claude_desktop_config.json
+    <h3>🔌 MCP 接入 — Agent 集成指南</h3>
+    <p>UDeal 支持标准 MCP (Model Context Protocol) 协议，任何兼容 MCP 的 AI Agent（如 Claude Desktop、OpenClaw 等）均可接入，查询会员权益、筛选对比、记录使用情况。</p>
+
+    <h4 style="margin-top:20px;color:#333;">1. 连接配置</h4>
+    <pre><code>// claude_desktop_config.json 或 .mcp.json
 {
   "mcpServers": {
     "udeal": {
       "command": "node",
-      "args": ["path/to/udeal/dist/index.js"]
+      "args": ["path/to/udeal/dist/mcp/stdio.js"]
     }
   }
 }</code></pre>
+    <p style="font-size:13px;color:#888;margin-top:6px;">启动入口：<code>dist/mcp/stdio.js</code>（stdio 传输模式）</p>
+
+    <h4 style="margin-top:24px;color:#333;">2. 可用工具</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:12px;">
+      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
+        <div style="font-weight:600;color:#667eea;">🔍 search_benefits</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">搜索权益，支持关键词+多维筛选</div>
+        <div style="font-size:12px;color:#888;margin-top:6px;">
+          <code>query</code> (必填) 搜索词 &nbsp;
+          <code>tag</code> 标签ID &nbsp;
+          <code>platform</code> 平台ID &nbsp;
+          <code>type</code> free|paid
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
+        <div style="font-weight:600;color:#667eea;">📋 list_platform_benefits</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">列出指定平台的全部权益</div>
+        <div style="font-size:12px;color:#888;margin-top:6px;">
+          <code>platform_id</code> (必填) 如 meituan, jd, taobao-88vip
+        </div>
+      </div>
+      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
+        <div style="font-weight:600;color:#667eea;">🏷️ get_categories</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">获取所有分类和标签（用于构建筛选 UI）</div>
+        <div style="font-size:12px;color:#888;margin-top:6px;">无参数</div>
+      </div>
+    </div>
+
+    <h4 style="margin-top:24px;color:#333;">3. 筛选方式</h4>
+    <p style="font-size:14px;color:#555;margin-top:6px;">使用 <code>search_benefits</code> 时可组合以下筛选维度：</p>
+    <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;">
+      <tr style="background:#f8f8f8;"><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">维度</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">参数</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">示例值</th></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">关键词</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>query</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">"洁牙"、"外卖"、"贵宾厅"</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">标签</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>tag</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">dental-cleaning, airport-lounge, food-delivery</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">平台</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>platform</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">meituan, jd, taobao-88vip</td></tr>
+      <tr><td style="padding:8px;">类型</td><td style="padding:8px;"><code>type</code></td><td style="padding:8px;">free（免费权益）、paid（付费权益）</td></tr>
+    </table>
+    <p style="font-size:13px;color:#888;margin-top:8px;">💡 先调用 <code>get_categories</code> 获取所有可用的标签 ID 和分类 ID。</p>
+
+    <h4 style="margin-top:24px;color:#333;">4. Agent 使用记录</h4>
+    <p style="font-size:14px;color:#555;margin-top:6px;">Agent 可通过memory记录使用情况</p>
+    <h4 style="margin-top:24px;color:#333;">5. Agent 调用示例</h4>
+    <pre><code>// 用户: "我有哪些免费的洁牙权益？"
+Agent → search_benefits(query="洁牙", type="free")
+← 返回各平台免费洁牙权益列表
+
+// 用户: "美团黑金会员有什么权益？"
+Agent → list_platform_benefits(platform_id="meituan")
+← 返回美团全部权益（含等级详情）
+
+// 用户: "帮我记录一下，我是美团黑金会员"
+Agent → update_membership(platform_id="meituan", level="黑金", since="2025-01-01")
+← 确认已记录
+
+// 用户: "我现在的会员权益有哪些？"
+Agent → get_my_benefits()
+← 返回已记录会员的可用权益
+
+// 用户: "哪个平台的机场贵宾厅最好？"
+Agent → compare_benefits(query="机场贵宾厅")
+← 跨平台对比贵宾厅权益
+
+// 用户: "有什么快到期的会员吗？"
+Agent → get_expiring_soon()
+← 返回 30 天内到期的会员列表</code></pre>
   </div>
   <div class="stats" id="stats">
     <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
@@ -170,7 +270,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 </div>
 
 <div class="footer">
-  <p>UDeal v2.0 - 用 MCP 让会员权益一目了然</p>
+  <p>UDeal v0.1 - 用 MCP 让会员权益一目了然 | 太细节羊毛已被过滤 📧反馈:zephyr.zz.zhang@qq.com</a></p>
 </div>
 
 <div class="update-overlay" id="updateOverlay">
@@ -219,9 +319,10 @@ async function init() {
 
 function renderTags() {
   const container = document.getElementById('tagsContainer');
-  container.innerHTML = allTags.map(t =>
-    `<div class="tag-chip" data-tag="${t.id}" onclick="toggleTag('${t.id}')">${t.icon} ${t.name}</div>`
-  ).join('');
+  container.innerHTML = allTags.map(t => {
+    const style = t.color ? `background:${t.color};border-color:${t.color};` : '';
+    return `<div class="tag-chip" data-tag="${t.id}" style="${style}" onclick="toggleTag('${t.id}')">${t.icon} ${t.name}</div>`;
+  }).join('');
 }
 
 function renderPlatforms() {
@@ -263,8 +364,13 @@ function renderBenefits() {
     return;
   }
 
-  grid.innerHTML = filtered.map(b => `
-    <div class="benefit-card">
+  grid.innerHTML = filtered.map((b, idx) => {
+    const levelRows = b.level_details ? Object.entries(b.level_details).map(([level, d]) => {
+      const info = [d.times, d.period, d.amount, d.discount, d.scope, d.note].filter(Boolean).join(' · ');
+      return `<tr><td>${level}</td><td>${info || '-'}</td></tr>`;
+    }).join('') : '';
+    return `
+    <div class="benefit-card" id="card-${idx}" onclick="expandCard(${idx}, event)">
       <div class="card-header">
         <div>
           <span class="card-title">${b.name}</span>
@@ -276,13 +382,51 @@ function renderBenefits() {
       <div class="card-tags">
         ${b.tags.map(t => {
           const tag = allTags.find(tt => tt.id === t);
-          return tag ? `<span class="card-tag">${tag.icon} ${tag.name}</span>` : '';
+          if (!tag) return '';
+          const style = tag.color ? `background:${tag.color};` : '';
+          return `<span class="card-tag" style="${style}">${tag.icon} ${tag.name}</span>`;
         }).join('')}
       </div>
       <div class="card-meta">兑换时间: ${b.redeem_time}${b.limit ? ' | ' + b.limit : ''}</div>
-    </div>
-  `).join('');
+      <div class="card-detail">
+        <div class="detail-section">
+          <h4>📊 各等级权益详情</h4>
+          <table class="detail-table">
+            <tr><th>等级</th><th>权益内容</th></tr>
+            ${levelRows}
+          </table>
+        </div>
+        ${b.tips ? `<div class="detail-section"><h4>💡 使用提示</h4><p style="font-size:13px;color:#555;">${b.tips}</p></div>` : ''}
+        <div class="detail-section" style="font-size:12px;color:#999;">
+          来源: ${b.platform} · 更新: ${b.last_updated || '-'}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
+
+function expandCard(idx, event) {
+  const card = document.getElementById(`card-${idx}`);
+  if (card.classList.contains('expanded')) {
+    closeExpandedCard();
+    return;
+  }
+  // 先关闭已展开的
+  document.querySelectorAll('.benefit-card.expanded').forEach(c => c.classList.remove('expanded'));
+  card.classList.add('expanded');
+  document.getElementById('cardOverlay').classList.add('show');
+  event.stopPropagation();
+}
+
+function closeExpandedCard() {
+  document.querySelectorAll('.benefit-card.expanded').forEach(c => c.classList.remove('expanded'));
+  document.getElementById('cardOverlay').classList.remove('show');
+}
+
+// ESC 键关闭
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeExpandedCard();
+});
 
 function toggleTag(tagId) {
   activeTag = activeTag === tagId ? '' : tagId;
@@ -488,12 +632,15 @@ function renderReview(results) {
     return `
       <div class="platform-review" data-idx="${ri}">
         <div class="platform-review-header" onclick="togglePlatformReview(${ri})">
-          <span class="pname">${r.platform} (${r.platform_id})</span>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;" onclick="event.stopPropagation()">
+            <input type="checkbox" class="select-all-check" data-ri="${ri}" checked onchange="toggleSelectAll(${ri}, this.checked)" style="cursor:pointer;width:16px;height:16px;">
+            <span class="pname">${r.platform} (${r.platform_id})</span>
+          </label>
           <span class="pcount">${r.benefits.length} 条权益 · ${summary.join(' / ')}</span>
         </div>
         <div class="platform-review-body open" id="prBody${ri}">
           ${r.benefits.map((b, bi) => renderPreviewItem(ri, bi, b)).join('')}
-          <button class="confirm-platform-btn" onclick="confirmPlatform(${ri})">✅ 确认提交 ${r.platform}</button>
+          <button class="confirm-platform-btn" onclick="confirmPlatform(${ri})">✅ 确认提交已选权益</button>
         </div>
       </div>`;
   }).join('');
@@ -503,7 +650,10 @@ function renderPreviewItem(ri, bi, b) {
   const levelInfo = b.level_details ? Object.entries(b.level_details).map(([k,v]) => `${k}: ${v.times || ''}${v.period ? '/' + v.period : ''}`).join(', ') : '';
   return `
     <div class="preview-item action-${b.action}" id="pi-${ri}-${bi}">
-      <span class="pi-name">${b.name}</span>
+      <label style="position:absolute;top:10px;left:10px;cursor:pointer;">
+        <input type="checkbox" class="benefit-check" data-ri="${ri}" data-bi="${bi}" checked style="cursor:pointer;width:16px;height:16px;">
+      </label>
+      <span class="pi-name" style="margin-left:28px;">${b.name}</span>
       <span class="action-badge ${b.action}">${b.action === 'add' ? '新增' : b.action === 'update' ? '更新' : '下架'}</span>
       <button class="edit-btn" onclick="toggleEdit(${ri},${bi})">✏️ 编辑</button>
       <div class="pi-desc">${b.description}</div>
@@ -514,9 +664,10 @@ function renderPreviewItem(ri, bi, b) {
         <label>描述</label><textarea id="efd-${ri}-${bi}">${escHtml(b.description)}</textarea>
         <label>类型</label><select id="eft-${ri}-${bi}"><option value="free" ${b.type==='free'?'selected':''}>免费</option><option value="paid" ${b.type==='paid'?'selected':''}>付费</option></select>
         <label>标签（逗号分隔）</label><input id="eftags-${ri}-${bi}" value="${escHtml((b.tags||[]).join(', '))}">
-        <label>操作</label><select id="efa-${ri}-${bi}"><option value="add" ${b.action==='add'?'selected':''}>新增</option><option value="update" ${b.action==='update'?'selected':''}>更新</option><option value="remove" ${b.action==='remove'?'selected':''}>下架</option></select>
+        <label>操作</label><select id="efa-${ri}-${bi}"><option value="add" ${b.action==='add'?'selected':''}>新增</option><option value="remove" ${b.action==='remove'?'selected':''}>下架</option></select>
         <div class="ef-actions">
           <button class="save-edit" onclick="saveEdit(${ri},${bi})">💾 保存</button>
+          <button class="delete-btn" onclick="deleteBenefit(${ri},${bi})">🗑️ 删除</button>
           <button onclick="toggleEdit(${ri},${bi})">取消</button>
         </div>
       </div>
@@ -530,8 +681,36 @@ function togglePlatformReview(idx) {
   body.classList.toggle('open');
 }
 
+function toggleSelectAll(ri, checked) {
+  document.querySelectorAll(`.benefit-check[data-ri="${ri}"]`).forEach(cb => {
+    cb.checked = checked;
+  });
+}
+
 function toggleEdit(ri, bi) {
   document.getElementById(`ef-${ri}-${bi}`).classList.toggle('show');
+}
+
+function deleteBenefit(ri, bi) {
+  const task = window._reviewTask;
+  if (!task) return;
+  if (!confirm('确定要删除这条权益吗？')) return;
+  task[ri].benefits.splice(bi, 1);
+  // 重新渲染该平台的权益列表
+  const body = document.getElementById(`prBody${ri}`);
+  const btn = body.querySelector('.confirm-platform-btn');
+  body.innerHTML = task[ri].benefits.map((b, idx) => renderPreviewItem(ri, idx, b)).join('') + btn.outerHTML;
+  // 更新头部计数
+  const header = body.previousElementSibling;
+  const countEl = header.querySelector('.pcount');
+  const summary = [];
+  const addCount = task[ri].benefits.filter(b => b.action === 'add').length;
+  const updateCount = task[ri].benefits.filter(b => b.action === 'update').length;
+  const removeCount = task[ri].benefits.filter(b => b.action === 'remove').length;
+  if (addCount) summary.push(`+${addCount} 新增`);
+  if (updateCount) summary.push(`~${updateCount} 更新`);
+  if (removeCount) summary.push(`-${removeCount} 下架`);
+  countEl.textContent = `${task[ri].benefits.length} 条权益 · ${summary.join(' / ')}`;
 }
 
 function saveEdit(ri, bi) {
@@ -554,6 +733,15 @@ async function confirmPlatform(ri) {
   const task = window._reviewTask;
   if (!task || !currentTaskId) return;
   const r = task[ri];
+
+  // 只提交勾选的权益
+  const checkedIndexes = [...document.querySelectorAll(`.benefit-check[data-ri="${ri}"]:checked`)].map(cb => parseInt(cb.dataset.bi));
+  if (checkedIndexes.length === 0) {
+    alert('请至少勾选一条权益');
+    return;
+  }
+  const selectedBenefits = checkedIndexes.map(i => r.benefits[i]);
+
   const btn = document.querySelector(`[data-idx="${ri}"] .confirm-platform-btn`);
   btn.disabled = true;
   btn.textContent = '⏳ 提交中...';
@@ -565,7 +753,7 @@ async function confirmPlatform(ri) {
       body: JSON.stringify({
         task_id: currentTaskId,
         platform_id: r.platform_id,
-        benefits: r.benefits,
+        benefits: selectedBenefits,
       }),
     });
     const result = await res.json();
