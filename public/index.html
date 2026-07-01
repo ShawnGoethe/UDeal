@@ -81,7 +81,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .mcp-section { background: white; border-radius: 12px; padding: 24px; margin: 30px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .mcp-section h3 { margin-bottom: 12px; color: #667eea; }
 .mcp-section pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
-.mcp-section code { color: #e91e63; }
+.mcp-section code { color: #333; }
 .footer { text-align: center; padding: 30px; color: #999; font-size: 14px; }
 .loading { text-align: center; padding: 40px; color: #999; }
 .no-results { text-align: center; padding: 40px; color: #999; }
@@ -183,84 +183,94 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   </div>
 
   <div class="mcp-section">
-    <h3>🔌 MCP 接入 — Agent 集成指南</h3>
-    <p>UDeal 支持标准 MCP (Model Context Protocol) 协议，任何兼容 MCP 的 AI Agent（如 Claude Desktop、OpenClaw 等）均可接入，查询会员权益、筛选对比、记录使用情况。</p>
+    <h3>🔌 Skills 接入</h3>
+    <p>将 UDeal 权益数据接入你的 AI Agent，支持 CLI 命令和 System Prompt 两种方式。</p>
 
-    <h4 style="margin-top:20px;color:#333;">1. 连接配置</h4>
-    <pre><code>// claude_desktop_config.json 或 .mcp.json
-      {
-        "mcpServers": {
-          "udeals": {
-            "url": "https://udeals.utools.icu/mcp"
-          }
-        }
-      }</code></pre>
-    <p style="font-size:13px;color:#888;margin-top:6px;">启动入口：<code>dist/mcp/stdio.js</code>（stdio 传输模式）</p>
+    <h4 style="margin-top:24px;color:#333;">方式一：CLI 命令行</h4>
+    <p style="font-size:14px;color:#555;margin-top:6px;">通过 API 直接查询，适合脚本和命令行场景：</p>
 
-    <h4 style="margin-top:24px;color:#333;">2. 可用工具</h4>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:12px;">
-      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
-        <div style="font-weight:600;color:#667eea;">🔍 search_benefits</div>
-        <div style="font-size:13px;color:#666;margin-top:4px;">搜索权益，支持关键词+多维筛选</div>
-        <div style="font-size:12px;color:#888;margin-top:6px;">
-          <code>query</code> (必填) 搜索词 &nbsp;
-          <code>tag</code> 标签ID &nbsp;
-          <code>platform</code> 平台ID &nbsp;
-          <code>type</code> free|paid
-        </div>
+    <div style="margin-top:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
+        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits"</code>
+        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
       </div>
-      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
-        <div style="font-weight:600;color:#667eea;">📋 list_platform_benefits</div>
-        <div style="font-size:13px;color:#666;margin-top:4px;">列出指定平台的全部权益</div>
-        <div style="font-size:12px;color:#888;margin-top:6px;">
-          <code>platform_id</code> (必填) 如 meituan, jd, taobao-88vip
-        </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
+        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits/search?q=洁牙"</code>
+        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits/search?q=洁牙&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
       </div>
-      <div style="border:1px solid #e8e8e8;border-radius:10px;padding:14px;">
-        <div style="font-weight:600;color:#667eea;">🏷️ get_categories</div>
-        <div style="font-size:13px;color:#666;margin-top:4px;">获取所有分类和标签（用于构建筛选 UI）</div>
-        <div style="font-size:12px;color:#888;margin-top:6px;">无参数</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
+        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits?platform=meituan&type=free"</code>
+        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits?platform=meituan&amp;type=free&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
+        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits?tag=airport-lounge"</code>
+        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits?tag=airport-lounge&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
       </div>
     </div>
 
-    <h4 style="margin-top:24px;color:#333;">3. 筛选方式</h4>
-    <p style="font-size:14px;color:#555;margin-top:6px;">使用 <code>search_benefits</code> 时可组合以下筛选维度：</p>
+    <h4 style="margin-top:24px;color:#333;">方式二：System Prompt 接入</h4>
+    <p style="font-size:14px;color:#555;margin-top:6px;">将以下 prompt 添加到你的 Agent 的 System Prompt 中，让 Agent 自动调用 API 查询权益：</p>
+
+    <div style="position:relative;margin-top:12px;">
+      <button onclick="copyText(this, document.getElementById('skillPrompt').textContent)" style="position:absolute;top:8px;right:8px;padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;z-index:1;">📋 复制</button>
+      <pre id="skillPrompt" style="background:#f5f5f5;color:#d4d4d4;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;"><code>你是一个会员权益查询助手，可以帮用户查询各平台会员权益。
+
+## API 基础信息
+- 基础地址: https://udeals.utools.icu
+- 数据格式: JSON
+
+## 可用接口
+
+### 1. 获取所有权益
+GET /api/benefits
+返回所有平台的权益列表。
+
+### 2. 搜索权益
+GET /api/benefits/search?q={关键词}
+示例: /api/benefits/search?q=洁牙
+
+### 3. 筛选权益
+GET /api/benefits?platform={平台ID}&amp;type={free|paid}&amp;tag={标签ID}
+- platform: meituan, jd, taobao-88vip, heytea, unionpay, 12306, alipay, ctrip
+- type: free（免费）, paid（付费）
+- tag: dental-cleaning, airport-lounge, birthday-gift, coupon, video 等
+
+### 4. 获取平台权益
+GET /api/platforms/{平台ID}
+示例: /api/platforms/meituan
+
+### 5. 获取标签列表
+GET /api/tags
+
+### 6. 获取用户权益
+GET /api/benefits/my
+
+## 使用规则
+1. 用户询问权益时，调用对应 API 获取实时数据
+2. 支持组合筛选，如 ?platform=meituan&amp;type=free&amp;tag=dental-cleaning
+3. 回答时列出权益名称、类型（免费/付费）、描述、兑换时间
+4. 对比类问题可多次调用不同平台数据后汇总</code></pre>
+    </div>
+
+    <h4 style="margin-top:24px;color:#333;">API 参数说明</h4>
     <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;">
-      <tr style="background:#f8f8f8;"><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">维度</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">参数</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">示例值</th></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">关键词</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>query</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">"洁牙"、"外卖"、"贵宾厅"</td></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">标签</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>tag</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">dental-cleaning, airport-lounge, food-delivery</td></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;">平台</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>platform</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">meituan, jd, taobao-88vip</td></tr>
-      <tr><td style="padding:8px;">类型</td><td style="padding:8px;"><code>type</code></td><td style="padding:8px;">free（免费权益）、paid（付费权益）</td></tr>
+      <tr style="background:#f8f8f8;"><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">参数</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">说明</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">示例值</th></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>q</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">搜索关键词</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">洁牙、外卖、贵宾厅</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>platform</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">平台筛选</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">meituan, jd, taobao-88vip, heytea</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>tag</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">标签筛选</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">dental-cleaning, airport-lounge, birthday-gift</td></tr>
+      <tr><td style="padding:8px;"><code>type</code></td><td style="padding:8px;">类型筛选</td><td style="padding:8px;">free（免费）、paid（付费）</td></tr>
     </table>
-    <p style="font-size:13px;color:#888;margin-top:8px;">💡 先调用 <code>get_categories</code> 获取所有可用的标签 ID 和分类 ID。</p>
-
-    <h4 style="margin-top:24px;color:#333;">4. Agent 使用记录</h4>
-    <p style="font-size:14px;color:#555;margin-top:6px;">Agent 可通过memory记录使用情况</p>
-    <h4 style="margin-top:24px;color:#333;">5. Agent 调用示例</h4>
-    <pre><code>// 用户: "我有哪些免费的洁牙权益？"
-Agent → search_benefits(query="洁牙", type="free")
-← 返回各平台免费洁牙权益列表
-
-// 用户: "美团黑金会员有什么权益？"
-Agent → list_platform_benefits(platform_id="meituan")
-← 返回美团全部权益（含等级详情）
-
-// 用户: "帮我记录一下，我是美团黑金会员"
-Agent → update_membership(platform_id="meituan", level="黑金", since="2025-01-01")
-← 确认已记录
-
-// 用户: "我现在的会员权益有哪些？"
-Agent → get_my_benefits()
-← 返回已记录会员的可用权益
-
-// 用户: "哪个平台的机场贵宾厅最好？"
-Agent → compare_benefits(query="机场贵宾厅")
-← 跨平台对比贵宾厅权益
-
-// 用户: "有什么快到期的会员吗？"
-Agent → get_expiring_soon()
-← 返回 30 天内到期的会员列表</code></pre>
   </div>
+
+<script>
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ 已复制';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+</script>
   <div class="stats" id="stats">
     <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
     <div class="stat-card"><div class="stat-number" id="statFree">-</div><div class="stat-label">免费权益</div></div>

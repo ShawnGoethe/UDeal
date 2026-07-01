@@ -30,8 +30,6 @@ async function bootstrap() {
 
   console.log(`🚀 UDeal 服务已启动`);
   console.log(`   主页: http://localhost:${httpPort}`);
-  console.log(`   API: http://localhost:${httpPort}/api/benefits`);
-  console.log(`   MCP: http://localhost:${httpPort}/mcp`);
 }
 
 bootstrap().catch((err) => {
