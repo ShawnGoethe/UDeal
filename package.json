@@ -10,7 +10,9 @@
     "start:stdio": "node dist/mcp/stdio.js",
     "dev": "ts-node src/main.ts",
     "dev:debug": "node --inspect -r ts-node/register src/main.ts",
-    "dev:stdio": "ts-node src/mcp/stdio.ts"
+    "dev:stdio": "ts-node src/mcp/stdio.ts",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "keywords": [
     "mcp",
@@ -35,6 +37,7 @@
     "cross-env": "^10.1.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "wrangler": "^4.106.0"
   }
 }
