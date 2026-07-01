@@ -69,3 +69,22 @@ export interface SearchResult {
   platform_id: string;
   matched_keywords: string[];
 }
+
+export type BenefitAction = "add" | "update" | "remove";
+
+export interface BenefitPreview extends Benefit {
+  action: BenefitAction;
+}
+
+export interface PlatformUpdateResult {
+  platform_id: string;
+  platform: string;
+  benefits: BenefitPreview[];
+}
+
+export interface UpdateTask {
+  task_id: string;
+  status: "pending" | "running" | "done" | "error";
+  results: PlatformUpdateResult[];
+  error?: string;
+}

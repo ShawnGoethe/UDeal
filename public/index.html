@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/public/favicon-32x32.png" type="image/x-icon">
 <title>UDeal - 会员权益查询</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,6 +54,58 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .footer { text-align: center; padding: 30px; color: #999; font-size: 14px; }
 .loading { text-align: center; padding: 40px; color: #999; }
 .no-results { text-align: center; padding: 40px; color: #999; }
+
+/* Update panel styles */
+.update-btn { padding: 10px 24px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.5); border-radius: 8px; font-size: 15px; cursor: pointer; transition: all 0.2s; margin-top: 16px; }
+.update-btn:hover { background: rgba(255,255,255,0.35); border-color: white; }
+.update-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.update-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
+.update-overlay.show { display: block; }
+.update-panel { max-width: 900px; margin: 0 auto; background: white; border-radius: 16px; padding: 28px; position: relative; }
+.update-panel h2 { margin-bottom: 6px; color: #333; }
+.update-panel .close-btn { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #999; }
+.update-panel .close-btn:hover { color: #333; }
+.update-progress { color: #666; margin-bottom: 20px; font-size: 14px; }
+.platform-review { border: 1.5px solid #e0e0e0; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+.platform-review-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: #f8f8f8; cursor: pointer; user-select: none; }
+.platform-review-header:hover { background: #f0f0f0; }
+.platform-review-header .pname { font-weight: 600; font-size: 15px; }
+.platform-review-header .pcount { font-size: 13px; color: #888; }
+.platform-review-body { padding: 0 18px 14px; display: none; }
+.platform-review-body.open { display: block; }
+.preview-item { border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-top: 10px; position: relative; }
+.preview-item.action-add { border-left: 4px solid #27ae60; }
+.preview-item.action-update { border-left: 4px solid #f39c12; }
+.preview-item.action-remove { border-left: 4px solid #e74c3c; opacity: 0.6; }
+.action-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+.action-badge.add { background: #e8f5e9; color: #2e7d32; }
+.action-badge.update { background: #fff3e0; color: #e65100; }
+.action-badge.remove { background: #ffebee; color: #c62828; }
+.preview-item .pi-name { font-weight: 600; font-size: 14px; }
+.preview-item .pi-desc { font-size: 13px; color: #666; margin-top: 4px; }
+.preview-item .pi-meta { font-size: 12px; color: #999; margin-top: 4px; }
+.preview-item .edit-btn { position: absolute; top: 10px; right: 10px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; padding: 3px 10px; font-size: 12px; cursor: pointer; }
+.preview-item .edit-btn:hover { background: #e8e8e8; }
+.edit-form { margin-top: 10px; display: none; }
+.edit-form.show { display: block; }
+.edit-form label { font-size: 12px; color: #888; display: block; margin-top: 6px; }
+.edit-form input, .edit-form textarea, .edit-form select { width: 100%; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; margin-top: 2px; }
+.edit-form textarea { resize: vertical; min-height: 50px; }
+.edit-form .ef-actions { margin-top: 8px; display: flex; gap: 8px; }
+.edit-form .ef-actions button { padding: 5px 14px; border-radius: 6px; border: 1px solid #ddd; font-size: 12px; cursor: pointer; }
+.edit-form .ef-actions .save-edit { background: #667eea; color: white; border-color: #667eea; }
+.confirm-platform-btn { margin-top: 14px; padding: 10px 24px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; width: 100%; transition: background 0.2s; }
+.confirm-platform-btn:hover { background: #5a6fd6; }
+.confirm-platform-btn:disabled { background: #ccc; cursor: not-allowed; }
+.confirm-platform-btn.done { background: #27ae60; }
+.loading-spinner { text-align: center; padding: 30px; color: #999; }
+.loading-spinner::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 8px; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.live-output { background: #1e1e1e; color: #d4d4d4; border-radius: 10px; padding: 16px; margin: 12px 0; max-height: 350px; overflow-y: auto; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; display: none; }
+.live-output.show { display: block; }
+.live-output .lo-label { color: #569cd6; font-size: 11px; margin-bottom: 6px; display: block; }
+.live-output .lo-cursor { display: inline-block; width: 8px; height: 14px; background: #d4d4d4; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 2px; }
+@keyframes blink { 50% { opacity: 0; } }
 @media (max-width: 768px) {
   .header h1 { font-size: 1.8em; }
   .benefits-grid { grid-template-columns: 1fr; }
@@ -65,20 +117,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 <div class="header">
   <h1>🎫 UDeal</h1>
   <p>一站式管理你的会员权益，不错过每一个羊毛</p>
+  <button class="update-btn" id="updateBtn" onclick="openUpdatePanel()">🔄 更新权益</button>
 </div>
 
 <div class="container">
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="搜索权益，如：洁牙、机场贵宾厅、外卖优惠..." />
   </div>
-
-  <div class="stats" id="stats">
-    <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
-    <div class="stat-card"><div class="stat-number" id="statFree">-</div><div class="stat-label">免费权益</div></div>
-    <div class="stat-card"><div class="stat-number" id="statPlatforms">-</div><div class="stat-label">覆盖平台</div></div>
-    <div class="stat-card"><div class="stat-number" id="statTags">-</div><div class="stat-label">权益标签</div></div>
-  </div>
-
   <div class="filter-section">
     <div class="filter-label">🏷️ 标签筛选</div>
     <div class="tags-container" id="tagsContainer"></div>
@@ -116,10 +161,28 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   }
 }</code></pre>
   </div>
+  <div class="stats" id="stats">
+    <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
+    <div class="stat-card"><div class="stat-number" id="statFree">-</div><div class="stat-label">免费权益</div></div>
+    <div class="stat-card"><div class="stat-number" id="statPlatforms">-</div><div class="stat-label">覆盖平台</div></div>
+    <div class="stat-card"><div class="stat-number" id="statTags">-</div><div class="stat-label">权益标签</div></div>
+  </div>
 </div>
 
 <div class="footer">
   <p>UDeal v2.0 - 用 MCP 让会员权益一目了然</p>
+</div>
+
+<div class="update-overlay" id="updateOverlay">
+  <div class="update-panel">
+    <button class="close-btn" onclick="closeUpdatePanel()">&times;</button>
+    <h2>🔄 AI 更新权益</h2>
+    <p class="update-progress" id="updateProgress">选择要更新的平台，点击开始生成</p>
+    <div id="platformChecks" style="margin-bottom:16px;"></div>
+    <button class="confirm-platform-btn" id="startGenBtn" onclick="startGeneration()" style="background:#764ba2;">🚀 开始生成</button>
+    <div class="live-output" id="liveOutput"><span class="lo-label">📡 AI 实时输出</span></div>
+    <div id="reviewContainer"></div>
+  </div>
 </div>
 
 <script>
@@ -272,6 +335,276 @@ document.getElementById('typeTabs').addEventListener('click', (e) => {
 });
 
 init();
+
+// ---- Update Benefits Flow ----
+let currentTaskId = null;
+let updatePlatforms = [];
+
+async function openUpdatePanel() {
+  document.getElementById('updateOverlay').classList.add('show');
+  document.getElementById('reviewContainer').innerHTML = '';
+  document.getElementById('updateProgress').textContent = '选择要更新的平台，点击开始生成';
+  document.getElementById('startGenBtn').disabled = false;
+  document.getElementById('startGenBtn').textContent = '🚀 开始生成';
+  document.getElementById('startGenBtn').style.display = '';
+  document.getElementById('platformChecks').style.display = '';
+  const liveOutput = document.getElementById('liveOutput');
+  liveOutput.classList.remove('show');
+  liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
+  currentTaskId = null;
+
+  // 加载平台列表
+  if (updatePlatforms.length === 0) {
+    try {
+      const res = await fetch(`${API}/api/updateBenefits/platforms`);
+      updatePlatforms = await res.json();
+    } catch { updatePlatforms = allPlatforms; }
+  }
+
+  const checks = document.getElementById('platformChecks');
+  checks.innerHTML = '<label style="font-size:13px;color:#888;margin-bottom:6px;display:block;">选择平台（不选则全部更新）：</label>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;">' +
+    updatePlatforms.map(p =>
+      `<label style="display:flex;align-items:center;gap:4px;font-size:14px;padding:6px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer;">
+        <input type="checkbox" value="${p.platform_id}" style="cursor:pointer;"> ${p.platform}
+      </label>`
+    ).join('') + '</div>';
+}
+
+function closeUpdatePanel() {
+  document.getElementById('updateOverlay').classList.remove('show');
+}
+
+async function startGeneration() {
+  const checked = [...document.querySelectorAll('#platformChecks input:checked')].map(el => el.value);
+  const btn = document.getElementById('startGenBtn');
+  const progress = document.getElementById('updateProgress');
+  const liveOutput = document.getElementById('liveOutput');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 生成中...';
+  progress.innerHTML = '<span class="loading-spinner">正在调用 AI 生成权益数据</span>';
+
+  // 显示实时输出区域
+  liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
+  liveOutput.classList.add('show');
+  liveOutput.scrollTop = liveOutput.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/api/updateBenefits`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platforms: checked.length ? checked : undefined }),
+    });
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let finalTask = null;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (line.startsWith('event: ')) {
+          var currentEvent = line.slice(7).trim();
+        } else if (line.startsWith('data: ') && currentEvent) {
+          try {
+            const data = JSON.parse(line.slice(6));
+
+            if (currentEvent === 'platform_start') {
+              progress.innerHTML = `<span class="loading-spinner">正在生成：${data.platform} (${data.index + 1}/${data.total})</span>`;
+              // 在输出区添加平台分隔
+              const label = document.createElement('div');
+              label.style.cssText = 'color:#c586c0;margin-top:10px;font-weight:bold;';
+              label.textContent = `\n━━━ ${data.platform} ━━━`;
+              liveOutput.appendChild(label);
+              liveOutput.scrollTop = liveOutput.scrollHeight;
+            }
+            else if (currentEvent === 'chunk') {
+              // 追加文本到实时输出
+              const textNode = document.createTextNode(data.text);
+              // 移除光标
+              const cursor = liveOutput.querySelector('.lo-cursor');
+              if (cursor) cursor.remove();
+              liveOutput.appendChild(textNode);
+              // 添加新光标
+              const newCursor = document.createElement('span');
+              newCursor.className = 'lo-cursor';
+              liveOutput.appendChild(newCursor);
+              liveOutput.scrollTop = liveOutput.scrollHeight;
+            }
+            else if (currentEvent === 'done') {
+              finalTask = data;
+              // 移除光标
+              const cursor = liveOutput.querySelector('.lo-cursor');
+              if (cursor) cursor.remove();
+            }
+          } catch { /* skip */ }
+          currentEvent = null;
+        }
+      }
+    }
+
+    if (finalTask && finalTask.status === 'done' && finalTask.results.length > 0) {
+      currentTaskId = finalTask.task_id;
+      progress.textContent = `✅ 生成完成，共 ${finalTask.results.length} 个平台`;
+      renderReview(finalTask.results);
+      btn.style.display = 'none';
+      document.getElementById('platformChecks').style.display = 'none';
+    } else if (finalTask && finalTask.status === 'error') {
+      progress.textContent = '❌ 生成失败: ' + (finalTask.error || '未知错误');
+      btn.disabled = false;
+      btn.textContent = '🚀 重试';
+    } else {
+      progress.textContent = '⚠️ 未收到有效结果';
+      btn.disabled = false;
+      btn.textContent = '🚀 重试';
+    }
+  } catch (err) {
+    progress.textContent = '❌ 生成失败: ' + err.message;
+    btn.disabled = false;
+    btn.textContent = '🚀 重试';
+  }
+}
+
+function renderReview(results) {
+  window._reviewTask = results;
+  const container = document.getElementById('reviewContainer');
+  container.innerHTML = results.map((r, ri) => {
+    const addCount = r.benefits.filter(b => b.action === 'add').length;
+    const updateCount = r.benefits.filter(b => b.action === 'update').length;
+    const removeCount = r.benefits.filter(b => b.action === 'remove').length;
+    const summary = [];
+    if (addCount) summary.push(`+${addCount} 新增`);
+    if (updateCount) summary.push(`~${updateCount} 更新`);
+    if (removeCount) summary.push(`-${removeCount} 下架`);
+
+    return `
+      <div class="platform-review" data-idx="${ri}">
+        <div class="platform-review-header" onclick="togglePlatformReview(${ri})">
+          <span class="pname">${r.platform} (${r.platform_id})</span>
+          <span class="pcount">${r.benefits.length} 条权益 · ${summary.join(' / ')}</span>
+        </div>
+        <div class="platform-review-body open" id="prBody${ri}">
+          ${r.benefits.map((b, bi) => renderPreviewItem(ri, bi, b)).join('')}
+          <button class="confirm-platform-btn" onclick="confirmPlatform(${ri})">✅ 确认提交 ${r.platform}</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderPreviewItem(ri, bi, b) {
+  const levelInfo = b.level_details ? Object.entries(b.level_details).map(([k,v]) => `${k}: ${v.times || ''}${v.period ? '/' + v.period : ''}`).join(', ') : '';
+  return `
+    <div class="preview-item action-${b.action}" id="pi-${ri}-${bi}">
+      <span class="pi-name">${b.name}</span>
+      <span class="action-badge ${b.action}">${b.action === 'add' ? '新增' : b.action === 'update' ? '更新' : '下架'}</span>
+      <button class="edit-btn" onclick="toggleEdit(${ri},${bi})">✏️ 编辑</button>
+      <div class="pi-desc">${b.description}</div>
+      <div class="pi-meta">${b.category} · ${b.type === 'free' ? '免费' : '付费'} · ${b.tags?.join(', ') || ''} · ${levelInfo}</div>
+      <div class="edit-form" id="ef-${ri}-${bi}">
+        <label>名称</label><input id="efn-${ri}-${bi}" value="${escHtml(b.name)}">
+        <label>分类</label><input id="efc-${ri}-${bi}" value="${escHtml(b.category)}">
+        <label>描述</label><textarea id="efd-${ri}-${bi}">${escHtml(b.description)}</textarea>
+        <label>类型</label><select id="eft-${ri}-${bi}"><option value="free" ${b.type==='free'?'selected':''}>免费</option><option value="paid" ${b.type==='paid'?'selected':''}>付费</option></select>
+        <label>标签（逗号分隔）</label><input id="eftags-${ri}-${bi}" value="${escHtml((b.tags||[]).join(', '))}">
+        <label>操作</label><select id="efa-${ri}-${bi}"><option value="add" ${b.action==='add'?'selected':''}>新增</option><option value="update" ${b.action==='update'?'selected':''}>更新</option><option value="remove" ${b.action==='remove'?'selected':''}>下架</option></select>
+        <div class="ef-actions">
+          <button class="save-edit" onclick="saveEdit(${ri},${bi})">💾 保存</button>
+          <button onclick="toggleEdit(${ri},${bi})">取消</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function togglePlatformReview(idx) {
+  const body = document.getElementById(`prBody${idx}`);
+  body.classList.toggle('open');
+}
+
+function toggleEdit(ri, bi) {
+  document.getElementById(`ef-${ri}-${bi}`).classList.toggle('show');
+}
+
+function saveEdit(ri, bi) {
+  const task = window._reviewTask;
+  if (!task) return;
+  const b = task[ri].benefits[bi];
+  b.name = document.getElementById(`efn-${ri}-${bi}`).value;
+  b.category = document.getElementById(`efc-${ri}-${bi}`).value;
+  b.description = document.getElementById(`efd-${ri}-${bi}`).value;
+  b.type = document.getElementById(`eft-${ri}-${bi}`).value;
+  b.tags = document.getElementById(`eftags-${ri}-${bi}`).value.split(',').map(s => s.trim()).filter(Boolean);
+  b.action = document.getElementById(`efa-${ri}-${bi}`).value;
+
+  // 更新显示
+  const item = document.getElementById(`pi-${ri}-${bi}`);
+  item.outerHTML = renderPreviewItem(ri, bi, b);
+}
+
+async function confirmPlatform(ri) {
+  const task = window._reviewTask;
+  if (!task || !currentTaskId) return;
+  const r = task[ri];
+  const btn = document.querySelector(`[data-idx="${ri}"] .confirm-platform-btn`);
+  btn.disabled = true;
+  btn.textContent = '⏳ 提交中...';
+
+  try {
+    const res = await fetch(`${API}/api/updateBenefits/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        task_id: currentTaskId,
+        platform_id: r.platform_id,
+        benefits: r.benefits,
+      }),
+    });
+    const result = await res.json();
+    if (result.ok) {
+      btn.textContent = `✅ 已提交 (${result.count} 条权益)`;
+      btn.classList.add('done');
+      // 关闭面板并刷新页面数据
+      setTimeout(() => {
+        closeUpdatePanel();
+        refreshPageData();
+      }, 800);
+    } else {
+      btn.textContent = '❌ 提交失败';
+      btn.disabled = false;
+    }
+  } catch (err) {
+    btn.textContent = '❌ 网络错误';
+    btn.disabled = false;
+  }
+}
+
+async function refreshPageData() {
+  try {
+    const [tags, platforms, benefits] = await Promise.all([
+      fetch(`${API}/api/tags`).then(r => r.json()),
+      fetch(`${API}/api/platforms`).then(r => r.json()),
+      fetch(`${API}/api/benefits`).then(r => r.json()),
+    ]);
+    allTags = tags;
+    allPlatforms = platforms;
+    allBenefits = benefits;
+    renderTags();
+    renderPlatforms();
+    renderStats();
+    renderBenefits();
+  } catch (err) {
+    console.error('刷新数据失败:', err);
+  }
+}
 </script>
 </body>
 </html>

@@ -6,3 +6,4 @@ dist-site/
 !src/**/*.d.ts
 .DS_Store
 Thumbs.db
+config.json

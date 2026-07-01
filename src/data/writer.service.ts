@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { LoaderService } from "./loader.service";
-import type { Benefit, UserMembership } from "../common/types";
+import type { Benefit, BenefitPreview, UserMembership } from "../common/types";
 
 const DATA_DIR = join(__dirname, "../../data");
 
@@ -34,6 +34,25 @@ export class WriterService {
 
     writeFileSync(filePath, JSON.stringify(platform, null, 2), "utf-8");
     this.loader.clearCache();
+  }
+
+  replaceBenefits(platformId: string, previews: BenefitPreview[]): number {
+    const filePath = join(DATA_DIR, "platforms", `${platformId}.json`);
+    const platform = JSON.parse(readFileSync(filePath, "utf-8"));
+    const today = new Date().toISOString().split("T")[0];
+
+    const benefits: Benefit[] = previews
+      .filter((p) => p.action !== "remove")
+      .map(({ action, ...rest }) => ({
+        ...rest,
+        active: true,
+        last_updated: today,
+      }));
+
+    platform.benefits = benefits;
+    writeFileSync(filePath, JSON.stringify(platform, null, 2), "utf-8");
+    this.loader.clearCache();
+    return benefits.length;
   }
 
   updateMembership(

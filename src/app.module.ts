@@ -5,6 +5,7 @@ import { PlatformsModule } from "./platforms/platforms.module";
 import { CategoriesModule } from "./categories/categories.module";
 import { HomeModule } from "./home/home.module";
 import { McpModule } from "./mcp/mcp.module";
+import { UpdateModule } from "./update/update.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { McpModule } from "./mcp/mcp.module";
     CategoriesModule,
     HomeModule,
     McpModule,
+    UpdateModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,340 @@
 {
   "platform": "携程",
   "platform_id": "ctrip",
-  "levels": ["黄金会员", "铂金会员", "钻石会员"],
-  "benefits": []
+  "levels": [
+    "黄金会员",
+    "铂金会员",
+    "钻石会员"
+  ],
+  "benefits": [
+    {
+      "id": "ctrip-membership-gift-pack",
+      "name": "等级礼包",
+      "category": "生活服务",
+      "tags": [
+        "酒店",
+        "出行",
+        "购物"
+      ],
+      "type": "free",
+      "description": "会员升级或保级后获得的专属礼包，内含酒店、机票、用车等多种优惠券。具体礼包内容根据等级不同有所差异，旨在提升会员旅行体验。",
+      "level_details": {
+        "黄金会员": {
+          "times": "1",
+          "period": "升级后",
+          "note": "礼包内容基础"
+        },
+        "铂金会员": {
+          "times": "1",
+          "period": "升级后",
+          "note": "礼包内容更丰富"
+        },
+        "钻石会员": {
+          "times": "1",
+          "period": "升级后",
+          "note": "礼包内容最顶级"
+        }
+      },
+      "redeem_time": "APP内自动发放",
+      "limit": null,
+      "tips": "请在携程APP查看礼包详情并及时使用优惠券。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-airport-vip-lounge",
+      "name": "全球机场贵宾厅",
+      "category": "出行",
+      "tags": [
+        "出行"
+      ],
+      "type": "paid",
+      "description": "享受国内及全球合作机场贵宾厅服务，提供舒适候机环境、免费餐饮、Wi-Fi等。需通过积分兑换或购买服务包。",
+      "level_details": {
+        "黄金会员": {
+          "times": "可购买",
+          "period": "按次或包年",
+          "note": "享受基础贵宾厅服务"
+        },
+        "铂金会员": {
+          "times": "可购买",
+          "period": "按次或包年",
+          "note": "享受更多合作机场"
+        },
+        "钻石会员": {
+          "times": "可购买",
+          "period": "按次或包年",
+          "note": "享受顶级贵宾厅服务"
+        }
+      },
+      "redeem_time": "APP内购买或积分兑换",
+      "limit": "仅限合作机场，具体以APP显示为准",
+      "tips": "提前预约以确保服务可用。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-hotel-upgrade",
+      "name": "酒店房型升级",
+      "category": "出行",
+      "tags": [
+        "酒店",
+        "出行"
+      ],
+      "type": "paid",
+      "description": "预订指定酒店时，有机会免费升级至更高级房型（如标准房升豪华房），具体以酒店当日房态为准。可能需要使用积分或满足条件。",
+      "level_details": {
+        "黄金会员": {
+          "times": "视酒店",
+          "period": "预订时",
+          "note": "升级机会较少"
+        },
+        "铂金会员": {
+          "times": "视酒店",
+          "period": "预订时",
+          "note": "升级机会较多"
+        },
+        "钻石会员": {
+          "times": "视酒店",
+          "period": "预订时",
+          "note": "升级机会最大"
+        }
+      },
+      "redeem_time": "预订时自动或手动申请",
+      "limit": "仅限指定合作酒店，以当日房态为准",
+      "tips": "在预订时查看是否有升级选项，或联系客服咨询。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-free-cancellation",
+      "name": "酒店免费取消",
+      "category": "出行",
+      "tags": [
+        "酒店",
+        "出行"
+      ],
+      "type": "free",
+      "description": "预订酒店时享受更宽松的免费取消政策，通常在入住前一定时间内取消可免扣款。具体取消政策以酒店条款为准。",
+      "level_details": {
+        "黄金会员": {
+          "times": "无限",
+          "period": "每次预订",
+          "note": "取消政策宽松"
+        },
+        "铂金会员": {
+          "times": "无限",
+          "period": "每次预订",
+          "note": "取消政策更宽松"
+        },
+        "钻石会员": {
+          "times": "无限",
+          "period": "每次预订",
+          "note": "取消政策最灵活"
+        }
+      },
+      "redeem_time": "预订时自动生效",
+      "limit": "需在免费取消时间内操作，具体时间以酒店规则为准",
+      "tips": "预订前仔细阅读取消政策，避免损失。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-price-guarantee",
+      "name": "酒店价格保护",
+      "category": "出行",
+      "tags": [
+        "酒店",
+        "出行"
+      ],
+      "type": "free",
+      "description": "在携程预订并支付成功后的一定时间内，若同一酒店同一房型价格下降，可申请退还差价。保障会员享受最低价。",
+      "level_details": {
+        "黄金会员": {
+          "times": "无限",
+          "period": "支付后24小时内",
+          "note": "可申请价格保护"
+        },
+        "铂金会员": {
+          "times": "无限",
+          "period": "支付后48小时内",
+          "note": "可申请价格保护"
+        },
+        "钻石会员": {
+          "times": "无限",
+          "period": "支付后72小时内",
+          "note": "可申请价格保护"
+        }
+      },
+      "redeem_time": "支付后自动监控，降价时通知",
+      "limit": "仅限同一酒店同一房型，价格下降需在规定时间内",
+      "tips": "支付后关注价格变动，及时申请差价退还。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-airport-transfer-discount",
+      "name": "接送机折扣",
+      "category": "出行",
+      "tags": [
+        "出行"
+      ],
+      "type": "paid",
+      "description": "预订携程接送机/站服务时享受会员专属折扣，降低出行成本。折扣力度根据会员等级可能不同。",
+      "level_details": {
+        "黄金会员": {
+          "times": "每次预订",
+          "period": "按需",
+          "note": "享受基础折扣"
+        },
+        "铂金会员": {
+          "times": "每次预订",
+          "period": "按需",
+          "note": "享受更高折扣"
+        },
+        "钻石会员": {
+          "times": "每次预订",
+          "period": "按需",
+          "note": "享受最高折扣"
+        }
+      },
+      "redeem_time": "预订时自动应用折扣",
+      "limit": "仅限指定城市和服务类型",
+      "tips": "在预订页面查看具体折扣金额。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-special-sale-access",
+      "name": "会员专属价",
+      "category": "出行",
+      "tags": [
+        "酒店",
+        "出行",
+        "购物"
+      ],
+      "type": "free",
+      "description": "会员在预订酒店、机票等产品时，可查看并购买仅对会员开放的特价商品，享受独家优惠价格。",
+      "level_details": {
+        "黄金会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "可查看基础会员价"
+        },
+        "铂金会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "可查看更优会员价"
+        },
+        "钻石会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "可查看顶级会员价"
+        }
+      },
+      "redeem_time": "APP内会员专区自动显示",
+      "limit": "特价商品数量有限，先到先得",
+      "tips": "定期查看会员专区，抢购特价商品。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-points-bonus",
+      "name": "积分加速",
+      "category": "金融",
+      "tags": [
+        "购物",
+        "出行"
+      ],
+      "type": "free",
+      "description": "在携程消费（酒店、机票、度假等）时，获得积分的倍率提升，帮助更快累积积分兑换权益。",
+      "level_details": {
+        "黄金会员": {
+          "times": "所有消费",
+          "period": "持续",
+          "note": "积分倍率1.5倍"
+        },
+        "铂金会员": {
+          "times": "所有消费",
+          "period": "持续",
+          "note": "积分倍率2倍"
+        },
+        "钻石会员": {
+          "times": "所有消费",
+          "period": "持续",
+          "note": "积分倍率3倍"
+        }
+      },
+      "redeem_time": "消费时自动累积",
+      "limit": null,
+      "tips": "积分可用于兑换优惠券或服务，建议及时使用。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-customer-service-priority",
+      "name": "专属客服通道",
+      "category": "生活服务",
+      "tags": [
+        "生活服务"
+      ],
+      "type": "free",
+      "description": "遇到问题时，可通过会员专属通道联系客服，享受更快的响应和更优先的处理，提升问题解决效率。",
+      "level_details": {
+        "黄金会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "优先响应"
+        },
+        "铂金会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "更优先处理"
+        },
+        "钻石会员": {
+          "times": "无限",
+          "period": "会员期内",
+          "note": "专属客服经理"
+        }
+      },
+      "redeem_time": "APP内会员中心联系客服",
+      "limit": null,
+      "tips": "在遇到问题时优先使用此通道，以获得更好服务。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    },
+    {
+      "id": "ctrip-travel-insurance-discount",
+      "name": "旅行保险折扣",
+      "category": "金融",
+      "tags": [
+        "出行",
+        "金融"
+      ],
+      "type": "paid",
+      "description": "购买携程旅行保险产品时享受会员专属折扣，降低保险费用，提供旅行保障。",
+      "level_details": {
+        "黄金会员": {
+          "times": "每次购买",
+          "period": "按需",
+          "note": "享受基础折扣"
+        },
+        "铂金会员": {
+          "times": "每次购买",
+          "period": "按需",
+          "note": "享受更高折扣"
+        },
+        "钻石会员": {
+          "times": "每次购买",
+          "period": "按需",
+          "note": "享受最高折扣"
+        }
+      },
+      "redeem_time": "购买保险时自动应用折扣",
+      "limit": "仅限指定保险产品",
+      "tips": "根据行程需要选择合适的保险，享受折扣优惠。",
+      "active": true,
+      "last_updated": "2026-07-01"
+    }
+  ]
 }
