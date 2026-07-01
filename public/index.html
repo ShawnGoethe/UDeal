@@ -188,14 +188,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 
     <h4 style="margin-top:20px;color:#333;">1. 连接配置</h4>
     <pre><code>// claude_desktop_config.json 或 .mcp.json
-{
-  "mcpServers": {
-    "udeal": {
-      "command": "node",
-      "args": ["path/to/udeal/dist/mcp/stdio.js"]
-    }
-  }
-}</code></pre>
+      {
+        "mcpServers": {
+          "udeals": {
+            "url": "https://udeals.utools.icu/mcp"
+          }
+        }
+      }</code></pre>
     <p style="font-size:13px;color:#888;margin-top:6px;">启动入口：<code>dist/mcp/stdio.js</code>（stdio 传输模式）</p>
 
     <h4 style="margin-top:24px;color:#333;">2. 可用工具</h4>
