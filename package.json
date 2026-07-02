@@ -1,23 +1,20 @@
 {
   "name": "udeal",
   "version": "3.0.0",
-  "description": "会员权益查询工具 - NestJS + FastMCP",
+  "description": "会员权益查询工具",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
     "build:static": "node scripts/build-static.js",
     "start": "node dist/main.js",
-    "start:stdio": "node dist/mcp/stdio.js",
     "dev": "ts-node src/main.ts",
     "dev:debug": "node --inspect -r ts-node/register src/main.ts",
-    "dev:stdio": "ts-node src/mcp/stdio.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix"
   },
   "keywords": [
-    "mcp",
     "membership",
     "benefits",
     "vip",
@@ -28,10 +25,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
-    "fastmcp": "^4.3.2",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.0",
-    "zod": "^3.25.0"
+    "rxjs": "^7.8.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

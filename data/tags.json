@@ -21,10 +21,6 @@
     { "id": "music", "name": "音乐会员", "icon": "🎵" },
     { "id": "storage", "name": "网盘", "icon": "☁️" },
     { "id": "delivery-coupon", "name": "外卖优惠", "icon": "🛵" },
-    { "id": "hotel", "name": "酒店", "icon": "🏨" },
-    { "id": "movie", "name": "电影", "icon": "🎬" },
-    { "id": "customer-service", "name": "专属客服", "icon": "🎧" },
-    { "id": "free-shipping", "name": "免运费", "icon": "📦" },
-    { "id": "priority-delivery", "name": "优先配送", "icon": "🚀" }
+    { "id": "movie", "name": "电影", "icon": "🎬" }
   ]
 }

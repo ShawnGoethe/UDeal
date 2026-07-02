@@ -4,8 +4,6 @@ import { BenefitsModule } from './benefits/benefits.module';
 import { PlatformsModule } from './platforms/platforms.module';
 import { CategoriesModule } from './categories/categories.module';
 import { HomeModule } from './home/home.module';
-import { McpModule } from './mcp/mcp.module';
-import { UpdateModule } from './update/update.module';
 
 @Module({
   imports: [
@@ -14,8 +12,6 @@ import { UpdateModule } from './update/update.module';
     PlatformsModule,
     CategoriesModule,
     HomeModule,
-    McpModule,
-    UpdateModule,
   ],
 })
 export class AppModule {}

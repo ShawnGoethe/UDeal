@@ -191,74 +191,42 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 
     <div style="margin-top:12px;">
       <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
-        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits"</code>
-        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
-        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits/search?q=洁牙"</code>
-        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits/search?q=洁牙&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
-        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits?platform=meituan&type=free"</code>
-        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits?platform=meituan&amp;type=free&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#f5f5f5;padding:12px 16px;border-radius:8px;margin-bottom:8px;">
-        <code style="font-size:13px;flex:1;">curl "https://udeals.utools.icu/api/benefits?tag=airport-lounge"</code>
-        <button onclick="copyText(this, 'curl &quot;https://udeals.utools.icu/api/benefits?tag=airport-lounge&quot;')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
+        <code style="font-size:13px;flex:1;">openclaw skills install @shawngoethe/udeals</code>
+        <button onclick="copyText(this, 'openclaw skills install @shawngoethe/udeals')" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;margin-left:12px;">📋 复制</button>
       </div>
     </div>
 
     <h4 style="margin-top:24px;color:#333;">方式二：System Prompt 接入</h4>
-    <p style="font-size:14px;color:#555;margin-top:6px;">将以下 prompt 添加到你的 Agent 的 System Prompt 中，让 Agent 自动调用 API 查询权益：</p>
+    <p style="font-size:14px;color:#555;margin-top:6px;">将以下内容添加到 Agent 的 System Prompt，让 Agent 自动调用 API 查询权益：</p>
 
     <div style="position:relative;margin-top:12px;">
       <button onclick="copyText(this, document.getElementById('skillPrompt').textContent)" style="position:absolute;top:8px;right:8px;padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;z-index:1;">📋 复制</button>
-      <pre id="skillPrompt" style="background:#f5f5f5;color:#d4d4d4;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;"><code>你是一个会员权益查询助手，可以帮用户查询各平台会员权益。
+      <pre id="skillPrompt" style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:0;"><code>你是一个会员权益查询助手，帮用户查询各平台会员权益。
 
-## API 基础信息
-- 基础地址: https://udeals.utools.icu
-- 数据格式: JSON
+API 地址: https://udeals.utools.icu
 
-## 可用接口
+接口列表:
+- GET /api/benefits — 获取所有权益，支持筛选参数: platform, tag, type
+- GET /api/platforms — 获取所有平台列表
+- GET /api/tags — 获取所有标签
 
-### 1. 获取所有权益
-GET /api/benefits
-返回所有平台的权益列表。
+平台ID: meituan, taobao-88vip, jd, heytea, unionpay, 12306, alipay, ctrip
+类型: free(免费), paid(付费)
+标签: dental-cleaning(洁牙), airport-lounge(贵宾厅), birthday-gift(生日礼), coupon(优惠券), video(视频会员) 等
 
-### 2. 搜索权益
-GET /api/benefits/search?q={关键词}
-示例: /api/benefits/search?q=洁牙
-
-### 3. 筛选权益
-GET /api/benefits?platform={平台ID}&amp;type={free|paid}&amp;tag={标签ID}
-- platform: meituan, jd, taobao-88vip, heytea, unionpay, 12306, alipay, ctrip
-- type: free（免费）, paid（付费）
-- tag: dental-cleaning, airport-lounge, birthday-gift, coupon, video 等
-
-### 4. 获取平台权益
-GET /api/platforms/{平台ID}
-示例: /api/platforms/meituan
-
-### 5. 获取标签列表
-GET /api/tags
-
-### 6. 获取用户权益
-GET /api/benefits/my
-
-## 使用规则
-1. 用户询问权益时，调用对应 API 获取实时数据
-2. 支持组合筛选，如 ?platform=meituan&amp;type=free&amp;tag=dental-cleaning
-3. 回答时列出权益名称、类型（免费/付费）、描述、兑换时间
-4. 对比类问题可多次调用不同平台数据后汇总</code></pre>
+使用规则:
+1. 用户问权益时调用 API 获取实时数据
+2. 支持组合筛选: /api/benefits?platform=meituan&amp;type=free&amp;tag=dental-cleaning
+3. 回答时列出权益名称、类型、描述、兑换时间
+4. 对比问题多次调用不同平台数据后汇总</code></pre>
     </div>
 
-    <h4 style="margin-top:24px;color:#333;">API 参数说明</h4>
+    <h4 style="margin-top:24px;color:#333;">API 接口一览</h4>
     <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;">
-      <tr style="background:#f8f8f8;"><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">参数</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">说明</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">示例值</th></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>q</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">搜索关键词</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">洁牙、外卖、贵宾厅</td></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>platform</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">平台筛选</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">meituan, jd, taobao-88vip, heytea</td></tr>
-      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>tag</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">标签筛选</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">dental-cleaning, airport-lounge, birthday-gift</td></tr>
-      <tr><td style="padding:8px;"><code>type</code></td><td style="padding:8px;">类型筛选</td><td style="padding:8px;">free（免费）、paid（付费）</td></tr>
+      <tr style="background:#f8f8f8;"><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">接口</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">说明</th><th style="text-align:left;padding:8px;border-bottom:1px solid #eee;">参数</th></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>GET /api/benefits</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">获取所有权益</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">platform, tag, type</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>GET /api/platforms</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">所有平台</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">无</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #f0f0f0;"><code>GET /api/tags</code></td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">所有标签</td><td style="padding:8px;border-bottom:1px solid #f0f0f0;">无</td></tr>
     </table>
   </div>
 
