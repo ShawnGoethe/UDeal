@@ -30,6 +30,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .type-tab:hover { border-color: #27ae60; color: #27ae60; }
 .type-tab.active { background: #27ae60; color: white; border-color: #27ae60; }
 .benefits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-top: 20px; }
+.benefits-grid.collapsed { max-height: 800px; overflow: hidden; position: relative; }
+.benefits-grid.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(transparent, #f5f5f5);
+  pointer-events: none;
+}
+.show-more-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  background: white;
+  border: 1.5px solid #667eea;
+  border-radius: 8px;
+  color: #667eea;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.show-more-btn:hover { background: #667eea; color: white; }
 .benefit-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
 .benefit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
@@ -343,8 +366,13 @@ function renderBenefits() {
   const grid = document.getElementById('benefitsGrid');
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="no-results">没有找到匹配的权益</div>';
+    document.getElementById('showMoreBtn')?.remove();
     return;
   }
+
+  // 4列布局，每行4个卡片，显示4行 = 16个卡片
+  const showCollapsed = !window._benefitsExpanded && filtered.length > 16;
+  grid.className = showCollapsed ? 'benefits-grid collapsed' : 'benefits-grid';
 
   grid.innerHTML = filtered.map((b, idx) => {
     const levelRows = b.level_details ? Object.entries(b.level_details).map(([level, d]) => {
@@ -385,6 +413,25 @@ function renderBenefits() {
       </div>
     </div>`;
   }).join('');
+
+  // 添加"显示更多"按钮
+  const existingBtn = document.getElementById('showMoreBtn');
+  if (showCollapsed) {
+    if (!existingBtn) {
+      const btn = document.createElement('button');
+      btn.id = 'showMoreBtn';
+      btn.className = 'show-more-btn';
+      btn.textContent = '显示更多';
+      btn.onclick = () => {
+        window._benefitsExpanded = true;
+        grid.classList.remove('collapsed');
+        btn.remove();
+      };
+      grid.parentNode.insertBefore(btn, grid.nextSibling);
+    }
+  } else if (existingBtn) {
+    existingBtn.remove();
+  }
 }
 
 function expandCard(idx, event) {
