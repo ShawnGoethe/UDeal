@@ -1,17 +1,4 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"$TOOL_INPUT_FILE_PATH\" | grep -qE '\\.ts$' && npx prettier --write \"$TOOL_INPUT_FILE_PATH\" 2>/dev/null; exit 0"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(npm run *)",
@@ -47,6 +34,19 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f'等级: {d[\\\\\"levels\\\\\"]}'\\); print\\(f'权益数: {len\\(d[\\\\\"benefits\\\\\"]\\)}'\\)\")",
       "Bash(pkill -f \"node dist/main\")",
       "Bash(python3 -c ' *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_INPUT_FILE_PATH\" | grep -qE '\\.ts$' && npx prettier --write \"$TOOL_INPUT_FILE_PATH\" 2>/dev/null; exit 0"
+          }
+        ]
+      }
     ]
   }
 }

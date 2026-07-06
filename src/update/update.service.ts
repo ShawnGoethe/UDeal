@@ -1,33 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { LoaderService } from '../data/loader.service';
 import { WriterService } from '../data/writer.service';
 import type { BenefitPreview, Platform, PlatformUpdateResult, UpdateTask } from '../common/types';
 
-// 从 config.json 读取配置，不存在则用环境变量或默认值
-function loadConfig() {
-  try {
-    const cfg = JSON.parse(readFileSync(join(__dirname, '../../config.json'), 'utf-8'));
-    return {
-      baseUrl: cfg.mimo?.baseUrl || process.env.MIMO_BASE_URL || '',
-      apiKey: cfg.mimo?.apiKey || process.env.MIMO_API_KEY || '',
-      model: cfg.mimo?.model || process.env.MIMO_MODEL || 'mimo-v2.5',
-    };
-  } catch {
-    return {
-      baseUrl: process.env.MIMO_BASE_URL || '',
-      apiKey: process.env.MIMO_API_KEY || '',
-      model: process.env.MIMO_MODEL || 'mimo-v2.5',
-    };
-  }
-}
-
-const cfg = loadConfig();
-const MIMO_BASE_URL = cfg.baseUrl;
-const MIMO_API_KEY = cfg.apiKey;
-const MIMO_MODEL = cfg.model;
+const MIMO_BASE_URL = process.env.MIMO_BASE_URL || '';
+const MIMO_API_KEY = process.env.MIMO_API_KEY || '';
+const MIMO_MODEL = process.env.MIMO_MODEL || 'mimo-v2.5';
 
 const BENEFIT_SCHEMA = `{
   "id": "string (英文短横线格式，如 jd-plus-free-shipping)",
@@ -54,8 +33,8 @@ export class UpdateService {
   ) {}
 
   /** 获取所有平台的基础信息（不含 benefits） */
-  getPlatforms(): Pick<Platform, 'platform' | 'platform_id' | 'levels'>[] {
-    const platforms = this.loader.loadPlatforms();
+  async getPlatforms(): Promise<Pick<Platform, 'platform' | 'platform_id' | 'levels'>[]> {
+    const platforms = await this.loader.loadPlatforms();
     return platforms.map((p) => ({
       platform: p.platform,
       platform_id: p.platform_id,
@@ -69,15 +48,15 @@ export class UpdateService {
   }
 
   /** 确认某个平台的权益并写入 */
-  confirmPlatform(
+  async confirmPlatform(
     taskId: string,
     platformId: string,
     benefits: BenefitPreview[],
-  ): { ok: boolean; count: number } {
+  ): Promise<{ ok: boolean; count: number }> {
     const task = this.tasks.get(taskId);
     if (!task) return { ok: false, count: 0 };
 
-    const count = this.writer.replaceBenefits(platformId, benefits);
+    const count = await this.writer.replaceBenefits(platformId, benefits);
 
     // 更新 task 中该平台的状态
     const result = task.results.find((r) => r.platform_id === platformId);
@@ -106,7 +85,7 @@ export class UpdateService {
     this.tasks.set(taskId, task);
 
     try {
-      const allPlatforms = this.loader.loadPlatforms();
+      const allPlatforms = await this.loader.loadPlatforms();
       const targets = platformIds?.length
         ? allPlatforms.filter((p) => platformIds.includes(p.platform_id))
         : allPlatforms;
