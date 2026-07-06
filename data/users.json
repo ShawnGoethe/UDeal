@@ -1,0 +1,62 @@
+[
+  {
+    "id": "user_1",
+    "username": "admin",
+    "password": "admin123",
+    "type": "admin",
+    "email": "admin@udeals.com",
+    "phone": "13800138001",
+    "avatar": null,
+    "status": "active",
+    "created_at": "2026-01-01T00:00:00.000Z",
+    "last_login": "2026-07-06T08:30:00.000Z"
+  },
+  {
+    "id": "user_2",
+    "username": "supplier_meituan",
+    "password": "meituan123",
+    "type": "supplier",
+    "email": "meituan@supplier.com",
+    "phone": "13800138002",
+    "avatar": null,
+    "status": "active",
+    "created_at": "2026-02-15T00:00:00.000Z",
+    "last_login": "2026-07-05T14:20:00.000Z"
+  },
+  {
+    "id": "user_3",
+    "username": "supplier_taobao",
+    "password": "taobao123",
+    "type": "supplier",
+    "email": "taobao@supplier.com",
+    "phone": "13800138003",
+    "avatar": null,
+    "status": "active",
+    "created_at": "2026-03-10T00:00:00.000Z",
+    "last_login": null
+  },
+  {
+    "id": "user_4",
+    "username": "manager",
+    "password": "manager123",
+    "type": "admin",
+    "email": "manager@udeals.com",
+    "phone": "13800138004",
+    "avatar": null,
+    "status": "active",
+    "created_at": "2026-04-20T00:00:00.000Z",
+    "last_login": "2026-06-30T10:00:00.000Z"
+  },
+  {
+    "id": "user_5",
+    "username": "supplier_jd",
+    "password": "jd123",
+    "type": "supplier",
+    "email": "jd@supplier.com",
+    "phone": "13800138005",
+    "avatar": null,
+    "status": "inactive",
+    "created_at": "2026-05-01T00:00:00.000Z",
+    "last_login": "2026-05-15T09:00:00.000Z"
+  }
+]

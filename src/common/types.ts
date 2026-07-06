@@ -70,6 +70,22 @@ export interface SearchResult {
   matched_keywords: string[];
 }
 
+export type UserType = 'admin' | 'supplier';
+export type UserStatus = 'active' | 'inactive';
+
+export interface SystemUser {
+  id: string;
+  username: string;
+  password: string;
+  type: UserType;
+  email: string | null;
+  phone: string | null;
+  avatar: string | null;
+  status: UserStatus;
+  created_at: string;
+  last_login: string | null;
+}
+
 export type BenefitAction = 'add' | 'update' | 'remove';
 
 export interface BenefitPreview extends Benefit {
