@@ -50,6 +50,7 @@ npm start
 ```
 GET /api/benefits              # 获取所有权益
 GET /api/benefits?platform=meituan  # 按平台筛选
+GET /api/benefits?type=free         # 按类型筛选
 GET /api/benefits?tag=dental-cleaning  # 按标签筛选
 GET /api/platforms             # 获取所有平台
 GET /api/tags                  # 获取所有标签

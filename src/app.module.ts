@@ -8,6 +8,7 @@ import { PlatformsModule } from './platforms/platforms.module';
 import { CategoriesModule } from './categories/categories.module';
 import { HomeModule } from './home/home.module';
 import { AdminModule } from './admin/admin.module';
+import { UpdateModule } from './update/update.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AdminModule } from './admin/admin.module';
     CategoriesModule,
     HomeModule,
     AdminModule,
+    UpdateModule,
   ],
 })
 export class AppModule {}

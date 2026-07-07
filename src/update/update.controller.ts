@@ -23,7 +23,7 @@ export class UpdateController {
 
   /** 触发 mimo 生成权益预览（SSE 流式返回） */
   @Post()
-  async generatePreviews(@Body() body: { platforms?: string[] }, @Res() res: Response) {
+  async generatePreviews(@Body() body: { platforms?: string[]; notes?: string }, @Res() res: Response) {
     // SSE headers
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -36,6 +36,7 @@ export class UpdateController {
 
     const task = await this.updateService.generatePreviewsStreaming(
       body?.platforms,
+      body?.notes,
       // onPlatformStart
       (platform, index, total) => {
         send('platform_start', { platform, index, total });

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import * as bcrypt from 'bcryptjs';
 import { LoaderService } from './loader.service';
 import type { Benefit, BenefitPreview, UserMembership, SystemUser } from '../common/types';
 
@@ -32,23 +33,58 @@ export class WriterService {
     this.loader.clearCache();
   }
 
-  replaceBenefits(platformId: string, previews: BenefitPreview[]): number {
+  mergeBenefits(platformId: string, previews: BenefitPreview[]): { added: number; updated: number; removed: number } {
     const filePath = join(DATA_DIR, 'platforms', `${platformId}.json`);
     const platform = JSON.parse(readFileSync(filePath, 'utf-8'));
     const today = new Date().toISOString().split('T')[0];
 
-    const benefits: Benefit[] = previews
-      .filter((p) => p.action !== 'remove')
-      .map(({ action, ...rest }) => ({
-        ...rest,
-        active: true,
-        last_updated: today,
-      }));
+    let added = 0, updated = 0, removed = 0;
 
-    platform.benefits = benefits;
+    for (const preview of previews) {
+      const { action, ...data } = preview;
+      const idx = platform.benefits.findIndex((b: Benefit) => b.id === data.id);
+
+      if (action === 'remove') {
+        // 删除：移除已有权益
+        if (idx >= 0) {
+          platform.benefits.splice(idx, 1);
+          removed++;
+        }
+      } else if (action === 'update') {
+        // 更新：合并到已有权益
+        if (idx >= 0) {
+          platform.benefits[idx] = {
+            ...platform.benefits[idx],
+            ...data,
+            active: true,
+            last_updated: today,
+          };
+          updated++;
+        } else {
+          // 没找到原权益，当作新增
+          platform.benefits.push({ ...data, active: true, last_updated: today } as Benefit);
+          added++;
+        }
+      } else {
+        // add：新增（如果 ID 已存在则更新）
+        if (idx >= 0) {
+          platform.benefits[idx] = {
+            ...platform.benefits[idx],
+            ...data,
+            active: true,
+            last_updated: today,
+          };
+          updated++;
+        } else {
+          platform.benefits.push({ ...data, active: true, last_updated: today } as Benefit);
+          added++;
+        }
+      }
+    }
+
     writeFileSync(filePath, JSON.stringify(platform, null, 2), 'utf-8');
     this.loader.clearCache();
-    return benefits.length;
+    return { added, updated, removed };
   }
 
   updateMembership(platformId: string, level: string, since?: string, expires?: string): void {
@@ -124,10 +160,12 @@ export class WriterService {
     return this.loadUsers();
   }
 
-  addUser(data: Omit<SystemUser, 'id' | 'created_at' | 'last_login'>): SystemUser {
+  async addUser(data: Omit<SystemUser, 'id' | 'created_at' | 'last_login'>): Promise<SystemUser> {
     const users = this.loadUsers();
+    const hash = await bcrypt.hash(data.password, 10);
     const user: SystemUser = {
       ...data,
+      password: hash,
       id: `user_${Date.now()}`,
       created_at: new Date().toISOString(),
       last_login: null,
@@ -137,10 +175,14 @@ export class WriterService {
     return user;
   }
 
-  updateUser(id: string, updates: Partial<Omit<SystemUser, 'id' | 'created_at'>>): boolean {
+  async updateUser(id: string, updates: Partial<Omit<SystemUser, 'id' | 'created_at'>>): Promise<boolean> {
     const users = this.loadUsers();
     const idx = users.findIndex(u => u.id === id);
     if (idx < 0) return false;
+    // Hash password if it's being updated and isn't already hashed
+    if (updates.password && !updates.password.startsWith('$2a$') && !updates.password.startsWith('$2b$')) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
     users[idx] = { ...users[idx], ...updates };
     this.saveUsers(users);
     return true;

@@ -12,6 +12,11 @@ export class AdminController {
     res.sendFile(join(__dirname, '../../public/admin.html'));
   }
 
+  @Get('login')
+  serveLoginPage(@Res() res: Response) {
+    res.sendFile(join(__dirname, '../../public/login.html'));
+  }
+
   constructor(
     private readonly loader: LoaderService,
     private readonly writer: WriterService,
@@ -25,17 +30,17 @@ export class AdminController {
   }
 
   @Post('users')
-  addUser(@Body() body: Omit<SystemUser, 'id' | 'created_at' | 'last_login'>) {
-    const user = this.writer.addUser(body);
+  async addUser(@Body() body: Omit<SystemUser, 'id' | 'created_at' | 'last_login'>) {
+    const user = await this.writer.addUser(body);
     return { ok: true, user };
   }
 
   @Put('users/:id')
-  updateUser(
+  async updateUser(
     @Param('id') id: string,
     @Body() body: Partial<Omit<SystemUser, 'id' | 'created_at'>>,
   ) {
-    const ok = this.writer.updateUser(id, body);
+    const ok = await this.writer.updateUser(id, body);
     return { ok };
   }
 

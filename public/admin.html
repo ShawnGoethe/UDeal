@@ -107,21 +107,50 @@
     .live-output .lo-label { color: #569cd6; font-size: 11px; margin-bottom: 6px; display: block; }
     .live-output .lo-cursor { display: inline-block; width: 8px; height: 14px; background: #d4d4d4; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 2px; }
     @keyframes blink { 50% { opacity: 0; } }
+
+    /* Review table */
+    .review-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+    .review-table th { background: #f0f0f5; padding: 10px 8px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #ddd; position: sticky; top: 0; }
+    .review-table td { padding: 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
+    .review-table tr:hover { background: #f8f8ff; }
+    .review-table .cb-cell { width: 36px; text-align: center; }
+    .review-table .action-cell { width: 80px; text-align: center; }
+    .review-table .rt-platform { font-weight: 600; color: #667eea; white-space: nowrap; }
+    .review-table .rt-type { font-size: 12px; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+    .review-table .rt-type.free { background: #e8f5e9; color: #2e7d32; }
+    .review-table .rt-type.paid { background: #fff3e0; color: #e65100; }
+    .review-table .rt-action { font-size: 11px; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+    .review-table .rt-action.add { background: #e8f5e9; color: #2e7d32; }
+    .review-table .rt-action.update { background: #fff3e0; color: #e65100; }
+    .review-table .rt-action.remove { background: #ffebee; color: #c62828; }
+    .review-table .edit-row-btn { padding: 3px 10px; border: 1px solid #ddd; border-radius: 4px; background: #f5f5f5; cursor: pointer; font-size: 12px; }
+    .review-table .edit-row-btn:hover { background: #e8e8e8; }
+    .review-table .inline-edit { padding: 4px 8px; border: 1px solid #667eea; border-radius: 4px; font-size: 13px; width: 100%; outline: none; }
+    .review-table .inline-select { padding: 4px 6px; border: 1px solid #667eea; border-radius: 4px; font-size: 13px; outline: none; background: white; }
+    .review-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 12px; }
+    .review-bar .select-all { font-size: 13px; color: #555; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .review-bar .select-all input { cursor: pointer; width: 16px; height: 16px; }
+    .review-bar .submit-btn { padding: 12px 28px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+    .review-bar .submit-btn:hover { opacity: 0.9; }
+    .review-bar .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>UDeal 管理后台</h1>
     <a href="/">← 返回前台</a>
+    <div style="flex:1;"></div>
+    <span id="currentUser" style="font-size:13px;opacity:0.8;"></span>
+    <a href="#" onclick="logout()" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:14px;">退出登录</a>
   </div>
 
   <div class="container">
     <div class="tabs">
-      <div class="tab active" data-tab="users">用户管理</div>
-      <div class="tab" data-tab="benefits">权益管理</div>
+      <div class="tab" data-tab="users">用户管理</div>
+      <div class="tab active" data-tab="benefits">权益管理</div>
     </div>
 
-    <div id="users-panel">
+    <div id="users-panel" style="display:none;">
       <div class="toolbar">
         <input type="text" id="user-search" placeholder="搜索用户名/邮箱/手机...">
         <button class="btn btn-primary" onclick="showAddUser()">+ 新增用户</button>
@@ -290,10 +319,27 @@
     <div class="update-panel">
       <button class="close-btn" onclick="closeUpdatePanel()">&times;</button>
       <h2>🤖 AI 新增权益</h2>
-      <p class="update-progress" id="updateProgress">选择要更新的平台，点击开始生成</p>
-      <div id="platformChecks" style="margin-bottom:16px;"></div>
+
+      <!-- 选择渠道 -->
+      <div id="platformChecks">
+        <label style="font-size:13px;color:#888;margin-bottom:8px;display:block;">📱 选择渠道（填写备注时此项无效）：</label>
+        <div id="platformChips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
+      </div>
+
+      <!-- 备注 -->
+      <div style="margin-bottom:16px;">
+        <label style="font-size:13px;color:#888;margin-bottom:6px;display:block;">📝 备注（可选，定向告诉 AI 你要什么）：</label>
+        <textarea id="aiNotes" placeholder="填写后将忽略渠道选择，直接按需求生成。&#10;例如：查找喜茶的生日礼权益 / 所有平台的出行类权益 / 京东PLUS最新权益" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;resize:vertical;min-height:60px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#ddd'"></textarea>
+      </div>
+
+      <!-- 生成按钮 -->
       <button class="confirm-platform-btn" id="startGenBtn" onclick="startGeneration()" style="background:#764ba2;">🚀 开始生成</button>
+
+      <!-- 生成过程 -->
+      <p class="update-progress" id="updateProgress"></p>
       <div class="live-output" id="liveOutput"><span class="lo-label">📡 AI 实时输出</span></div>
+
+      <!-- 结果表格 -->
       <div id="reviewContainer"></div>
     </div>
   </div>
@@ -301,7 +347,54 @@
   <script>
     const API = '/admin';
     let platforms = [];
-    let currentTab = 'users';
+    let currentTab = 'benefits';
+
+    // ===== Auth =====
+    function getToken() { return localStorage.getItem('admin_token'); }
+    function authHeaders() { return { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' }; }
+    function authHeadersGet() { return { 'Authorization': 'Bearer ' + getToken() }; }
+
+    function logout() {
+      localStorage.removeItem('admin_token');
+      window.location.href = '/admin/login';
+    }
+
+    // Auth-aware fetch: auto-redirect on 401
+    async function authFetch(url, options = {}) {
+      const headers = { ...authHeadersGet(), ...(options.headers || {}) };
+      const res = await fetch(url, { ...options, headers });
+      if (res.status === 401) {
+        logout();
+        throw new Error('Unauthorized');
+      }
+      return res;
+    }
+
+    // Check auth first, then load data — sequential, no race
+    async function initApp() {
+      const token = getToken();
+      if (!token) { window.location.href = '/admin/login'; return; }
+
+      try {
+        // 1. Verify token
+        const verifyRes = await fetch(`${API}/auth/verify`, { headers: authHeadersGet() });
+        if (!verifyRes.ok) { logout(); return; }
+        const verifyData = await verifyRes.json();
+        document.getElementById('currentUser').textContent = verifyData.user?.username || '';
+
+        // 2. Show the active panel
+        document.getElementById('benefits-panel').style.display = '';
+
+        // 3. Load platforms then data
+        await loadPlatforms();
+        await loadData();
+      } catch (err) {
+        console.error('Init failed:', err);
+        logout();
+      }
+    }
+
+    initApp();
 
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -317,7 +410,7 @@
 
     // Load platforms for filters
     async function loadPlatforms() {
-      const res = await fetch(`${API}/platforms`);
+      const res = await authFetch(`${API}/platforms`);
       platforms = await res.json();
       const options = platforms.map(p => `<option value="${p.platform_id}">${p.platform}</option>`).join('');
       document.getElementById('benefit-platform-filter').innerHTML = '<option value="">所有平台</option>' + options;
@@ -331,7 +424,7 @@
     }
 
     async function loadUsers() {
-      const res = await fetch(`${API}/users`);
+      const res = await authFetch(`${API}/users`);
       const users = await res.json();
       const search = document.getElementById('user-search').value.toLowerCase();
 
@@ -367,7 +460,7 @@
 
     async function loadBenefits() {
       const platform = document.getElementById('benefit-platform-filter').value;
-      const res = await fetch(`${API}/benefits?platform=${platform}`);
+      const res = await authFetch(`${API}/benefits?platform=${platform}`);
       const benefits = await res.json();
       const search = document.getElementById('benefit-search').value.toLowerCase();
 
@@ -415,7 +508,7 @@
     }
 
     async function editUser(id) {
-      const res = await fetch(`${API}/users`);
+      const res = await authFetch(`${API}/users`);
       const users = await res.json();
       const user = users.find(u => u.id === id);
       if (!user) return;
@@ -457,7 +550,7 @@
       const method = mode ? 'PUT' : 'POST';
       const url = mode ? `${API}/users/${mode}` : `${API}/users`;
 
-      await fetch(url, {
+      await authFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -471,7 +564,7 @@
     function confirmDeleteUser(id, username) {
       document.getElementById('confirm-message').textContent = `确定要删除用户 "${username}" 吗？`;
       document.getElementById('confirm-btn').onclick = async () => {
-        await fetch(`${API}/users/${id}`, { method: 'DELETE' });
+        await authFetch(`${API}/users/${id}`, { method: 'DELETE' });
         closeModal('confirm-modal');
         loadUsers();
       };
@@ -497,7 +590,7 @@
     }
 
     async function editBenefit(id, platformId) {
-      const res = await fetch(`${API}/benefits?platform=${platformId}`);
+      const res = await authFetch(`${API}/benefits?platform=${platformId}`);
       const benefits = await res.json();
       const item = benefits.find(b => b.benefit.id === id);
       if (!item) return;
@@ -544,14 +637,14 @@
 
       if (mode) {
         // Update
-        await fetch(`${API}/benefits/${mode}`, {
+        await authFetch(`${API}/benefits/${mode}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ platform_id: platformId, benefit: data }),
         });
       } else {
         // Create
-        await fetch(`${API}/benefits`, {
+        await authFetch(`${API}/benefits`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ platform_id: platformId, benefit: data }),
@@ -567,7 +660,7 @@
     function confirmDeleteBenefit(id, platformId) {
       document.getElementById('confirm-message').textContent = `确定要删除权益 "${id}" 吗？`;
       document.getElementById('confirm-btn').onclick = async () => {
-        await fetch(`${API}/benefits/${id}?platform=${platformId}`, { method: 'DELETE' });
+        await authFetch(`${API}/benefits/${id}?platform=${platformId}`, { method: 'DELETE' });
         closeModal('confirm-modal');
         loadBenefits();
       };
@@ -588,17 +681,16 @@
     document.getElementById('benefit-search').addEventListener('input', loadBenefits);
     document.getElementById('benefit-platform-filter').addEventListener('change', loadBenefits);
 
-    // Init
-    loadPlatforms().then(loadData);
-
     // ---- AI Update Benefits Flow ----
     let currentTaskId = null;
     let updatePlatforms = [];
+    let _reviewBenefits = []; // flat array of benefit previews with platform info
 
     async function openUpdatePanel() {
       document.getElementById('updateOverlay').classList.add('show');
       document.getElementById('reviewContainer').innerHTML = '';
-      document.getElementById('updateProgress').textContent = '选择要更新的平台，点击开始生成';
+      document.getElementById('updateProgress').textContent = '';
+      document.getElementById('aiNotes').value = '';
       document.getElementById('startGenBtn').disabled = false;
       document.getElementById('startGenBtn').textContent = '🚀 开始生成';
       document.getElementById('startGenBtn').style.display = '';
@@ -607,23 +699,22 @@
       liveOutput.classList.remove('show');
       liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
       currentTaskId = null;
+      _reviewBenefits = [];
 
       // 加载平台列表
       if (updatePlatforms.length === 0) {
         try {
-          const res = await fetch('/api/updateBenefits/platforms');
+          const res = await fetch('/api/platforms');
           updatePlatforms = await res.json();
         } catch { updatePlatforms = platforms; }
       }
 
-      const checks = document.getElementById('platformChecks');
-      checks.innerHTML = '<label style="font-size:13px;color:#888;margin-bottom:6px;display:block;">选择平台（不选则全部更新）：</label>' +
-        '<div style="display:flex;flex-wrap:wrap;gap:8px;">' +
-        updatePlatforms.map(p =>
-          `<label style="display:flex;align-items:center;gap:4px;font-size:14px;padding:6px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer;">
-            <input type="checkbox" value="${p.platform_id}" style="cursor:pointer;"> ${p.platform}
-          </label>`
-        ).join('') + '</div>';
+      const chips = document.getElementById('platformChips');
+      chips.innerHTML = updatePlatforms.map(p =>
+        `<label style="display:flex;align-items:center;gap:4px;font-size:14px;padding:6px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='#667eea'" onmouseout="if(!this.querySelector('input').checked)this.style.borderColor='#ddd'">
+          <input type="checkbox" value="${p.platform_id}" style="cursor:pointer;" onchange="this.parentElement.style.borderColor=this.checked?'#667eea':'#ddd';this.parentElement.style.background=this.checked?'#f0f0ff':'';"> ${p.platform}
+        </label>`
+      ).join('');
     }
 
     function closeUpdatePanel() {
@@ -631,7 +722,8 @@
     }
 
     async function startGeneration() {
-      const checked = [...document.querySelectorAll('#platformChecks input:checked')].map(el => el.value);
+      const checked = [...document.querySelectorAll('#platformChips input:checked')].map(el => el.value);
+      const notes = document.getElementById('aiNotes').value.trim();
       const btn = document.getElementById('startGenBtn');
       const progress = document.getElementById('updateProgress');
       const liveOutput = document.getElementById('liveOutput');
@@ -649,7 +741,11 @@
         const res = await fetch('/api/updateBenefits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ platforms: checked.length ? checked : undefined }),
+          body: JSON.stringify({
+            // 有备注时忽略平台选择，由 AI 自行判断
+            platforms: notes ? undefined : (checked.length ? checked : undefined),
+            notes: notes || undefined,
+          }),
         });
 
         const reader = res.body.getReader();
@@ -703,10 +799,13 @@
 
         if (finalTask && finalTask.status === 'done' && finalTask.results.length > 0) {
           currentTaskId = finalTask.task_id;
-          progress.textContent = `✅ 生成完成，共 ${finalTask.results.length} 个平台`;
-          renderReview(finalTask.results);
+          // 清空流式输出，显示结果表格
+          liveOutput.classList.remove('show');
+          liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
           btn.style.display = 'none';
           document.getElementById('platformChecks').style.display = 'none';
+          document.getElementById('aiNotes').parentElement.style.display = 'none';
+          renderReview(finalTask.results);
         } else if (finalTask && finalTask.status === 'error') {
           progress.textContent = '❌ 生成失败: ' + (finalTask.error || '未知错误');
           btn.disabled = false;
@@ -724,153 +823,173 @@
     }
 
     function renderReview(results) {
-      window._reviewTask = results;
+      const progress = document.getElementById('updateProgress');
       const container = document.getElementById('reviewContainer');
-      container.innerHTML = results.map((r, ri) => {
-        const addCount = r.benefits.filter(b => b.action === 'add').length;
-        const updateCount = r.benefits.filter(b => b.action === 'update').length;
-        const removeCount = r.benefits.filter(b => b.action === 'remove').length;
-        const summary = [];
-        if (addCount) summary.push(`+${addCount} 新增`);
-        if (updateCount) summary.push(`~${updateCount} 更新`);
-        if (removeCount) summary.push(`-${removeCount} 下架`);
 
-        return `
-          <div class="platform-review" data-idx="${ri}">
-            <div class="platform-review-header" onclick="togglePlatformReview(${ri})">
-              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;" onclick="event.stopPropagation()">
-                <input type="checkbox" class="select-all-check" data-ri="${ri}" checked onchange="toggleSelectAll(${ri}, this.checked)" style="cursor:pointer;width:16px;height:16px;">
-                <span class="pname">${r.platform} (${r.platform_id})</span>
-              </label>
-              <span class="pcount">${r.benefits.length} 条权益 · ${summary.join(' / ')}</span>
-            </div>
-            <div class="platform-review-body open" id="prBody${ri}">
-              ${r.benefits.map((b, bi) => renderPreviewItem(ri, bi, b)).join('')}
-              <button class="confirm-platform-btn" onclick="confirmPlatform(${ri})">✅ 确认提交已选权益</button>
-            </div>
-          </div>`;
-      }).join('');
+      // 展平所有 benefits，带上 platform 信息
+      _reviewBenefits = results.flatMap(r =>
+        r.benefits.map((b, bi) => ({
+          ...b,
+          _idx: bi,
+          platform: r.platform,
+          platform_id: r.platform_id,
+        }))
+      );
+
+      const addCount = _reviewBenefits.filter(b => b.action === 'add').length;
+      const updateCount = _reviewBenefits.filter(b => b.action === 'update').length;
+      const removeCount = _reviewBenefits.filter(b => b.action === 'remove').length;
+      const summary = [];
+      if (addCount) summary.push(`+${addCount} 新增`);
+      if (updateCount) summary.push(`~${updateCount} 更新`);
+      if (removeCount) summary.push(`-${removeCount} 下架`);
+
+      progress.textContent = `✅ 生成完成，共 ${_reviewBenefits.length} 条权益 · ${summary.join(' / ')}`;
+
+      container.innerHTML = `
+        <div class="review-bar">
+          <label class="select-all">
+            <input type="checkbox" onchange="toggleAllRows(this.checked)"> 全选（${_reviewBenefits.length} 条）
+          </label>
+          <button class="submit-btn" onclick="confirmAll()">✅ 确认提交已选权益</button>
+        </div>
+        <div style="max-height:50vh;overflow-y:auto;border:1px solid #eee;border-radius:8px;margin-top:8px;">
+          <table class="review-table">
+            <thead>
+              <tr>
+                <th class="cb-cell"><input type="checkbox" onchange="toggleAllRows(this.checked)" style="cursor:pointer;width:16px;height:16px;"></th>
+                <th>渠道</th>
+                <th>名称</th>
+                <th>分类</th>
+                <th>类型</th>
+                <th>描述</th>
+                <th>操作标记</th>
+                <th class="action-cell">编辑</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${_reviewBenefits.map((b, i) => renderReviewRow(i, b)).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div class="review-bar" style="margin-top:12px;">
+          <label class="select-all">
+            <input type="checkbox" onchange="toggleAllRows(this.checked)"> 全选
+          </label>
+          <button class="submit-btn" onclick="confirmAll()">✅ 确认提交已选权益</button>
+        </div>`;
     }
 
-    function renderPreviewItem(ri, bi, b) {
-      const levelInfo = b.level_details ? Object.entries(b.level_details).map(([k,v]) => `${k}: ${v.times || ''}${v.period ? '/' + v.period : ''}`).join(', ') : '';
+    function renderReviewRow(i, b) {
+      const actionLabel = { add: '新增', update: '更新', remove: '下架' }[b.action] || b.action;
       return `
-        <div class="preview-item action-${b.action}" id="pi-${ri}-${bi}">
-          <label style="position:absolute;top:10px;left:10px;cursor:pointer;">
-            <input type="checkbox" class="benefit-check" data-ri="${ri}" data-bi="${bi}" checked style="cursor:pointer;width:16px;height:16px;">
-          </label>
-          <span class="pi-name" style="margin-left:28px;">${b.name}</span>
-          <span class="action-badge ${b.action}">${b.action === 'add' ? '新增' : b.action === 'update' ? '更新' : '下架'}</span>
-          <button class="edit-btn" onclick="toggleEdit(${ri},${bi})">✏️ 编辑</button>
-          <div class="pi-desc">${b.description}</div>
-          <div class="pi-meta">${b.category} · ${b.type === 'free' ? '免费' : '付费'} · ${b.tags?.join(', ') || ''} · ${levelInfo}</div>
-          <div class="edit-form" id="ef-${ri}-${bi}">
-            <label>名称</label><input id="efn-${ri}-${bi}" value="${escHtml(b.name)}">
-            <label>分类</label><input id="efc-${ri}-${bi}" value="${escHtml(b.category)}">
-            <label>描述</label><textarea id="efd-${ri}-${bi}">${escHtml(b.description)}</textarea>
-            <label>类型</label><select id="eft-${ri}-${bi}"><option value="free" ${b.type==='free'?'selected':''}>免费</option><option value="paid" ${b.type==='paid'?'selected':''}>付费</option></select>
-            <label>标签（逗号分隔）</label><input id="eftags-${ri}-${bi}" value="${escHtml((b.tags||[]).join(', '))}">
-            <label>操作</label><select id="efa-${ri}-${bi}"><option value="add" ${b.action==='add'?'selected':''}>新增</option><option value="remove" ${b.action==='remove'?'selected':''}>下架</option></select>
-            <div class="ef-actions">
-              <button class="save-edit" onclick="saveEdit(${ri},${bi})">💾 保存</button>
-              <button class="delete-btn" onclick="deleteBenefit(${ri},${bi})">🗑️ 删除</button>
-              <button onclick="toggleEdit(${ri},${bi})">取消</button>
-            </div>
-          </div>
-        </div>`;
+        <tr id="rr-${i}" data-idx="${i}">
+          <td class="cb-cell"><input type="checkbox" class="row-check" data-i="${i}" style="cursor:pointer;width:16px;height:16px;"></td>
+          <td class="rt-platform">${escHtml(b.platform)}</td>
+          <td class="rt-name">${escHtml(b.name)}</td>
+          <td>${escHtml(b.category)}</td>
+          <td><span class="rt-type ${b.type}">${b.type === 'free' ? '免费' : '付费'}</span></td>
+          <td style="max-width:240px;color:#666;font-size:12px;line-height:1.4;">${escHtml(b.description)}</td>
+          <td><span class="rt-action ${b.action}">${actionLabel}</span></td>
+          <td class="action-cell"><button class="edit-row-btn" onclick="toggleRowEdit(${i})">✏️</button></td>
+        </tr>`;
     }
 
     function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-    function togglePlatformReview(idx) {
-      const body = document.getElementById(`prBody${idx}`);
-      body.classList.toggle('open');
+    function toggleAllRows(checked) {
+      document.querySelectorAll('.row-check').forEach(cb => cb.checked = checked);
+      document.querySelectorAll('.review-table thead input[type=checkbox]').forEach(cb => cb.checked = checked);
     }
 
-    function toggleSelectAll(ri, checked) {
-      document.querySelectorAll(`.benefit-check[data-ri="${ri}"]`).forEach(cb => {
-        cb.checked = checked;
-      });
+    function toggleRowEdit(i) {
+      const b = _reviewBenefits[i];
+      const tr = document.getElementById(`rr-${i}`);
+      const isEditing = tr.dataset.editing === '1';
+
+      if (isEditing) {
+        // 保存：从 input 读取值，更新数据，切回只读
+        b.name = tr.querySelector('.ie-name').value;
+        b.category = tr.querySelector('.ie-cat').value;
+        b.description = tr.querySelector('.ie-desc').value;
+        b.type = tr.querySelector('.ie-type').value;
+        b.action = tr.querySelector('.ie-action').value;
+        tr.dataset.editing = '0';
+        tr.outerHTML = renderReviewRow(i, b);
+        // 恢复 checkbox 状态
+        const cb = document.querySelector(`.row-check[data-i="${i}"]`);
+        if (cb) cb.checked = true;
+      } else {
+        // 进入编辑模式
+        tr.dataset.editing = '1';
+        const cells = tr.querySelectorAll('td');
+        cells[2].innerHTML = `<input class="inline-edit ie-name" value="${escHtml(b.name)}">`;
+        cells[3].innerHTML = `<input class="inline-edit ie-cat" value="${escHtml(b.category)}">`;
+        cells[5].innerHTML = `<textarea class="inline-edit ie-desc" style="min-height:40px;resize:vertical;">${escHtml(b.description)}</textarea>`;
+        cells[6].innerHTML = `
+          <select class="inline-select ie-action">
+            <option value="add" ${b.action==='add'?'selected':''}>新增</option>
+            <option value="update" ${b.action==='update'?'selected':''}>更新</option>
+            <option value="remove" ${b.action==='remove'?'selected':''}>下架</option>
+          </select>`;
+        // 类型也改成可编辑
+        cells[4].innerHTML = `
+          <select class="inline-select ie-type">
+            <option value="free" ${b.type==='free'?'selected':''}>免费</option>
+            <option value="paid" ${b.type==='paid'?'selected':''}>付费</option>
+          </select>`;
+        // 编辑按钮变成保存
+        cells[7].innerHTML = `<button class="edit-row-btn" onclick="toggleRowEdit(${i})" style="background:#667eea;color:white;border-color:#667eea;">💾</button>`;
+      }
     }
 
-    function toggleEdit(ri, bi) {
-      document.getElementById(`ef-${ri}-${bi}`).classList.toggle('show');
-    }
-
-    function deleteBenefit(ri, bi) {
-      const task = window._reviewTask;
-      if (!task) return;
-      if (!confirm('确定要删除这条权益吗？')) return;
-      task[ri].benefits.splice(bi, 1);
-      const body = document.getElementById(`prBody${ri}`);
-      const btn = body.querySelector('.confirm-platform-btn');
-      body.innerHTML = task[ri].benefits.map((b, idx) => renderPreviewItem(ri, idx, b)).join('') + btn.outerHTML;
-      const header = body.previousElementSibling;
-      const countEl = header.querySelector('.pcount');
-      const summary = [];
-      const addCount = task[ri].benefits.filter(b => b.action === 'add').length;
-      const updateCount = task[ri].benefits.filter(b => b.action === 'update').length;
-      const removeCount = task[ri].benefits.filter(b => b.action === 'remove').length;
-      if (addCount) summary.push(`+${addCount} 新增`);
-      if (updateCount) summary.push(`~${updateCount} 更新`);
-      if (removeCount) summary.push(`-${removeCount} 下架`);
-      countEl.textContent = `${task[ri].benefits.length} 条权益 · ${summary.join(' / ')}`;
-    }
-
-    function saveEdit(ri, bi) {
-      const task = window._reviewTask;
-      if (!task) return;
-      const b = task[ri].benefits[bi];
-      b.name = document.getElementById(`efn-${ri}-${bi}`).value;
-      b.category = document.getElementById(`efc-${ri}-${bi}`).value;
-      b.description = document.getElementById(`efd-${ri}-${bi}`).value;
-      b.type = document.getElementById(`eft-${ri}-${bi}`).value;
-      b.tags = document.getElementById(`eftags-${ri}-${bi}`).value.split(',').map(s => s.trim()).filter(Boolean);
-      b.action = document.getElementById(`efa-${ri}-${bi}`).value;
-      const item = document.getElementById(`pi-${ri}-${bi}`);
-      item.outerHTML = renderPreviewItem(ri, bi, b);
-    }
-
-    async function confirmPlatform(ri) {
-      const task = window._reviewTask;
-      if (!task || !currentTaskId) return;
-      const r = task[ri];
-
-      const checkedIndexes = [...document.querySelectorAll(`.benefit-check[data-ri="${ri}"]:checked`)].map(cb => parseInt(cb.dataset.bi));
+    async function confirmAll() {
+      const checkedIndexes = [...document.querySelectorAll('.row-check:checked')].map(cb => parseInt(cb.dataset.i));
       if (checkedIndexes.length === 0) {
         alert('请至少勾选一条权益');
         return;
       }
-      const selectedBenefits = checkedIndexes.map(i => r.benefits[i]);
 
-      const btn = document.querySelector(`[data-idx="${ri}"] .confirm-platform-btn`);
+      const selected = checkedIndexes.map(i => _reviewBenefits[i]);
+
+      // 按 platform_id 分组
+      const grouped = {};
+      for (const b of selected) {
+        if (!grouped[b.platform_id]) grouped[b.platform_id] = [];
+        grouped[b.platform_id].push(b);
+      }
+
+      const btn = document.querySelector('.submit-btn');
       btn.disabled = true;
       btn.textContent = '⏳ 提交中...';
 
       try {
-        const res = await fetch('/api/updateBenefits/confirm', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            task_id: currentTaskId,
-            platform_id: r.platform_id,
-            benefits: selectedBenefits,
-          }),
-        });
-        const result = await res.json();
-        if (result.ok) {
-          btn.textContent = `✅ 已提交 (${result.count} 条权益)`;
-          btn.classList.add('done');
-          setTimeout(() => {
-            closeUpdatePanel();
-            loadBenefits();
-          }, 800);
-        } else {
-          btn.textContent = '❌ 提交失败';
-          btn.disabled = false;
+        let totalAdded = 0, totalUpdated = 0, totalRemoved = 0;
+        for (const [platformId, benefits] of Object.entries(grouped)) {
+          const res = await fetch('/api/updateBenefits/confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              task_id: currentTaskId,
+              platform_id: platformId,
+              benefits,
+            }),
+          });
+          const result = await res.json();
+          if (!result.ok) throw new Error(`${platformId} 提交失败`);
+          totalAdded += result.added || 0;
+          totalUpdated += result.updated || 0;
+          totalRemoved += result.removed || 0;
         }
+
+        const summary = [];
+        if (totalAdded) summary.push(`+${totalAdded} 新增`);
+        if (totalUpdated) summary.push(`~${totalUpdated} 更新`);
+        if (totalRemoved) summary.push(`-${totalRemoved} 删除`);
+        btn.textContent = `✅ ${summary.join(' ')}，正在刷新...`;
+        setTimeout(() => location.reload(), 800);
       } catch (err) {
-        btn.textContent = '❌ 网络错误';
+        btn.textContent = '❌ ' + err.message;
         btn.disabled = false;
       }
     }
