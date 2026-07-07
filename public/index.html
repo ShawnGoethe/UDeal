@@ -177,24 +177,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 
     <div style="position:relative;margin-top:12px;">
       <button onclick="copyText(this, document.getElementById('skillPrompt').textContent)" style="position:absolute;top:8px;right:8px;padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:12px;z-index:1;">📋 复制</button>
-      <pre id="skillPrompt" style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:0;"><code>你是一个会员权益查询助手，帮用户查询各平台会员权益。
+      <pre id="skillPrompt" style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin:0;"><code>加载中...</code></pre>
+    </div>
 
-API 地址: https://udeals.utools.icu
-
-接口列表:
-- GET /api/benefits — 获取所有权益，支持筛选参数: platform, tag, type
-- GET /api/platforms — 获取所有平台列表
-- GET /api/tags — 获取所有标签
-
-平台ID: meituan, taobao-88vip, jd, heytea, unionpay, 12306, alipay, ctrip
-类型: free(免费), paid(付费)
-标签: dental-cleaning(洁牙), airport-lounge(贵宾厅), birthday-gift(生日礼), coupon(优惠券), video(视频会员) 等
-
-使用规则:
-1. 用户问权益时调用 API 获取实时数据
-2. 支持组合筛选
-3. 回答时列出权益名称、类型、描述、兑换时间
-4. 对比问题多次调用不同平台数据后汇总</code></pre>
+    <div id="skillFullContent" style="margin-top:16px;display:none;">
+      <details>
+        <summary style="cursor:pointer;color:#667eea;font-size:14px;">📄 查看完整 SKILL.md</summary>
+        <pre id="skillMarkdown" style="background:#f5f5f5;padding:16px;border-radius:8px;font-size:13px;line-height:1.6;overflow-x:auto;margin-top:8px;white-space:pre-wrap;"></pre>
+      </details>
     </div>
 
     <h4 style="margin-top:24px;color:#333;">API 接口一览</h4>
@@ -214,6 +204,29 @@ function copyText(btn, text) {
     setTimeout(() => btn.textContent = orig, 1500);
   });
 }
+
+// 从 SKILL.md 加载 System Prompt
+(async function loadSkill() {
+  try {
+    const res = await fetch('/api/skill');
+    const data = await res.json();
+    if (!data.content) return;
+
+    const md = data.content;
+
+    // 提取 System Prompt 代码块
+    const promptMatch = md.match(/## System Prompt\s*\n\s*```[\s\S]*?\n([\s\S]*?)```/);
+    if (promptMatch) {
+      document.querySelector('#skillPrompt code').textContent = promptMatch[1].trim();
+    }
+
+    // 显示完整 SKILL.md
+    document.getElementById('skillMarkdown').textContent = md;
+    document.getElementById('skillFullContent').style.display = '';
+  } catch (e) {
+    document.querySelector('#skillPrompt code').textContent = '加载失败，请刷新重试';
+  }
+})();
 </script>
   <div class="stats" id="stats">
     <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>

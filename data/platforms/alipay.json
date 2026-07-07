@@ -5,12 +5,7 @@
     "大众会员",
     "黄金会员",
     "铂金会员",
-    "钻石会员",
-    "财富黑卡V1",
-    "财富黑卡V2",
-    "财富黑卡V3",
-    "财富黑卡S1",
-    "财富黑卡S2"
+    "钻石会员"
   ],
   "benefits": [
     {
@@ -87,32 +82,6 @@
       "tips": "兑换前确认积分足够，部分商品需额外支付运费。",
       "active": true,
       "last_updated": "2026-07-01"
-    },
-    {
-      "id": "alipay-black-card-v1-airport-lounge",
-      "name": "机场贵宾厅免费使用权",
-      "category": "出行",
-      "tags": [
-        "出行",
-        "酒店"
-      ],
-      "type": "free",
-      "description": "支付宝黑卡v1会员可免费使用全球指定机场贵宾厅。",
-      "level_details": {
-        "财富黑卡V1": {
-          "times": "4次/年",
-          "period": "每年",
-          "note": "需提前预约"
-        }
-      },
-      "redeem_time": "随时",
-      "limit": "每年限用4次",
-      "tips": "通过支付宝APP预约使用",
-      "platform_id": "alipay",
-      "_idx": 0,
-      "platform": "支付宝",
-      "active": true,
-      "last_updated": "2026-07-07"
     }
   ]
 }

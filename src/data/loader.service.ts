@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
-import type { Platform, Category, Tag, UserData, SearchResult, Benefit } from '../common/types';
+import type { Platform, Tag, UserData, SearchResult, Benefit } from '../common/types';
 
 const DATA_DIR = join(__dirname, '../../data');
 const isDev = process.env.NODE_ENV !== 'production';
@@ -9,13 +9,11 @@ const isDev = process.env.NODE_ENV !== 'production';
 @Injectable()
 export class LoaderService {
   private platformsCache: Platform[] | null = null;
-  private categoriesCache: Category[] | null = null;
   private tagsCache: Tag[] | null = null;
   private userCache: UserData | null = null;
 
   clearCache() {
     this.platformsCache = null;
-    this.categoriesCache = null;
     this.tagsCache = null;
     this.userCache = null;
   }
@@ -29,13 +27,6 @@ export class LoaderService {
       return data as Platform;
     });
     return this.platformsCache;
-  }
-
-  loadCategories(): Category[] {
-    if (this.categoriesCache) return this.categoriesCache;
-    const data = JSON.parse(readFileSync(join(DATA_DIR, 'categories.json'), 'utf-8'));
-    this.categoriesCache = data.categories;
-    return this.categoriesCache!;
   }
 
   loadTags(): Tag[] {

@@ -21,6 +21,7 @@
     { "id": "music", "name": "音乐会员", "icon": "🎵" },
     { "id": "storage", "name": "网盘", "icon": "☁️" },
     { "id": "delivery-coupon", "name": "外卖优惠", "icon": "🛵" },
-    { "id": "movie", "name": "电影", "icon": "🎬" }
+    { "id": "movie", "name": "电影", "icon": "🎬" },
+    { "id": "finance", "name": "理财", "icon": "💎" }
   ]
 }

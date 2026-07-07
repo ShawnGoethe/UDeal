@@ -5,5 +5,13 @@
       "args": ["dist/mcp/stdio.js"],
       "cwd": "C:\\Users\\zehai\\Downloads\\UDeal"
     }
+  },
+  "hooks": {
+    "postEdit": [
+      {
+        "pattern": "README.md",
+        "command": "bash .claude/hooks/readme-reminder.sh"
+      }
+    ]
   }
 }

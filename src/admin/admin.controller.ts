@@ -132,11 +132,6 @@ export class AdminController {
     }));
   }
 
-  @Get('categories')
-  getCategories() {
-    return this.loader.loadCategories();
-  }
-
   @Get('tags')
   getTags() {
     return this.loader.loadTags();

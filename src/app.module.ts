@@ -5,10 +5,11 @@ import { join } from 'path';
 import { DataModule } from './data/data.module';
 import { BenefitsModule } from './benefits/benefits.module';
 import { PlatformsModule } from './platforms/platforms.module';
-import { CategoriesModule } from './categories/categories.module';
 import { HomeModule } from './home/home.module';
 import { AdminModule } from './admin/admin.module';
 import { UpdateModule } from './update/update.module';
+import { TagsModule } from './tags/tags.module';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
   imports: [
@@ -20,10 +21,11 @@ import { UpdateModule } from './update/update.module';
     DataModule,
     BenefitsModule,
     PlatformsModule,
-    CategoriesModule,
     HomeModule,
     AdminModule,
     UpdateModule,
+    TagsModule,
+    SkillModule,
   ],
 })
 export class AppModule {}

@@ -14,3 +14,7 @@ config.json
 !.dev.vars.example
 .env*
 !.env.example
+
+# Claude local config
+.claude/settings.local.json
+.claude/hooks/

@@ -34,13 +34,6 @@ export interface Platform {
   benefits: Benefit[];
 }
 
-export interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  keywords: string[];
-}
-
 export interface Tag {
   id: string;
   name: string;
