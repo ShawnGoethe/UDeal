@@ -234,30 +234,6 @@ function copyText(btn, text) {
   });
 }
 
-// 从 SKILL.md 加载 System Prompt
-(function loadSkill() {
-  // 优先用嵌入数据（静态构建），否则 fetch API（Node 服务）
-  const embedded = typeof EMBEDDED_DATA !== 'undefined' ? EMBEDDED_DATA.skillMd : null;
-
-  function render(md) {
-    if (!md) { document.querySelector('#skillPrompt code').textContent = 'SKILL.md 未找到'; return; }
-    // 提取 System Prompt 代码块
-    const promptMatch = md.match(/## System Prompt\s*\n\s*```[\s\S]*?\n([\s\S]*?)```/);
-    if (promptMatch) {
-      document.querySelector('#skillPrompt code').textContent = promptMatch[1].trim();
-    }
-    document.getElementById('skillMarkdown').textContent = md;
-    document.getElementById('skillFullContent').style.display = '';
-  }
-
-  if (embedded) {
-    render(embedded);
-  } else {
-    fetch('/api/skill').then(r => r.json()).then(d => render(d.content)).catch(() => {
-      document.querySelector('#skillPrompt code').textContent = '加载失败';
-    });
-  }
-})();
 </script>
   <div class="stats" id="stats">
     <div class="stat-card"><div class="stat-number" id="statTotal">-</div><div class="stat-label">权益总数</div></div>
@@ -347,11 +323,35 @@ async function init() {
   renderStats();
   renderPinnedFavorites();
   renderBenefits();
+  loadSkill();
 
   document.getElementById('searchInput').addEventListener('input', (e) => {
     searchQuery = e.target.value;
     renderBenefits();
   });
+}
+
+// 从 SKILL.md 加载 System Prompt
+function loadSkill() {
+  const embedded = typeof EMBEDDED_DATA !== 'undefined' ? EMBEDDED_DATA.skillMd : null;
+
+  function render(md) {
+    if (!md) { document.querySelector('#skillPrompt code').textContent = 'SKILL.md 未找到'; return; }
+    const promptMatch = md.match(/## System Prompt\s*\n\s*```[\s\S]*?\n([\s\S]*?)```/);
+    if (promptMatch) {
+      document.querySelector('#skillPrompt code').textContent = promptMatch[1].trim();
+    }
+    document.getElementById('skillMarkdown').textContent = md;
+    document.getElementById('skillFullContent').style.display = '';
+  }
+
+  if (embedded) {
+    render(embedded);
+  } else {
+    fetch('/api/skill').then(r => r.json()).then(d => render(d.content)).catch(() => {
+      document.querySelector('#skillPrompt code').textContent = '加载失败';
+    });
+  }
 }
 
 function renderTags() {

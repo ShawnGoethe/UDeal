@@ -47,14 +47,6 @@ export interface UserMembership {
   notes: string;
 }
 
-export interface UserData {
-  memberships: UserMembership[];
-  preferences: {
-    priority_categories: string[];
-    notify_expiring: boolean;
-  };
-}
-
 export interface SearchResult {
   benefit: Benefit;
   platform: string;
