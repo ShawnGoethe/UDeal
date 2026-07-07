@@ -18,7 +18,6 @@ export class BenefitsController {
     return results.map((r) => ({
       id: r.benefit.id,
       name: r.benefit.name,
-      category: r.benefit.category,
       tags: r.benefit.tags,
       type: r.benefit.type,
       description: r.benefit.description,

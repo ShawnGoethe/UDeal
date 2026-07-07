@@ -55,7 +55,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   transition: all 0.2s;
 }
 .show-more-btn:hover { background: #667eea; color: white; }
-.benefit-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+.benefit-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; position: relative; }
 .benefit-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
 .card-title { font-size: 16px; font-weight: 600; }
@@ -111,6 +111,28 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .loading { text-align: center; padding: 40px; color: #999; }
 .no-results { text-align: center; padding: 40px; color: #999; }
 
+/* Favorite heart */
+.fav-btn { position: absolute; bottom: 12px; right: 12px; background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px; line-height: 1; transition: transform 0.2s; z-index: 2; }
+.fav-btn:hover { transform: scale(1.2); }
+.fav-btn .fav-outline { color: #ccc; }
+.fav-btn .fav-filled { color: #e74c3c; display: none; }
+.fav-btn.active .fav-outline { display: none; }
+.fav-btn.active .fav-filled { display: block; }
+
+/* Pinned favorites section */
+.pinned-section { margin-bottom: 24px; }
+.pinned-section .section-title { margin-top: 0; }
+.pinned-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pinned-card { background: white; border-radius: 10px; padding: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer; position: relative; transition: transform 0.2s, box-shadow 0.2s; border: 1.5px solid #ffe0e0; }
+.pinned-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(231,76,60,0.15); }
+.pinned-card .pinned-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pinned-card .pinned-platform { font-size: 12px; color: #888; }
+.pinned-card .pinned-heart { position: absolute; top: 8px; right: 8px; color: #e74c3c; font-size: 14px; }
+
+@media (max-width: 768px) {
+  .pinned-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 768px) {
   .header h1 { font-size: 1.8em; }
   .benefits-grid { grid-template-columns: 1fr; }
@@ -134,6 +156,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="搜索权益，如：洁牙、机场贵宾厅、外卖优惠..." />
   </div>
+
+  <!-- 置顶收藏 -->
+  <div class="pinned-section" id="pinnedSection" style="display:none;">
+    <div class="section-title">❤️ 我的收藏</div>
+    <div class="pinned-grid" id="pinnedGrid"></div>
+  </div>
+
   <div class="filter-section">
     <div class="filter-label">🏷️ 标签筛选</div>
     <div class="tags-container" id="tagsContainer"></div>
@@ -206,25 +235,27 @@ function copyText(btn, text) {
 }
 
 // 从 SKILL.md 加载 System Prompt
-(async function loadSkill() {
-  try {
-    const res = await fetch('/api/skill');
-    const data = await res.json();
-    if (!data.content) return;
+(function loadSkill() {
+  // 优先用嵌入数据（静态构建），否则 fetch API（Node 服务）
+  const embedded = typeof EMBEDDED_DATA !== 'undefined' ? EMBEDDED_DATA.skillMd : null;
 
-    const md = data.content;
-
+  function render(md) {
+    if (!md) { document.querySelector('#skillPrompt code').textContent = 'SKILL.md 未找到'; return; }
     // 提取 System Prompt 代码块
     const promptMatch = md.match(/## System Prompt\s*\n\s*```[\s\S]*?\n([\s\S]*?)```/);
     if (promptMatch) {
       document.querySelector('#skillPrompt code').textContent = promptMatch[1].trim();
     }
-
-    // 显示完整 SKILL.md
     document.getElementById('skillMarkdown').textContent = md;
     document.getElementById('skillFullContent').style.display = '';
-  } catch (e) {
-    document.querySelector('#skillPrompt code').textContent = '加载失败，请刷新重试';
+  }
+
+  if (embedded) {
+    render(embedded);
+  } else {
+    fetch('/api/skill').then(r => r.json()).then(d => render(d.content)).catch(() => {
+      document.querySelector('#skillPrompt code').textContent = '加载失败';
+    });
   }
 })();
 </script>
@@ -251,6 +282,56 @@ let activeType = '';
 let activeLevel = '';
 let searchQuery = '';
 
+// ===== Favorites =====
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('udeal_favorites') || '{}'); } catch { return {}; }
+}
+
+function toggleFavorite(benefitId, event) {
+  event.stopPropagation();
+  const favs = getFavorites();
+  if (favs[benefitId]) {
+    delete favs[benefitId];
+  } else {
+    favs[benefitId] = Date.now();
+  }
+  localStorage.setItem('udeal_favorites', JSON.stringify(favs));
+  renderPinnedFavorites();
+  // 更新卡片上的爱心状态
+  document.querySelectorAll(`.fav-btn[data-id="${benefitId}"]`).forEach(btn => {
+    btn.classList.toggle('active', !!favs[benefitId]);
+  });
+}
+
+function renderPinnedFavorites() {
+  const favs = getFavorites();
+  const favEntries = Object.entries(favs).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  const section = document.getElementById('pinnedSection');
+  const grid = document.getElementById('pinnedGrid');
+
+  if (favEntries.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = '';
+  grid.innerHTML = favEntries.map(([id]) => {
+    const b = allBenefits.find(bb => bb.id === id);
+    if (!b) return '';
+    return `
+      <div class="pinned-card" onclick="expandBenefitById('${id}')">
+        <span class="pinned-heart">❤️</span>
+        <div class="pinned-title">${b.name}</div>
+        <div class="pinned-platform">${b.platform} · ${b.type === 'free' ? '免费' : '付费'}</div>
+      </div>`;
+  }).join('');
+}
+
+function expandBenefitById(id) {
+  const idx = allBenefits.findIndex(b => b.id === id);
+  if (idx >= 0) expandCard(idx, new Event('click'));
+}
+
 async function init() {
   const [tags, platforms, benefits] = await Promise.all([
     fetch(`${API}/api/tags`).then(r => r.json()),
@@ -264,6 +345,7 @@ async function init() {
   renderTags();
   renderPlatforms();
   renderStats();
+  renderPinnedFavorites();
   renderBenefits();
 
   document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -324,13 +406,20 @@ function renderBenefits() {
   const showCollapsed = !window._benefitsExpanded && filtered.length > 16;
   grid.className = showCollapsed ? 'benefits-grid collapsed' : 'benefits-grid';
 
+  const favs = getFavorites();
+
   grid.innerHTML = filtered.map((b, idx) => {
     const levelRows = b.level_details ? Object.entries(b.level_details).map(([level, d]) => {
       const info = [d.times, d.period, d.amount, d.discount, d.scope, d.note].filter(Boolean).join(' · ');
       return `<tr><td>${level}</td><td>${info || '-'}</td></tr>`;
     }).join('') : '';
+    const isFav = !!favs[b.id];
     return `
     <div class="benefit-card" id="card-${idx}" onclick="expandCard(${idx}, event)">
+      <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${b.id}" onclick="toggleFavorite('${b.id}', event)">
+        <span class="fav-outline">🤍</span>
+        <span class="fav-filled">❤️</span>
+      </button>
       <div class="card-header">
         <div>
           <span class="card-title">${b.name}</span>

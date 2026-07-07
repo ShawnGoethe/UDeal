@@ -2,31 +2,199 @@
   "platform": "京东",
   "platform_id": "jd",
   "levels": [
-    "PLUS"
+    "普通会员",
+    "PLUS会员"
   ],
   "benefits": [
     {
-      "id": "jd-plus-health-service",
-      "name": "健康服务",
-      "category": "生活",
+      "id": "jd-plus-qingju-bike",
+      "name": "青桔单车月卡",
       "tags": [
-        "健康",
-        "生活服务"
+        "出行"
       ],
-      "type": "free",
-      "description": "合作健康平台提供会员折扣，如在线问诊8折、体检套餐优惠。",
+      "type": "paid",
+      "description": "兑换青桔单车月卡，每日骑行不限次，每次可抵扣5元。10点兑换。",
       "level_details": {
-        "PLUS": {
-          "times": "不限",
-          "period": "长期",
-          "note": "仅限合作服务商"
+        "PLUS会员": {
+          "times": "1张/年",
+          "period": "每年",
+          "note": "1积分+10点兑换"
         }
       },
-      "redeem_time": "自动生效或APP内领取",
-      "limit": "仅限指定服务商和项目",
-      "tips": "通过京东健康APP购买相关服务时，系统自动应用会员折扣。",
+      "redeem_time": "APP内兑换",
+      "limit": "每月卡30天有效",
+      "tips": "兑换后自动生效，每日骑行不限次，每次行程抵扣5元。",
       "active": true,
-      "last_updated": "2026-07-01"
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-medical-beauty",
+      "name": "医美服务",
+      "tags": [
+        "健康",
+        "医美护肤"
+      ],
+      "type": "paid",
+      "description": "合作医美机构专属折扣和服务，含皮肤管理、轻医美等项目。",
+      "level_details": {
+        "PLUS会员": {
+          "period": "长期",
+          "note": "合作机构折扣"
+        }
+      },
+      "redeem_time": "APP内预约",
+      "limit": "仅限指定合作机构",
+      "tips": "具体项目和折扣以合作机构为准，需提前预约。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-dental-cleaning",
+      "name": "免费洁牙",
+      "tags": [
+        "dental-cleaning"
+      ],
+      "type": "paid",
+      "description": "合作口腔机构免费洗牙服务，2积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1次/年",
+          "period": "每年",
+          "note": "2积分兑换"
+        }
+      },
+      "redeem_time": "APP内预约",
+      "limit": "仅限指定口腔机构",
+      "tips": "兑换后需在合作机构预约使用。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-health-check",
+      "name": "免费体检",
+      "tags": [
+        "健康"
+      ],
+      "type": "paid",
+      "description": "合作体检机构免费体检一次，含常规检查项目，5积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1次/年",
+          "period": "每年",
+          "note": "5积分兑换"
+        }
+      },
+      "redeem_time": "APP内预约",
+      "limit": "仅限指定体检机构",
+      "tips": "兑换后需在合作机构预约，覆盖全国主要城市。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-reading-annual",
+      "name": "京东读书年卡",
+      "tags": [
+        "娱乐"
+      ],
+      "type": "paid",
+      "description": "京东读书APP年度会员，畅读海量电子书，1积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1张/年",
+          "period": "每年",
+          "note": "1积分兑换"
+        }
+      },
+      "redeem_time": "APP内兑换",
+      "limit": "年卡365天有效",
+      "tips": "兑换后自动开通京东读书年度会员。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-laundry",
+      "name": "自营洗衣服务",
+      "tags": [
+        "生活服务"
+      ],
+      "type": "paid",
+      "description": "京东自营洗衣服务，衣物清洗养护，2积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1次/年",
+          "period": "每年",
+          "note": "2积分兑换"
+        }
+      },
+      "redeem_time": "APP内下单",
+      "limit": "仅限指定衣物类型",
+      "tips": "下单后上门取衣，洗好送回。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-free-shipping-first",
+      "name": "寄件免首重",
+      "tags": [
+        "快递"
+      ],
+      "type": "paid",
+      "description": "京东快递寄件免首重费用，1积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1次/年",
+          "period": "每年",
+          "note": "1积分兑换"
+        }
+      },
+      "redeem_time": "APP内寄件时使用",
+      "limit": "首重1kg内免费",
+      "tips": "寄件时自动抵扣首重费用。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-housekeeping",
+      "name": "免费日常保洁",
+      "tags": [
+        "保洁",
+        "生活服务"
+      ],
+      "type": "paid",
+      "description": "专业保洁人员上门日常保洁服务，5积分兑换。",
+      "level_details": {
+        "PLUS会员": {
+          "times": "1次/年",
+          "period": "每年",
+          "note": "5积分兑换"
+        }
+      },
+      "redeem_time": "APP内预约",
+      "limit": "仅限指定城市",
+      "tips": "兑换后需预约上门时间，覆盖主要城市。",
+      "active": true,
+      "last_updated": "2026-07-07"
+    },
+    {
+      "id": "jd-plus-car-wash",
+      "name": "京东养车洗车",
+      "tags": [
+        "出行",
+        "生活服务"
+      ],
+      "type": "paid",
+      "description": "京东养车洗车及保养服务。洗车工作日1积分、通用2积分；小保养9积分+10点；保养机油1积分。",
+      "level_details": {
+        "PLUS会员": {
+          "period": "每年",
+          "note": "洗车工作日1积分/通用2积分，小保养9积分+10点，机油1积分"
+        }
+      },
+      "redeem_time": "APP内预约",
+      "limit": "仅限京东养车合作门店",
+      "tips": "兑换后在京东养车APP预约到店服务。",
+      "active": true,
+      "last_updated": "2026-07-07"
     }
   ]
 }

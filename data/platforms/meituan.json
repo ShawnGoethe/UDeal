@@ -1,18 +1,33 @@
 {
   "platform": "美团",
   "platform_id": "meituan",
-  "levels": ["普通会员", "白银会员", "黄金会员", "白金会员", "黑金会员", "黑钻会员"],
+  "levels": [
+    "普通会员",
+    "白银会员",
+    "黄金会员",
+    "白金会员",
+    "黑金会员",
+    "黑钻会员"
+  ],
   "benefits": [
     {
       "id": "meituan-dental-cleaning",
       "name": "洁牙",
-      "category": "health",
-      "tags": ["dental-cleaning", "important"],
+      "tags": [
+        "dental-cleaning",
+        "important"
+      ],
       "type": "free",
       "description": "美团会员可兑换免费洁牙权益，口腔机构提供",
       "level_details": {
-        "黑金会员": { "times": 1, "period": "每月" },
-        "黑钻会员": { "times": 2, "period": "每月" }
+        "黑金会员": {
+          "times": 1,
+          "period": "每月"
+        },
+        "黑钻会员": {
+          "times": 2,
+          "period": "每月"
+        }
       },
       "redeem_time": "每日0:00",
       "limit": "限量，需抢兑",
@@ -23,13 +38,22 @@
     {
       "id": "meituan-photon-rejuvenation",
       "name": "光子嫩肤",
-      "category": "health",
-      "tags": ["skin-care", "grab-10s", "important"],
+      "tags": [
+        "skin-care",
+        "grab-10s",
+        "important"
+      ],
       "type": "free",
       "description": "美团会员可兑换免费光子嫩肤权益，医美机构提供",
       "level_details": {
-        "黑金会员": { "times": 1, "period": "每年" },
-        "黑钻会员": { "times": 1, "period": "每半年" }
+        "黑金会员": {
+          "times": 1,
+          "period": "每年"
+        },
+        "黑钻会员": {
+          "times": 1,
+          "period": "每半年"
+        }
       },
       "redeem_time": "每日0:00",
       "limit": "限量，需抢兑",
@@ -40,13 +64,21 @@
     {
       "id": "meituan-free-cleaning",
       "name": "免费保洁",
-      "category": "services",
-      "tags": ["housekeeping", "grab-60s"],
+      "tags": [
+        "housekeeping",
+        "grab-60s"
+      ],
       "type": "free",
       "description": "美团会员可兑换免费上门保洁服务",
       "level_details": {
-        "黑金会员": { "times": 1, "period": "每年" },
-        "黑钻会员": { "times": 1, "period": "每半年" }
+        "黑金会员": {
+          "times": 1,
+          "period": "每年"
+        },
+        "黑钻会员": {
+          "times": 1,
+          "period": "每半年"
+        }
       },
       "redeem_time": "每日0:00",
       "limit": "限量，需设闹钟抢兑",
@@ -57,13 +89,22 @@
     {
       "id": "meituan-free-powerbank",
       "name": "免费充电宝",
-      "category": "services",
-      "tags": ["powerbank"],
+      "tags": [
+        "powerbank"
+      ],
       "type": "free",
       "description": "美团会员可享免费充电宝使用时长",
       "level_details": {
-        "黑金会员": { "times": 2, "period": "每月", "note": "2小时" },
-        "黑钻会员": { "times": 4, "period": "每月", "note": "4小时" }
+        "黑金会员": {
+          "times": 2,
+          "period": "每月",
+          "note": "2小时"
+        },
+        "黑钻会员": {
+          "times": 4,
+          "period": "每月",
+          "note": "4小时"
+        }
       },
       "redeem_time": "随时",
       "limit": null,
@@ -74,13 +115,18 @@
     {
       "id": "meituan-birthday-gift",
       "name": "生日礼",
-      "category": "services",
-      "tags": ["birthday-gift"],
+      "tags": [
+        "birthday-gift"
+      ],
       "type": "free",
       "description": "美团会员生日当月可领取生日礼包，含外卖红包、优惠券等",
       "level_details": {
-        "黑金会员": { "note": "生日当月领取优惠券礼包（具体面额以App展示为准）" },
-        "黑钻会员": { "note": "生日当月领取更大额优惠券礼包（具体面额以App展示为准）" }
+        "黑金会员": {
+          "note": "生日当月领取优惠券礼包（具体面额以App展示为准）"
+        },
+        "黑钻会员": {
+          "note": "生日当月领取更大额优惠券礼包（具体面额以App展示为准）"
+        }
       },
       "redeem_time": "生日当月",
       "limit": "每个会员年度仅限一次",
@@ -91,12 +137,16 @@
     {
       "id": "meituan-free-haircut",
       "name": "免费丽人美发",
-      "category": "services",
-      "tags": ["hair-salon"],
+      "tags": [
+        "hair-salon"
+      ],
       "type": "free",
       "description": "黑钻会员可兑换免费美发服务",
       "level_details": {
-        "黑钻会员": { "times": 1, "period": "终身" }
+        "黑钻会员": {
+          "times": 1,
+          "period": "终身"
+        }
       },
       "redeem_time": "每日0:00",
       "limit": "仅限黑钻会员，限量抢兑",
@@ -107,12 +157,16 @@
     {
       "id": "meituan-airport-fast-track",
       "name": "机场快速通道",
-      "category": "travel",
-      "tags": ["airport-fast"],
+      "tags": [
+        "airport-fast"
+      ],
       "type": "free",
       "description": "黑钻会员可享机场快速安检通道",
       "level_details": {
-        "黑钻会员": { "times": 2, "period": "每季度" }
+        "黑钻会员": {
+          "times": 2,
+          "period": "每季度"
+        }
       },
       "redeem_time": "随时",
       "limit": "仅限黑钻会员，每季度2次",
@@ -123,12 +177,16 @@
     {
       "id": "meituan-mango-tv",
       "name": "芒果视频会员",
-      "category": "entertainment",
-      "tags": ["video"],
+      "tags": [
+        "video"
+      ],
       "type": "free",
       "description": "黑钻会员可每周领取芒果TV会员权益",
       "level_details": {
-        "黑钻会员": { "times": 1, "period": "每周" }
+        "黑钻会员": {
+          "times": 1,
+          "period": "每周"
+        }
       },
       "redeem_time": "每周一0:00",
       "limit": "仅限黑钻会员，每周限领1次",

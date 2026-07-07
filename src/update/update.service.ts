@@ -7,7 +7,6 @@ import type { BenefitPreview, Platform, PlatformUpdateResult, UpdateTask } from 
 const BENEFIT_SCHEMA = `{
   "id": "string (英文短横线格式，如 jd-plus-free-shipping)",
   "name": "string (权益名称)",
-  "category": "string (分类：购物/出行/餐饮/娱乐/生活/金融)",
   "tags": ["string (标签数组)"],
   "type": "free 或 paid",
   "description": "string (权益描述)",

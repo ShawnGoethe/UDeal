@@ -1,22 +1,48 @@
 {
   "platform": "喜茶",
   "platform_id": "heytea",
-  "levels": ["星球会员", "见习贵宾", "进阶贵宾", "高阶贵宾", "资深贵宾", "黑卡贵宾"],
+  "levels": [
+    "星球会员",
+    "见习贵宾",
+    "进阶贵宾",
+    "高阶贵宾",
+    "资深贵宾",
+    "黑卡贵宾"
+  ],
   "benefits": [
     {
       "id": "xicha-points-redemption",
       "name": "积分兑换",
-      "category": "shopping",
-      "tags": ["points"],
+      "tags": [
+        "points"
+      ],
       "type": "free",
       "description": "会员消费累积积分，可兑换喜茶饮品、周边产品或优惠券",
       "level_details": {
-        "星球会员": { "times": "1积分=1元", "note": "积分有效期1年" },
-        "见习贵宾": { "times": "1积分=1元", "note": "积分有效期1年" },
-        "进阶贵宾": { "times": "1积分=2元", "note": "额外积分加速" },
-        "高阶贵宾": { "times": "1积分=2元", "note": "专属兑换商品" },
-        "资深贵宾": { "times": "1积分=2元", "note": "优先兑换权" },
-        "黑卡贵宾": { "times": "1积分=2元", "note": "优先兑换权" }
+        "星球会员": {
+          "times": "1积分=1元",
+          "note": "积分有效期1年"
+        },
+        "见习贵宾": {
+          "times": "1积分=1元",
+          "note": "积分有效期1年"
+        },
+        "进阶贵宾": {
+          "times": "1积分=2元",
+          "note": "额外积分加速"
+        },
+        "高阶贵宾": {
+          "times": "1积分=2元",
+          "note": "专属兑换商品"
+        },
+        "资深贵宾": {
+          "times": "1积分=2元",
+          "note": "优先兑换权"
+        },
+        "黑卡贵宾": {
+          "times": "1积分=2元",
+          "note": "优先兑换权"
+        }
       },
       "redeem_time": "APP内兑换",
       "limit": "积分有效期1年",
@@ -27,17 +53,42 @@
     {
       "id": "xicha-birthday-benefit",
       "name": "生日特权",
-      "category": "lifestyle",
-      "tags": ["birthday-gift"],
+      "tags": [
+        "birthday-gift"
+      ],
       "type": "free",
       "description": "会员生日当月可领取专属生日礼券",
       "level_details": {
-        "星球会员": { "times": "1张", "period": "生日当月", "note": "8折券" },
-        "见习贵宾": { "times": "1张", "period": "生日当月", "note": "买一送一券" },
-        "进阶贵宾": { "times": "1张", "period": "生日当月", "note": "免费饮品券" },
-        "高阶贵宾": { "times": "2张", "period": "生日当月", "note": "免费饮品券+周边" },
-        "资深贵宾": { "times": "2张", "period": "生日当月", "note": "豪华礼品" },
-        "黑卡贵宾": { "times": "3张", "period": "生日当月", "note": "定制礼品+免单" }
+        "星球会员": {
+          "times": "1张",
+          "period": "生日当月",
+          "note": "8折券"
+        },
+        "见习贵宾": {
+          "times": "1张",
+          "period": "生日当月",
+          "note": "买一送一券"
+        },
+        "进阶贵宾": {
+          "times": "1张",
+          "period": "生日当月",
+          "note": "免费饮品券"
+        },
+        "高阶贵宾": {
+          "times": "2张",
+          "period": "生日当月",
+          "note": "免费饮品券+周边"
+        },
+        "资深贵宾": {
+          "times": "2张",
+          "period": "生日当月",
+          "note": "豪华礼品"
+        },
+        "黑卡贵宾": {
+          "times": "3张",
+          "period": "生日当月",
+          "note": "定制礼品+免单"
+        }
       },
       "redeem_time": "生日月自动发放",
       "limit": "仅限生日当月使用",
@@ -48,14 +99,24 @@
     {
       "id": "xicha-free-toppings",
       "name": "周二加倍果肉或其他小料",
-      "category": "shopping",
-      "tags": ["member-price"],
+      "tags": [
+        "member-price"
+      ],
       "type": "free",
       "description": "会员下单可享受免费加料服务，如珍珠、椰果等",
       "level_details": {
-        "高阶贵宾": { "times": "1次", "period": "每周" },
-        "资深贵宾": { "times": "1次", "period": "每周" },
-        "黑卡贵宾": { "times": "1次", "period": "每周" }
+        "高阶贵宾": {
+          "times": "1次",
+          "period": "每周"
+        },
+        "资深贵宾": {
+          "times": "1次",
+          "period": "每周"
+        },
+        "黑卡贵宾": {
+          "times": "1次",
+          "period": "每周"
+        }
       },
       "redeem_time": "下单时选择",
       "limit": "仅限指定加料",
@@ -66,17 +127,31 @@
     {
       "id": "xicha-upgrade-reward",
       "name": "升级奖励",
-      "category": "lifestyle",
-      "tags": ["points", "coupon"],
+      "tags": [
+        "points",
+        "coupon"
+      ],
       "type": "free",
       "description": "会员等级提升时获得额外奖励",
       "level_details": {
-        "星球会员": { "note": "升级至见习贵宾获50积分" },
-        "见习贵宾": { "note": "升级至进阶贵宾获100积分+券" },
-        "进阶贵宾": { "note": "升级至高阶贵宾获200积分+礼品" },
-        "高阶贵宾": { "note": "升级至资深贵宾获300积分+礼品" },
-        "资深贵宾": { "note": "升级至黑卡贵宾获500积分+专属礼" },
-        "黑卡贵宾": { "note": "年度礼包" }
+        "星球会员": {
+          "note": "升级至见习贵宾获50积分"
+        },
+        "见习贵宾": {
+          "note": "升级至进阶贵宾获100积分+券"
+        },
+        "进阶贵宾": {
+          "note": "升级至高阶贵宾获200积分+礼品"
+        },
+        "高阶贵宾": {
+          "note": "升级至资深贵宾获300积分+礼品"
+        },
+        "资深贵宾": {
+          "note": "升级至黑卡贵宾获500积分+专属礼"
+        },
+        "黑卡贵宾": {
+          "note": "年度礼包"
+        }
       },
       "redeem_time": "升级后自动发放",
       "limit": "以升级条件为准",
@@ -87,17 +162,36 @@
     {
       "id": "xicha-monday-free-delivery",
       "name": "周一免配送费",
-      "category": "shopping",
-      "tags": ["delivery-coupon"],
+      "tags": [
+        "delivery-coupon"
+      ],
       "type": "free",
       "description": "每周一可领取一张外卖免配送费券，满20元可用，限当天使用",
       "level_details": {
-        "星球会员": { "times": "1张/周一", "note": "满20元可用" },
-        "见习贵宾": { "times": "1张/周一", "note": "满20元可用" },
-        "进阶贵宾": { "times": "1张-3现金券", "note": "仅1次"},
-        "高阶贵宾": { "times": "1张买第二杯半价，1张外卖免配送权", "note": "仅1次"},
-        "资深贵宾": { "times": "1张买1送1，1张外卖免配送权", "note": "仅1次"},
-        "黑卡贵宾": { "times": "1张赠饮券，1张优先制作", "note": "仅1次" }
+        "星球会员": {
+          "times": "1张/周一",
+          "note": "满20元可用"
+        },
+        "见习贵宾": {
+          "times": "1张/周一",
+          "note": "满20元可用"
+        },
+        "进阶贵宾": {
+          "times": "1张-3现金券",
+          "note": "仅1次"
+        },
+        "高阶贵宾": {
+          "times": "1张买第二杯半价，1张外卖免配送权",
+          "note": "仅1次"
+        },
+        "资深贵宾": {
+          "times": "1张买1送1，1张外卖免配送权",
+          "note": "仅1次"
+        },
+        "黑卡贵宾": {
+          "times": "1张赠饮券，1张优先制作",
+          "note": "仅1次"
+        }
       },
       "redeem_time": "每周一",
       "limit": "限当天使用",

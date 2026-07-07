@@ -1,13 +1,18 @@
 {
   "platform": "银联",
   "platform_id": "unionpay",
-  "levels": ["持卡人", "62VIP", "钻石"],
+  "levels": [
+    "持卡人",
+    "62VIP",
+    "钻石"
+  ],
   "benefits": [
     {
       "id": "unionpay-ccb-debit-12306",
       "name": "建行借记卡12306满减",
-      "category": "travel",
-      "tags": ["coupon"],
+      "tags": [
+        "coupon"
+      ],
       "type": "free",
       "description": "建设银行借记卡在12306购票满100元减10元",
       "level_details": {
@@ -28,8 +33,10 @@
     {
       "id": "unionpay-ccb-social-12306",
       "name": "建行社保卡12306满减",
-      "category": "travel",
-      "tags": ["coupon", "important"],
+      "tags": [
+        "coupon",
+        "important"
+      ],
       "type": "free",
       "description": "建设银行社保卡在12306购票满100元减20元",
       "level_details": {
@@ -50,8 +57,11 @@
     {
       "id": "unionpay-icbc-debit-12306",
       "name": "工商银行卡12306五折",
-      "category": "travel",
-      "tags": ["coupon", "important", "grab-3s"],
+      "tags": [
+        "coupon",
+        "important",
+        "grab-3s"
+      ],
       "type": "free",
       "description": "工商银行卡在12306购票享5折优惠，每日8点抢名额",
       "level_details": {
@@ -72,8 +82,9 @@
     {
       "id": "unionpay-icbc-credit-12306",
       "name": "工商信用卡12306满减",
-      "category": "travel",
-      "tags": ["coupon"],
+      "tags": [
+        "coupon"
+      ],
       "type": "free",
       "description": "工商银行信用卡在12306购票满100元减15元",
       "level_details": {
@@ -94,8 +105,9 @@
     {
       "id": "unionpay-cmb-debit-taobao",
       "name": "招行借记卡淘宝闪购满减",
-      "category": "shopping",
-      "tags": ["coupon"],
+      "tags": [
+        "coupon"
+      ],
       "type": "free",
       "description": "招商银行借记卡在淘宝闪购满15元减2元",
       "level_details": {
@@ -116,8 +128,9 @@
     {
       "id": "unionpay-cmb-credit-taobao",
       "name": "招行信用卡淘宝闪购满减",
-      "category": "shopping",
-      "tags": ["coupon"],
+      "tags": [
+        "coupon"
+      ],
       "type": "free",
       "description": "招商银行信用卡在淘宝闪购满10元减2元",
       "level_details": {
@@ -138,8 +151,10 @@
     {
       "id": "unionpay-62vip-cashback-coupon",
       "name": "回本券",
-      "category": "shopping",
-      "tags": ["coupon", "important"],
+      "tags": [
+        "coupon",
+        "important"
+      ],
       "type": "free",
       "description": "银联62VIP会员每月可领取回本券，金额6元或7.5元",
       "level_details": {
@@ -159,8 +174,9 @@
     {
       "id": "unionpay-62vip-mobile-data",
       "name": "移动2G国内流量",
-      "category": "services",
-      "tags": ["coupon"],
+      "tags": [
+        "coupon"
+      ],
       "type": "free",
       "description": "银联62VIP会员每月可领取移动2G国内流量，领取后24小时内有效",
       "level_details": {
@@ -180,8 +196,9 @@
     {
       "id": "unionpay-62vip-youli",
       "name": "有礼甄享家",
-      "category": "shopping",
-      "tags": ["member-price"],
+      "tags": [
+        "member-price"
+      ],
       "type": "free",
       "description": "银联62VIP有礼甄享家专属权益",
       "level_details": {
@@ -198,8 +215,10 @@
     {
       "id": "unionpay-62vip-birthday",
       "name": "生日礼包",
-      "category": "shopping",
-      "tags": ["birthday-gift", "important"],
+      "tags": [
+        "birthday-gift",
+        "important"
+      ],
       "type": "free",
       "description": "银联62VIP会员生日当天额外获得1倍积点，最多888积点",
       "level_details": {
@@ -218,8 +237,10 @@
     {
       "id": "unionpay-diamond-airport-lounge",
       "name": "机场贵宾室",
-      "category": "travel",
-      "tags": ["airport-lounge", "grab-10s"],
+      "tags": [
+        "airport-lounge",
+        "grab-10s"
+      ],
       "type": "free",
       "description": "银联钻石卡会员可抢购机场贵宾室权益，支持单人和三人厅，当日有效",
       "level_details": {
@@ -239,8 +260,10 @@
     {
       "id": "unionpay-diamond-rail-lounge",
       "name": "高铁贵宾室",
-      "category": "travel",
-      "tags": ["rail-lounge", "grab-10s"],
+      "tags": [
+        "rail-lounge",
+        "grab-10s"
+      ],
       "type": "free",
       "description": "银联钻石卡会员可抢购高铁贵宾室权益，当日有效",
       "level_details": {
@@ -260,8 +283,9 @@
     {
       "id": "unionpay-diamond-medical-companion",
       "name": "陪诊就医",
-      "category": "health",
-      "tags": ["important"],
+      "tags": [
+        "important"
+      ],
       "type": "free",
       "description": "银联钻石卡会员可预约陪诊就医服务，每日限量15份",
       "level_details": {
@@ -280,8 +304,9 @@
     {
       "id": "unionpay-diamond-disney",
       "name": "迪士尼礼遇",
-      "category": "entertainment",
-      "tags": ["ticket"],
+      "tags": [
+        "ticket"
+      ],
       "type": "free",
       "description": "银联钻石卡会员专属迪士尼礼遇",
       "level_details": {
@@ -298,8 +323,9 @@
     {
       "id": "unionpay-diamond-dental",
       "name": "洁牙",
-      "category": "health",
-      "tags": ["dental-cleaning"],
+      "tags": [
+        "dental-cleaning"
+      ],
       "type": "free",
       "description": "银联钻石卡会员可抢购洁牙权益，每张银联卡活动期间最多2次",
       "level_details": {

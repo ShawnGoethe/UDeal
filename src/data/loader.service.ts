@@ -58,7 +58,7 @@ export class LoaderService {
         if (filters?.tag && !b.tags.includes(filters.tag)) continue;
         if (filters?.type && b.type !== filters.type) continue;
 
-        const matchFields = [b.name, b.description, b.category, ...b.tags].map((s) =>
+        const matchFields = [b.name, b.description, ...b.tags].map((s) =>
           s.toLowerCase(),
         );
 

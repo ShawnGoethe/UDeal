@@ -32,6 +32,12 @@ const platformSummary = platforms.map((p) => ({
   benefit_count: p.benefits.filter((b) => b.active).length,
 }));
 
+// 读取 SKILL.md
+let skillMd = '';
+try {
+  skillMd = fs.readFileSync(path.join(__dirname, "../clawhub/SKILL.md"), "utf-8");
+} catch {}
+
 // 读取 HTML 模板
 const html = fs.readFileSync(path.join(__dirname, "../public/index.html"), "utf-8");
 
@@ -39,7 +45,7 @@ const html = fs.readFileSync(path.join(__dirname, "../public/index.html"), "utf-
 const injected = html.replace(
   "const API = '';",
   `const API = '';
-const EMBEDDED_DATA = ${JSON.stringify({ tags, platforms: platformSummary, benefits: allBenefits })};`
+const EMBEDDED_DATA = ${JSON.stringify({ tags, platforms: platformSummary, benefits: allBenefits, skillMd })};`
 ).replace(
   `fetch(\`\${API}/api/tags\`).then(r => r.json()),
     fetch(\`\${API}/api/platforms\`).then(r => r.json()),

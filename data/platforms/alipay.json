@@ -11,7 +11,6 @@
     {
       "id": "alipay-birthday-benefit",
       "name": "生日特权",
-      "category": "生活",
       "tags": [
         "生活服务"
       ],
@@ -48,7 +47,6 @@
     {
       "id": "alipay-points-redemption",
       "name": "积分兑换专区",
-      "category": "购物",
       "tags": [
         "购物",
         "生活服务"

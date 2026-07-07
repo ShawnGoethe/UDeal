@@ -192,7 +192,6 @@
               <th>名称</th>
               <th>平台</th>
               <th>类型</th>
-              <th>分类</th>
               <th>状态</th>
               <th>操作</th>
             </tr>
@@ -265,10 +264,6 @@
         <input type="text" id="benefit-name" placeholder="如: 免费包邮">
       </div>
       <div class="form-group">
-        <label>分类</label>
-        <input type="text" id="benefit-category" placeholder="如: 物流">
-      </div>
-      <div class="form-group">
         <label>标签（逗号分隔）</label>
         <input type="text" id="benefit-tags" placeholder="如: 包邮,物流">
       </div>
@@ -320,16 +315,10 @@
       <button class="close-btn" onclick="closeUpdatePanel()">&times;</button>
       <h2>🤖 AI 新增权益</h2>
 
-      <!-- 选择渠道 -->
-      <div id="platformChecks">
-        <label style="font-size:13px;color:#888;margin-bottom:8px;display:block;">📱 选择渠道（填写备注时此项无效）：</label>
-        <div id="platformChips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
-      </div>
-
-      <!-- 备注 -->
+      <!-- 需求描述 -->
       <div style="margin-bottom:16px;">
-        <label style="font-size:13px;color:#888;margin-bottom:6px;display:block;">📝 备注（可选，定向告诉 AI 你要什么）：</label>
-        <textarea id="aiNotes" placeholder="填写后将忽略渠道选择，直接按需求生成。&#10;例如：查找喜茶的生日礼权益 / 所有平台的出行类权益 / 京东PLUS最新权益" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;resize:vertical;min-height:60px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#ddd'"></textarea>
+        <label style="font-size:13px;color:#888;margin-bottom:6px;display:block;">📝 描述你想获取的权益：</label>
+        <textarea id="aiNotes" placeholder="告诉 AI 你需要什么权益，例如：&#10;• 查找喜茶的生日礼权益&#10;• 所有平台的出行类权益&#10;• 京东PLUS最新权益&#10;• 支付宝财富黑卡的贵宾厅权益" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#ddd'"></textarea>
       </div>
 
       <!-- 生成按钮 -->
@@ -467,8 +456,7 @@
       const filtered = benefits.filter(b => {
         return !search ||
           b.benefit.name.toLowerCase().includes(search) ||
-          b.benefit.id.toLowerCase().includes(search) ||
-          b.benefit.category.toLowerCase().includes(search);
+          b.benefit.id.toLowerCase().includes(search);
       });
 
       const tbody = document.getElementById('benefits-tbody');
@@ -483,7 +471,6 @@
           <td>${b.benefit.name}</td>
           <td>${b.platform}</td>
           <td><span class="badge badge-${b.benefit.type}">${b.benefit.type === 'free' ? '免费' : '付费'}</span></td>
-          <td>${b.benefit.category}</td>
           <td><span class="badge badge-${b.benefit.active ? 'active' : 'inactive'}">${b.benefit.active ? '启用' : '禁用'}</span></td>
           <td class="actions">
             <button class="btn btn-sm" onclick="editBenefit('${b.benefit.id}', '${b.platform_id}')">编辑</button>
@@ -579,7 +566,6 @@
       document.getElementById('benefit-id').value = '';
       document.getElementById('benefit-id').disabled = false;
       document.getElementById('benefit-name').value = '';
-      document.getElementById('benefit-category').value = '';
       document.getElementById('benefit-tags').value = '';
       document.getElementById('benefit-type').value = 'free';
       document.getElementById('benefit-description').value = '';
@@ -603,7 +589,6 @@
       document.getElementById('benefit-id').value = id;
       document.getElementById('benefit-id').disabled = true;
       document.getElementById('benefit-name').value = item.benefit.name;
-      document.getElementById('benefit-category').value = item.benefit.category;
       document.getElementById('benefit-tags').value = item.benefit.tags.join(',');
       document.getElementById('benefit-type').value = item.benefit.type;
       document.getElementById('benefit-description').value = item.benefit.description;
@@ -620,7 +605,6 @@
       const data = {
         id: document.getElementById('benefit-id').value,
         name: document.getElementById('benefit-name').value,
-        category: document.getElementById('benefit-category').value,
         tags: document.getElementById('benefit-tags').value.split(',').map(t => t.trim()).filter(Boolean),
         type: document.getElementById('benefit-type').value,
         description: document.getElementById('benefit-description').value,
@@ -683,7 +667,6 @@
 
     // ---- AI Update Benefits Flow ----
     let currentTaskId = null;
-    let updatePlatforms = [];
     let _reviewBenefits = []; // flat array of benefit previews with platform info
 
     async function openUpdatePanel() {
@@ -694,27 +677,11 @@
       document.getElementById('startGenBtn').disabled = false;
       document.getElementById('startGenBtn').textContent = '🚀 开始生成';
       document.getElementById('startGenBtn').style.display = '';
-      document.getElementById('platformChecks').style.display = '';
       const liveOutput = document.getElementById('liveOutput');
       liveOutput.classList.remove('show');
       liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
       currentTaskId = null;
       _reviewBenefits = [];
-
-      // 加载平台列表
-      if (updatePlatforms.length === 0) {
-        try {
-          const res = await fetch('/api/platforms');
-          updatePlatforms = await res.json();
-        } catch { updatePlatforms = platforms; }
-      }
-
-      const chips = document.getElementById('platformChips');
-      chips.innerHTML = updatePlatforms.map(p =>
-        `<label style="display:flex;align-items:center;gap:4px;font-size:14px;padding:6px 12px;border:1px solid #ddd;border-radius:6px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='#667eea'" onmouseout="if(!this.querySelector('input').checked)this.style.borderColor='#ddd'">
-          <input type="checkbox" value="${p.platform_id}" style="cursor:pointer;" onchange="this.parentElement.style.borderColor=this.checked?'#667eea':'#ddd';this.parentElement.style.background=this.checked?'#f0f0ff':'';"> ${p.platform}
-        </label>`
-      ).join('');
     }
 
     function closeUpdatePanel() {
@@ -722,8 +689,13 @@
     }
 
     async function startGeneration() {
-      const checked = [...document.querySelectorAll('#platformChips input:checked')].map(el => el.value);
       const notes = document.getElementById('aiNotes').value.trim();
+
+      if (!notes) {
+        alert('请描述你想获取的权益');
+        return;
+      }
+
       const btn = document.getElementById('startGenBtn');
       const progress = document.getElementById('updateProgress');
       const liveOutput = document.getElementById('liveOutput');
@@ -741,11 +713,7 @@
         const res = await fetch('/api/updateBenefits', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            // 有备注时忽略平台选择，由 AI 自行判断
-            platforms: notes ? undefined : (checked.length ? checked : undefined),
-            notes: notes || undefined,
-          }),
+          body: JSON.stringify({ notes }),
         });
 
         const reader = res.body.getReader();
@@ -803,7 +771,6 @@
           liveOutput.classList.remove('show');
           liveOutput.innerHTML = '<span class="lo-label">📡 AI 实时输出</span>';
           btn.style.display = 'none';
-          document.getElementById('platformChecks').style.display = 'none';
           document.getElementById('aiNotes').parentElement.style.display = 'none';
           renderReview(finalTask.results);
         } else if (finalTask && finalTask.status === 'error') {
@@ -860,7 +827,6 @@
                 <th class="cb-cell"><input type="checkbox" onchange="toggleAllRows(this.checked)" style="cursor:pointer;width:16px;height:16px;"></th>
                 <th>渠道</th>
                 <th>名称</th>
-                <th>分类</th>
                 <th>类型</th>
                 <th>描述</th>
                 <th>操作标记</th>
@@ -887,7 +853,6 @@
           <td class="cb-cell"><input type="checkbox" class="row-check" data-i="${i}" style="cursor:pointer;width:16px;height:16px;"></td>
           <td class="rt-platform">${escHtml(b.platform)}</td>
           <td class="rt-name">${escHtml(b.name)}</td>
-          <td>${escHtml(b.category)}</td>
           <td><span class="rt-type ${b.type}">${b.type === 'free' ? '免费' : '付费'}</span></td>
           <td style="max-width:240px;color:#666;font-size:12px;line-height:1.4;">${escHtml(b.description)}</td>
           <td><span class="rt-action ${b.action}">${actionLabel}</span></td>
@@ -910,7 +875,6 @@
       if (isEditing) {
         // 保存：从 input 读取值，更新数据，切回只读
         b.name = tr.querySelector('.ie-name').value;
-        b.category = tr.querySelector('.ie-cat').value;
         b.description = tr.querySelector('.ie-desc').value;
         b.type = tr.querySelector('.ie-type').value;
         b.action = tr.querySelector('.ie-action').value;
@@ -924,22 +888,21 @@
         tr.dataset.editing = '1';
         const cells = tr.querySelectorAll('td');
         cells[2].innerHTML = `<input class="inline-edit ie-name" value="${escHtml(b.name)}">`;
-        cells[3].innerHTML = `<input class="inline-edit ie-cat" value="${escHtml(b.category)}">`;
-        cells[5].innerHTML = `<textarea class="inline-edit ie-desc" style="min-height:40px;resize:vertical;">${escHtml(b.description)}</textarea>`;
-        cells[6].innerHTML = `
+        cells[4].innerHTML = `<textarea class="inline-edit ie-desc" style="min-height:40px;resize:vertical;">${escHtml(b.description)}</textarea>`;
+        cells[5].innerHTML = `
           <select class="inline-select ie-action">
             <option value="add" ${b.action==='add'?'selected':''}>新增</option>
             <option value="update" ${b.action==='update'?'selected':''}>更新</option>
             <option value="remove" ${b.action==='remove'?'selected':''}>下架</option>
           </select>`;
         // 类型也改成可编辑
-        cells[4].innerHTML = `
+        cells[3].innerHTML = `
           <select class="inline-select ie-type">
             <option value="free" ${b.type==='free'?'selected':''}>免费</option>
             <option value="paid" ${b.type==='paid'?'selected':''}>付费</option>
           </select>`;
         // 编辑按钮变成保存
-        cells[7].innerHTML = `<button class="edit-row-btn" onclick="toggleRowEdit(${i})" style="background:#667eea;color:white;border-color:#667eea;">💾</button>`;
+        cells[6].innerHTML = `<button class="edit-row-btn" onclick="toggleRowEdit(${i})" style="background:#667eea;color:white;border-color:#667eea;">💾</button>`;
       }
     }
 

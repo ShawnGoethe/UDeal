@@ -15,7 +15,6 @@ export interface LevelDetail {
 export interface Benefit {
   id: string;
   name: string;
-  category: string;
   tags: string[];
   type: 'free' | 'paid';
   description: string;
